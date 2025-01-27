@@ -70,7 +70,7 @@ body {
 
   --error-color: #FF0E0E;
   --success-color: #6DAF3E;
-};
+}
 
 /* 태블릿 */
 @media (min-width: 768px) {
