@@ -1,7 +1,6 @@
-import React from "react";
 
-const modal = () => {
+const Modal = () => {
   return <div>modal</div>;
 };
 
-export default modal;
+export default Modal;
