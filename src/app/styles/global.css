@@ -150,64 +150,6 @@ input, button , textarea, select {
   text-align: center;
   }
 
-/* button utility class */
-/* btn-common utility class*/
-[class^="btn"] {
-  font-family: inherit;
-  font-size: 0.875rem; 
-  font-weight: 700;
-
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem; 
-
-  transition: all 0.2s ease-in-out;
-  text-align: center;
-}
-
-/* btn-contained utility class */
-.btn--contained {
-  background-color: var(--primary-color);
-  color: var(--white-color);
-  border: 1px solid var(--primary-500);
-}
-
-.btn--contained:hover {
-  cursor: pointer;
-  background-color: var(--hover-color);
-  border-color: var(--hover-color);
-}
-
-.btn--contained:active {
-  background-color: var(--active-color);
-  border-color: var(--active-color);
-}
-
-/*btn_line utility class*/
-.btn--line {
-  background-color: transparent;
-  color: var(--primary-color);
-  border: 1px solid var(--primary-color);
-}
-
-.btn--line:hover {
-  cursor: pointer;
-  color: var(--hover-color);
-  border-color: var(--hover-color); 
-}
-
-.btn--line:active {
-  color: var(--active-color);
-  border-color: var(--active-color);
-}
-
-/* disabled utility class*/
-[class^="btn"]:disabled,
-[class^="btn"][aria-disabled="true"] { 
-  background-color: var(--gray-200); /* 비활성화 배경 */
-  border-color: var(--gray-200); /* 비활성화 테두리 */
-  cursor: not-allowed; 
-  pointer-events: none; 
-}
 
 /*image, video reset*/
 img, video {
