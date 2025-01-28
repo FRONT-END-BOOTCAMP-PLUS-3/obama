@@ -5,12 +5,8 @@ import {
   NavItemLink,
   NavIcon,
   NavLabel,
-} from "./NavBarStyeld";
-
-type NavItem = {
-  label: string;
-  href: string;
-};
+} from "./NavBar.Styeld";
+import { NavItem } from "@/types/NavBar";
 
 const navItems: NavItem[] = [
   { label: "profile", href: "/" },
