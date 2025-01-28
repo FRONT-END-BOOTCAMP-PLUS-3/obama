@@ -16,7 +16,7 @@ const BaseButtonStyled = styled.button<{
     height: 2.5rem;
     padding: 0.625rem 1.25rem;
     font-weight: bold;
-    border-radius: 3.13rem;
+    border-radius: 3.125rem;
     border: 1px solid var(--primary-color);
     cursor: pointer;
     transition: all 0.3s ease;
