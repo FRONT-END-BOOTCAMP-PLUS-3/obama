@@ -10,7 +10,6 @@ export const NavBarContainer = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 20px;
   z-index: 1000;
 `;
 
@@ -19,14 +18,11 @@ export const NavItemLink = styled(Link)`
   font-size: var(--font-size-sm);
   color: var(--gray-600);
   text-align: center;
-  transition: color 0.2s;
-
-  &:hover {
-    color: var(--hover-color);
-  }
 `;
 
 export const NavIcon = styled.div`
-  font-size: 3.4375rem;
+  position: relative;
+  width: 55px;
+  height: 55px;
   margin-bottom: 0.25rem;
 `;

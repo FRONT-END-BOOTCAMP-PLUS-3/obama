@@ -2,6 +2,7 @@
 
 import { NavBarContainer, NavItemLink, NavIcon } from "./NavBar.Styeld";
 import { NavItem } from "@/types/NavBar";
+import Image from "next/image";
 
 const navItems: NavItem[] = [
   { label: "profile", href: "/" },
@@ -14,7 +15,14 @@ const NavBar: React.FC = () => {
     <NavBarContainer>
       {navItems.map((item) => (
         <NavItemLink key={item.href} href={item.href}>
-          <NavIcon>아이콘</NavIcon>
+          <NavIcon>
+            <Image
+              src={`/Icons/${item.label}.svg`}
+              alt={`${item.label} 아이콘`}
+              layout="fill"
+              objectFit="contain"
+            />
+          </NavIcon>
         </NavItemLink>
       ))}
     </NavBarContainer>
