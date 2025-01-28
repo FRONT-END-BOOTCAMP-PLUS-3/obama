@@ -30,8 +30,3 @@ export const NavIcon = styled.div`
   font-size: 3.4375rem;
   margin-bottom: 0.25rem;
 `;
-
-export const NavLabel = styled.div`
-  font-size: var(--font-size-xs);
-  color: var(--gray-700);
-`;
