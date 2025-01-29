@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Link from "next/link";
 
 export const NavBarContainer = styled.nav`
-  position: fixed;
+  /* position: fixed; */
   bottom: 0;
   width: 100%;
   height: 80px;
