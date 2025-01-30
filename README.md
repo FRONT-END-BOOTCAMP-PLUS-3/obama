@@ -1,1 +1,1 @@
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Official_portrait_of_Barack_Obama.jpg/1200px-Official_portrait_of_Barack_Obama.jpg" alt="Official portrait of Barack Obama" width="600">
+두근두근 소톡소톡
