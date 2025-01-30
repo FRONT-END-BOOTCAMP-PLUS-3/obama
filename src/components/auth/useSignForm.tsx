@@ -4,7 +4,7 @@ import {
   validatePassword,
   validatePhone,
   validateVerificationCode,
-} from "@/utils/validate";
+} from "@/utils/auth/validate";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 
 type FromType = "email" | "password" | "passwordConfirm" | "name" | "phone";
