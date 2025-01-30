@@ -1,18 +1,18 @@
+import { config } from "@/config/env";
 import { createServerClient } from "@supabase/ssr";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
 
 export async function createClient() {
   if (process.env.NODE_ENV === "test") {
     console.log("⚠️ Running in test mode: Using mock Supabase client.");
-    return createSupabaseClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    return createSupabaseClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_ROLE_KEY);
   }
 
   const cookieStore = await cookies();
-  return createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  return createServerClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY, {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: async (cookiesToSet) => {
