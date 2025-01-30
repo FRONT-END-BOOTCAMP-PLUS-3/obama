@@ -1,7 +1,7 @@
 "use client";
 
-import { NavBarContainer, NavItemLink, NavIcon } from "./NavBar.Styeld";
-import { NavItem } from "@/types/navBar";
+import { NavBarContainer, NavItemLink, NavIcon } from "./NavBar.Styled";
+import { NavItem } from "@/types/NavBar";
 import Image from "next/image";
 
 const navItems: NavItem[] = [
