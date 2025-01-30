@@ -6,7 +6,7 @@
     "test": "cross-env NODE_ENV=test jest --runInBand",
     "test:watch": "cross-env NODE_ENV=test jest --watch",
     "test:verbose": "cross-env NODE_ENV=test jest --verbose",
-    "test:single": "cross-env NODE_ENV=test jest --testPathPattern=",
+    "test:single": "cross-env NODE_ENV=test jest --testPathPattern",
     
     "dev": "next dev --turbopack",
     "build": "next build",
