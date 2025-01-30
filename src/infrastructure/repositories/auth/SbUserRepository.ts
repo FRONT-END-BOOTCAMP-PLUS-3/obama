@@ -18,5 +18,20 @@ export class SbUserRepository implements IUserRepository {
             throw new Error(`Failed to create user: ${error.message}`);
         }
     }
+
+    async findByEmail(email: string): Promise<boolean> {
+        const { data, error } = await this.supabase
+        .from('user')
+        .select('email')
+        .eq('email', email)
+        .single();
+
+        if (error) {
+            console.error("Error finding email:", error.message);
+            throw new Error("Error finding email");
+        }
+
+        return !!data;
+    }
     
 }
