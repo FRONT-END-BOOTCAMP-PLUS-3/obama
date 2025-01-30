@@ -7,6 +7,8 @@ const Container = styled.div`
   align-items: center;
   height: 100vh;
   width: 100%;
+  overflow: hidden;
+  background-color: var(--gray-500);
 `;
 
 const Page = styled.div<{ hasNavBar: boolean }>`
@@ -14,11 +16,13 @@ const Page = styled.div<{ hasNavBar: boolean }>`
   width: 390px;
   height: ${({ hasNavBar }) => (hasNavBar ? "100vh" : "100%")};
   text-align: center;
-  border: solid 1px #000000; /* TODO : UI 구현 후 삭제 */
   display: flex;
   flex-direction: column;
   justify-content: ${({ hasNavBar }) => (hasNavBar ? "space-between" : "center")};
   align-items: center;
+  overflow: hidden;
+  padding-bottom: 5rem;
+  background-color: var(--white-color);
 `;
 
 const LayoutContainer = ({

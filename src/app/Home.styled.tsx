@@ -7,6 +7,7 @@ export const TextContainer = styled.div`
   flex-direction: column; 
   align-items: center;
   margin-bottom: 0;
+  margin-top: 5rem;
 `;
 
 export const TitleRow = styled.div`
@@ -41,6 +42,6 @@ export const IconContainer = styled.div`
   `;
 
 export const ButtonWrapper = styled.div`
-  margin-top: 6.25rem; 
+  margin-top: 3rem; 
   `;
 

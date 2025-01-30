@@ -2,9 +2,10 @@ import styled from "styled-components";
 import Link from "next/link";
 
 export const NavBarContainer = styled.nav`
-  /* position: fixed; */
+  position: fixed;
   bottom: 0;
   width: 100%;
+  max-width: 390px;
   height: 80px;
   background-color: var(--white-color);
   display: flex;
