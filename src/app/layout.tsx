@@ -1,16 +1,23 @@
-import NavBar from "./components/common/NavBar/NavBar";
+"use client";
+
+import { usePathname } from "next/navigation";
 import "../styles/global.css";
+import LayoutContainer from "../components/common/LayoutContainer";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const shouldShowNavBar = pathname !== "/";
+
   return (
     <html lang="en">
       <body>
-        <main>{children}</main> {/* 페이지의 실제 콘텐츠는 여기 */}
-        <NavBar /> {/* 모든 페이지 하단에 NavBar 추가 */}
+        <LayoutContainer hasNavBar={shouldShowNavBar}>
+          {children}
+        </LayoutContainer>
       </body>
     </html>
   );
