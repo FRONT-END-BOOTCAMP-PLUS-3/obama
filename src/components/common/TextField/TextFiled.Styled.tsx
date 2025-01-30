@@ -26,6 +26,5 @@ export const StyledInput = styled.input<{
 
   &:focus {
     border-color: var(--primary-color);
-    outline: none;
   }
 `;
