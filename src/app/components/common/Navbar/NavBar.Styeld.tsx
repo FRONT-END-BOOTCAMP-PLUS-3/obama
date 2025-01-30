@@ -11,7 +11,7 @@ export const NavBarContainer = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  /* z-index: 1000; */
+  z-index: 1000;
 `;
 
 export const NavItemLink = styled(Link)`
