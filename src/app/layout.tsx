@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import "../styles/global.css";
-import LayoutContainer from "./components/common/LayoutContainer";
+import LayoutContainer from "../components/common/LayoutContainer";
 
 export default function RootLayout({
   children,
@@ -11,11 +11,13 @@ export default function RootLayout({
 }) {
   const pathname = usePathname();
   const shouldShowNavBar = pathname !== "/";
-  
+
   return (
     <html lang="en">
       <body>
-        <LayoutContainer hasNavBar={shouldShowNavBar}>{children}</LayoutContainer>
+        <LayoutContainer hasNavBar={shouldShowNavBar}>
+          {children}
+        </LayoutContainer>
       </body>
     </html>
   );
