@@ -3,7 +3,7 @@ export interface TextFieldProps {
   children?: React.ReactNode;
   name: string;
   value?: string | number;
-  type?: "text" | "password" | "number" | "price";
+  type?: "text" | "password" | "number" | "email";
   size?: "L" | "M" | "S";
   state?: "default" | "current" | "error";
   autoFocus?: boolean;
