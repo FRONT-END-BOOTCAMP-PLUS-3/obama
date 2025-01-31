@@ -12,6 +12,7 @@ export const NavBarContainer = styled.nav`
   align-items: center;
   justify-content: space-around;
   z-index: 1000;
+  border-top: solid 1px var(--gray-100);
 `;
 
 export const NavItemLink = styled(Link)`

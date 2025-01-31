@@ -2,9 +2,9 @@ import { css } from "styled-components";
 import type { ButtonVariant, ButtonSize } from "@/types/button"; 
 
 export const sizeStyles: Record<ButtonSize, string> = {
-    s: "5.625rem",
-    m: "8.75rem",
-    l: "20rem",
+    s: "90px",
+    m: "140px",
+    l: "320px",
 };
 
 export const variantStyles: Record<ButtonVariant, ReturnType<typeof css>> = {
