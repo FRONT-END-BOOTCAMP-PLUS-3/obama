@@ -1,65 +1,29 @@
-import dotenv from "dotenv";
+import dotenv from "dotenv"; // dotenv .env.local 로드
+import { z } from "zod";
+
 
 dotenv.config({ path: ".env.local" });
 
-interface Config {
-  
-    SUPABASE_URL: string;
-    SUPABASE_ANON_KEY: string;
-    SUPABASE_SERVICE_ROLE_KEY: string;
-    REDIS_URL: string
-    SMTP_HOST: string;
-  SMTP_PORT: number;
-  SMTP_USER_EMAIL: string;
-  SMTP_PASSWORD: string;
+
+// 1) 스키마 정의
+const envSchema = z.object({
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().nonempty(),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().nonempty(),
+  REDIS_URL: z.string().nonempty(),
+  SMTP_HOST: z.string().nonempty(),
+  SMTP_PORT: z.string().default("587").transform(Number),
+  SMTP_USER_EMAIL: z.string().email(),
+  SMTP_PASSWORD: z.string().nonempty(),
+});
+
+// 2) 검증
+const parsed = envSchema.safeParse(process.env);
+
+if (!parsed.success) {
+  console.error("환경 변수 오류:", parsed.error.format());
+  throw new Error("환경 변수 검증 실패!");
 }
 
-export const config : Config= {
-    SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-    SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
-    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY || "",
-
-    REDIS_URL: process.env.REDIS_URL || "",
-
-    SMTP_HOST: process.env.SMTP_HOST || '',
-    SMTP_PORT: parseInt(process.env.SMTP_PORT || '587', 10),
-    SMTP_USER_EMAIL: process.env.SMTP_USER_EMAIL || '',
-    SMTP_PASSWORD: process.env.SMTP_PASSWORD || ''
-
-
-  };
-
-  // 환경 변수 유효성 검사 (없으면 애플리케이션 실행 차단)
-  const missingEnvVars: string[] = [];
-
-  if (!config.SUPABASE_URL) {
-    missingEnvVars.push("NEXT_PUBLIC_SUPABASE_URL");
-  }
-  if (!config.SUPABASE_ANON_KEY) {
-    missingEnvVars.push("NEXT_PUBLIC_SUPABASE_ANON_KEY");
-  }
-  if (!config.SUPABASE_SERVICE_ROLE_KEY) {
-    missingEnvVars.push("SUPABASE_SERVICE_ROLE_KEY");
-  }
-  if (!config.REDIS_URL) {
-    missingEnvVars.push("REDIS_URL");
-  }
-
-  if (!config.SMTP_HOST) {
-    missingEnvVars.push('SMTP_HOST');
-  }
-  if (!config.SMTP_PORT) {
-    missingEnvVars.push('SMTP_PORT');
-  }
-  if (!config.SMTP_USER_EMAIL) {
-    missingEnvVars.push('SMTP_USER_EMAIL');
-  }
-  if (!config.SMTP_PASSWORD) {
-    missingEnvVars.push('SMTP_PASSWORD');
-  }
-  
-  // 필수 환경 변수가 없을 경우 서버 실행을 중단
-  if (missingEnvVars.length > 0) {
-    console.error(`❌ Missing environment variables: ${missingEnvVars.join(", ")}`);
-    process.exit(1); // Node.js 프로세스를 강제 종료
-  }
+// 3) 검증된 결과 export
+export const config = parsed.data;
