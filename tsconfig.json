@@ -32,7 +32,12 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+<<<<<<< HEAD
     ".next/types/**/*.ts"
+=======
+    ".next/types/**/*.ts",
+    "jest.config.js"
+>>>>>>> 1c4d0486386ac471b0e4a12e2bba825ebf5b24ee
   ],
   "exclude": [
     "node_modules",
