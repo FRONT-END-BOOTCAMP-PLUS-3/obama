@@ -1,5 +1,6 @@
 import redisClient, { connectRedis } from "@/utils/redis/redisClient";
 
+
 describe("Redis Connection Test", () => {
   beforeAll(async () => {
     await connectRedis();
