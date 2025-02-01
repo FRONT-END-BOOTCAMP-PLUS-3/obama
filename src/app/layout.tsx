@@ -10,7 +10,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const shouldShowNavBar = pathname !== "/";
+  const shouldShowNavBar = pathname !== "/" && !pathname.endsWith("/create");
 
   return (
     <html lang="en">
