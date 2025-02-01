@@ -1,9 +1,9 @@
 import { SignUpRequestDTO } from "@/application/auth/dtos/SignUpRequestDto";
 
-import { IDuplicateEmailUseCase } from "@/domain/usecases/IDuplicateEmailUseCase";
-import { IUUIDGeneratorUseCase } from "@/domain/usecases/IUUIDGeneratorUseCase";
+import { IDuplicateEmailUseCase } from "@/application/auth/interfaces/IDuplicateEmailUseCase";
+import { IUUIDGeneratorUseCase } from "@/application/common/usecases/interfaces/IUUIDGeneratorUseCase";
 import { IUserRepository } from "@/domain/repositories/IUserRepository";
-import { IPasswordHasher } from "@/domain/usecases/IPasswordHasherUseCase";
+import { IPasswordHasher } from "@/application/common/usecases/interfaces/IPasswordHasherUseCase";
 export class SignUpUseCase {
   constructor(
     private readonly userRepository: IUserRepository,

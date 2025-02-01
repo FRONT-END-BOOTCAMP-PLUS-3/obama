@@ -1,4 +1,4 @@
-import { IPasswordHasher } from '@/domain/usecases/IPasswordHasherUseCase';
+import { IPasswordHasher } from '@/application/common/usecases/interfaces/IPasswordHasherUseCase';
 import bcrypt from 'bcrypt';
 
 export class PasswordHasherUseCase implements IPasswordHasher{

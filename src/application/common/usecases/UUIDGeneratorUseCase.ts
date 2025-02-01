@@ -1,4 +1,4 @@
-import { IUUIDGeneratorUseCase } from '@/domain/usecases/IUUIDGeneratorUseCase';
+import { IUUIDGeneratorUseCase } from '@/application/common/usecases/interfaces/IUUIDGeneratorUseCase';
 import { v7 as uuidv7 } from 'uuid';
 
 export class UUIDGeneratorUseCase implements IUUIDGeneratorUseCase {
