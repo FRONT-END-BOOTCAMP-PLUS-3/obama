@@ -1,6 +1,5 @@
 import { IUserRepository } from "@/domain/repositories/IUserRepository";
-import { IDuplicateEmailUseCase } from "@/application/auth/usecases/interfaces/IDuplicateEmailUseCase";
-
+import { IDuplicateEmailUseCase } from "@/domain/usecases/IDuplicateEmailUseCase";
 export class DuplicateEmailUseCase implements IDuplicateEmailUseCase {
 
     constructor(private readonly userRepository: IUserRepository) {}

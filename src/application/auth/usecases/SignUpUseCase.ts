@@ -1,14 +1,14 @@
-import { IUserRepository } from "@/domain/repositories/IUserRepository";
-import { IDuplicateEmailUseCase } from "./interfaces/IDuplicateEmailUseCase";
-import { IUUIDGenerator } from "@/application/common/interfaces/IUUIDGenerator";
-import { IPasswordHasher } from "@/application/common/interfaces/IPasswordHasher";
-
 import { SignUpRequestDTO } from "@/application/auth/dtos/SignUpRequestDto";
+
+import { IDuplicateEmailUseCase } from "@/domain/usecases/IDuplicateEmailUseCase";
+import { IUUIDGeneratorUseCase } from "@/domain/usecases/IUUIDGeneratorUseCase";
+import { IUserRepository } from "@/domain/repositories/IUserRepository";
+import { IPasswordHasher } from "@/domain/usecases/IPasswordHasherUseCase";
 export class SignUpUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly duplicateEmailUseCase: IDuplicateEmailUseCase,
-    private readonly uuidGenerator: IUUIDGenerator, // UUID 생성 유스케이스
+    private readonly uuidGenerator: IUUIDGeneratorUseCase, // UUID 생성 유스케이스
     private readonly passwordHasher: IPasswordHasher
   ) {}
   async execute(request: SignUpRequestDTO): Promise<void> {

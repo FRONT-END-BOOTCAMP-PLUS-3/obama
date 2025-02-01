@@ -1,7 +1,7 @@
+import { IPasswordHasher } from '@/domain/usecases/IPasswordHasherUseCase';
 import bcrypt from 'bcrypt';
-import { IPasswordHasher } from '@/application/common/interfaces/IPasswordHasher';
 
-export class PasswordHasherUseCase implements IPasswordHasher {
+export class PasswordHasherUseCase implements IPasswordHasher{
     private readonly saltRounds = 10;
   
     async hash(password: string): Promise<string> {
