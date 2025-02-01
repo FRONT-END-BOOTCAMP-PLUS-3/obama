@@ -12,9 +12,15 @@ export default function CreatePage() {
     const fetchItems = async () => {
       try {
         const useCase = new GetItemListUseCase();
-        const response = await useCase.execute({ offset: 0, limit: 10 });
+        const response = await useCase.execute({ offset: 0 }); // limit 제거, offset만 전달
         console.log("Fetched Items:", response.items);
-        setItems(response.items || []);
+
+        // category_id가 1인 아이템만 필터링
+        const filteredItems = response.items.filter(
+          (item) => item.category_id === 1
+        );
+
+        setItems(filteredItems); // 필터링된 아이템을 상태로 설정
       } catch (error) {
         console.error("Error fetching items:", error);
       }
@@ -25,25 +31,16 @@ export default function CreatePage() {
 
   return (
     <div>
-      <h1>Create Page</h1>
-      <ul>
-        {items.length > 0 ? (
-          items.map((item, index) => (
-            <li key={index}>
-              {item.item_name ? item.item_name : "No name available"}{" "}
-              {/* item_name이 없으면 기본값 표시 */}
-            </li>
-          ))
-        ) : (
-          <li>No items found</li> // 아이템이 없을 경우 메시지 표시
-        )}
-      </ul>
-      <Button size="m" variant="contained" isToggle={true}>
-        토글 버튼
-      </Button>
-      <Button size="m" variant="line" isToggle={true}>
-        토글 버튼
-      </Button>
+      <h5>Q3. 나의 취미는?</h5>
+      {items.length > 0 ? (
+        items.map((item, index) => (
+          <Button key={index} size="m" variant="contained" isToggle={true}>
+            {item.item_name || "No name available"}
+          </Button>
+        ))
+      ) : (
+        <p>No items found</p>
+      )}
     </div>
   );
 }
