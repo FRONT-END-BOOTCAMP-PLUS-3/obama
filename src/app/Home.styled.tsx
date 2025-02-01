@@ -16,8 +16,11 @@ export const TitleRow = styled.div`
   justify-content: center; 
 `;
 
-export const SubTitleText = styled.h4<{ isBold?: boolean }>` 
-  font-weight: ${(props) => (props.isBold ? 600 : 100)};
+export const SubTitleText = styled.h4`
+  font-weight: 100; 
+  &.bold {
+    font-weight: 600;
+  }
 `;
 
 export const Title = styled.h1`

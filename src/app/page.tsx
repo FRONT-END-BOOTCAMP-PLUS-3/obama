@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  TextContainer,
-  TitleRow,
-  SubTitleText,
-  Title,
-  Line,
-  IconContainer,
-  ButtonWrapper,
-} from "./Home.styled";
+import {  TextContainer,TitleRow, SubTitleText,Title,Line,IconContainer,ButtonWrapper } from "@/app/Home.Styled";
 import Link from "next/link";
 import { Button } from "@/components/common/Button";
 
@@ -18,7 +10,7 @@ const Home = () => {
       <TextContainer>
         <SubTitleText>나를 가장 손쉽게 소개하는</SubTitleText>
         <TitleRow>
-          <SubTitleText isBold>모바일 프로필</SubTitleText>
+          <SubTitleText className= "bold">모바일 프로필</SubTitleText>
           <Line />
         </TitleRow>
       </TextContainer>
