@@ -8,11 +8,11 @@ import { cookies } from "next/headers";
 export async function createClient() {
   if (process.env.NODE_ENV === "test") {
     console.log("⚠️ Running in test mode: Using mock Supabase client.");
-    return createSupabaseClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_ROLE_KEY);
+    return createSupabaseClient(config.NEXT_PUBLIC_SUPABASE_URL, config.SUPABASE_SERVICE_ROLE_KEY);
   }
 
   const cookieStore = await cookies();
-  return createServerClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY, {
+  return createServerClient(config.NEXT_PUBLIC_SUPABASE_URL, config.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: async (cookiesToSet) => {
