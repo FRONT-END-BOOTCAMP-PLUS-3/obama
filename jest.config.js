@@ -1,12 +1,10 @@
 
 export default {
   preset: "ts-jest",
-  testEnvironment: "node",
   setupFiles: ["dotenv/config"],
+  testEnvironment: "node",
   moduleFileExtensions: ["ts", "tsx", "js"],
-  testMatch: process.env.TEST_FILE
-  ? [`**/${process.env.TEST_FILE}.test.ts`]
-  : ["**/tests/**/*.test.ts"],
+  testMatch: ['**/__tests__/**/*.test.ts'], 
   transform: {
     "^.+\\.tsx?$": "ts-jest",
   },
