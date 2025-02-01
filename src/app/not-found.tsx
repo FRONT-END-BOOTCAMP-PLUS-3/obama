@@ -1,10 +1,19 @@
 "use client";
 
-import { LogoContainer, Message, ButtonWrapper } from "./NotFound.styled";
+import { useState, useEffect } from "react";
+import { LogoContainer, Message, ButtonWrapper } from "@/app/notFound.Styled";
 import Button from "@/components/common/Button/Button";
 import Link from "next/link";
 
 const NotFound = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true); 
+  }, []);
+
+  if (!isClient) return null; 
+
   return (
     <>
       <LogoContainer>
@@ -27,4 +36,3 @@ const NotFound = () => {
 };
 
 export default NotFound;
-

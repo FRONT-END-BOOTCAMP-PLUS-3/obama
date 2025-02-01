@@ -4,20 +4,18 @@ import { usePathname } from "next/navigation";
 import "../styles/global.css";
 import LayoutContainer from "../components/common/LayoutContainer";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const shouldShowNavBar = pathname !== "/";
+  const isAdminPage = pathname.startsWith("/admin"); 
 
   return (
     <html lang="en">
       <body>
-        <LayoutContainer hasNavBar={shouldShowNavBar}>
-          {children}
-        </LayoutContainer>
+        {!isAdminPage ? (
+          <LayoutContainer>{children}</LayoutContainer>
+        ) : (
+          children 
+        )}
       </body>
     </html>
   );
