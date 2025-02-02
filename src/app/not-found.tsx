@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { LogoContainer, Message, ButtonWrapper } from "@/app/notFound.Styled";
+import { LogoContainer, Message, ButtonWrapper } from "@/app/NotFound.styled";
 import Button from "@/components/common/Button/Button";
 import Link from "next/link";
 
