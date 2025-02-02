@@ -1,7 +1,8 @@
 import nodemailer from "nodemailer";
 import { EmailService } from "@/domain/emailVerification/EmailService";
 import { config } from "@/config/env";
-import { generateEmailHtml } from "@utils/email/generateEmailHtml";
+import { generateEmailHtml } from "@/utils/email/generateEmailHtml";
+
 
 export class SMTPEmailService implements EmailService {
   private transporter;
