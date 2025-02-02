@@ -12,8 +12,8 @@ export class SMTPEmailService implements EmailService {
       port: config.SMTP_PORT,
       secure: false,
       auth: {
-        user: process.env.SMTP_USER_EMAIL,
-        pass: process.env.SMTP_PASSWORD,
+        user: config.env.SMTP_USER_EMAIL,
+        pass: config.env.SMTP_PASSWORD,
       },
     });
   }
