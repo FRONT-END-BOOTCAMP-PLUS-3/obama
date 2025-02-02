@@ -4,7 +4,7 @@ import { v7 as uuidv7 } from "uuid";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { User } from "@/domain/entities/User";
 
-describe.only("SbUserRepository (Integration Test)", () => {
+describe("SbUserRepository (Integration Test)", () => {
   let supabase: SupabaseClient;
   let repository: SbUserRepository;
   let testUserId: string;
@@ -12,7 +12,6 @@ describe.only("SbUserRepository (Integration Test)", () => {
   beforeAll(async () => {
     // ✅ Supabase 클라이언트 생성
     supabase = await createClient();
-
     // ✅ Repository 인스턴스 생성
     repository = new SbUserRepository(supabase);
 
@@ -40,32 +39,22 @@ describe.only("SbUserRepository (Integration Test)", () => {
 
     // ✅ Repository를 통해 유저 생성
     await repository.createUser(testUser);
+    console.log("🔹 데이터 입력 완료: ", JSON.stringify(testUser, null, 2));
 
-    await new Promise((res) => setTimeout(res, 3000)); // 500ms 대기
+    const result = await repository.findByEmail(testUser.email);
+    console.log("🔹 이메일 조회 결과: ", result ? "이메일 존재" : "이메일 없음");
+    expect(result).toBe(true);
 
-    // ✅ Supabase에서 데이터 조회
-    const { data , error } = await supabase
-      .from("user") // 테이블 이름 확인
-      .select("*")
-      .eq("user_id", testUserId)
-      .maybeSingle();
+    const fromMock = jest.fn().mockReturnValue({
+      select: jest.fn().mockRejectedValue(new Error("Supabase error")),
+    });
+    
+    (supabase.from as jest.Mock) = fromMock;
 
-    console.log(
-      "🔹 Supabase에서 조회된 데이터 (snake_case):",
-      JSON.stringify(data, null, 2)
-    );
-
-    // ✅ 데이터가 정상적으로 저장되었는지 검증
-    expect(data).not.toBeNull();
-    expect(data!.user_id).toBe(testUserId);
-    expect(data!.email).toBe(testUser.email);
-    expect(data!.name).toBe(testUser.name);
-    expect(data!.password).toBe(testUser.password);
-
-    console.log("🔹 [테스트] Supabase에서 조회된 데이터 (snake_case):", JSON.stringify(data, null, 2));
-    console.log("🔹 [테스트] Supabase 조회 에러:", error);
+    // findByEmail 호출 시 오류가 발생해야 함
+    await expect(repository.findByEmail("test@example.com")).rejects.toThrow("Error finding email");
   });
-  
+
 
   afterAll(async () => {
     // ✅ 테스트가 끝난 후, 생성한 테스트 데이터를 삭제

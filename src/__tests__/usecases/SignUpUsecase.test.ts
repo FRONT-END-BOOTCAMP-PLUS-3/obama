@@ -1,9 +1,11 @@
 import bcrypt from "bcrypt";
-import { SignUpRequestDTO } from "@/application/usecases/auth/dto/SignUpRequestDto";
-import { SignUpUseCase } from "@/application/usecases/auth/SignUpUseCase";
+import { SignUpRequestDTO } from "@/application/auth/dtos/SignUpRequestDto";
+import { SignUpUseCase } from "@/application/auth/usecases/SignUpUseCase";
 import { User } from "@/domain/entities/User";
 import { IUserRepository } from "@/domain/repositories/IUserRepository";
 import { v7 as uuidv7 } from "uuid";
+
+
 
 // ✅ Jest에서 uuid 모듈을 Mock 처리 (ESM 방식)
 jest.mock("uuid", () => ({
@@ -13,6 +15,7 @@ jest.mock("uuid", () => ({
 // ✅ Jest Mock을 사용하여 Repository를 가짜 객체로 만듦
 const mockUserRepository: jest.Mocked<IUserRepository> = {
     createUser: jest.fn(),
+    findByEmail: jest.fn()
 };
 
 describe("SignUpUseCase", () => {
@@ -54,4 +57,5 @@ describe("SignUpUseCase", () => {
         expect(mockUserRepository.createUser).toHaveBeenCalledTimes(1);
         expect(mockUserRepository.createUser).toHaveBeenCalledWith(expectedUser);
     });
-});
+
+  });
