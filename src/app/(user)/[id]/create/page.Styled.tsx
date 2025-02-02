@@ -16,6 +16,7 @@ export const ProfileSection = styled.div`
 `;
 
 export const ProfileTitle = styled.h3`
+  display: inline-block;
   width: 11.75rem;
   height: 4.75rem;
 `;
