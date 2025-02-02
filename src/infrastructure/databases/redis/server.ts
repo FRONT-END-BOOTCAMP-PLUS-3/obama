@@ -2,6 +2,10 @@ import { config } from "@/config/env";
 
 import Redis from "ioredis";
 
-const redis = new Redis(config.REDIS_URL);
+const redisClient = new Redis(config.REDIS_URL);
 
-export default redis;
+redisClient.on("error", (err) => {
+    console.error("Redis connection error:", err);
+  });
+
+export default redisClient;
