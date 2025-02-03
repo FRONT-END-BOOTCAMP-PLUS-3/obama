@@ -5,6 +5,7 @@ import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepos
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest){
+    console.log("check-email api mounted");
     try{
         const {email} = await req.json();
 
