@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation"; // Import useRouter
+import { useParams, useRouter } from "next/navigation";
 import { GetItemListUseCase } from "@/application/usecases/item/GetItemListUseCase";
 import { GetItemListDto } from "@/application/usecases/item/dto/GetItemListDto";
 import { Button } from "@/components/common/Button";
@@ -16,7 +16,7 @@ import {
 export default function CreatePage() {
   const { id } = useParams(); // URL의 [id] 값을 가져옴
   const categoryId = Number(id); // 숫자로 변환
-  const router = useRouter(); // Initialize the router
+  const router = useRouter();
 
   const [items, setItems] = useState<GetItemListDto["items"]>([]);
 
@@ -38,9 +38,6 @@ export default function CreatePage() {
       try {
         const useCase = new GetItemListUseCase();
         const response = await useCase.execute({ offset: 0 });
-
-        console.log("Fetched Items:", response.items);
-
         const filteredItems = response.items.filter(
           (item) => item.category_id === categoryId
         );
@@ -54,10 +51,10 @@ export default function CreatePage() {
     fetchItems();
   }, [categoryId]); // categoryId가 변경될 때마다 실행
 
-  // Function to handle "다음" button click
-  const handleNextClick = () => {
-    const nextCategoryId = categoryId + 1; // Move to the next category
-    router.push(`/${nextCategoryId}/create`); // Navigate to the new route
+  const handleNavigation = (direction: "next" | "previous") => {
+    const newCategoryId =
+      direction === "next" ? categoryId + 1 : categoryId - 1;
+    router.push(`/${newCategoryId}/create`);
   };
 
   return (
@@ -81,12 +78,18 @@ export default function CreatePage() {
       )}
 
       <BottomButtonContainer>
-        <Button size="m" variant="line">
-          건너뛰기
+        <Button
+          size="m"
+          variant="line"
+          onClick={() => handleNavigation("previous")}
+        >
+          이전
         </Button>
-        <Button size="m" variant="contained" onClick={handleNextClick}>
-          {" "}
-          {/* Add onClick here */}
+        <Button
+          size="m"
+          variant="contained"
+          onClick={() => handleNavigation("next")}
+        >
           다음
         </Button>
       </BottomButtonContainer>
