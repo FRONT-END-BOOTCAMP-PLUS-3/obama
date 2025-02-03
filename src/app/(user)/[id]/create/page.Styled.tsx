@@ -33,4 +33,5 @@ export const ButtonList = styled.div`
 export const BottomButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  min-width: 100%;
 `;
