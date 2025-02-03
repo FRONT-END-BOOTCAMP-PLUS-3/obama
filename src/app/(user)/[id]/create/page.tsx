@@ -19,6 +19,7 @@ export default function CreatePage() {
   const router = useRouter();
 
   const [items, setItems] = useState<GetItemListDto["items"]>([]);
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set()); // 선택된 버튼 텍스트 관리
 
   // 카테고리 ID에 따른 질문 매핑
   const categoryQuestions: Record<number, string> = {
@@ -51,9 +52,25 @@ export default function CreatePage() {
     fetchItems();
   }, [categoryId]); // categoryId가 변경될 때마다 실행
 
+  const handleToggle = (itemName: string) => {
+    setSelectedItems((prevSelectedItems) => {
+      const newSelectedItems = new Set(prevSelectedItems);
+      if (newSelectedItems.has(itemName)) {
+        newSelectedItems.delete(itemName); // 이미 선택된 항목은 취소
+      } else {
+        newSelectedItems.add(itemName); // 새 항목 선택
+      }
+      return newSelectedItems;
+    });
+  };
+
   const handleNavigation = (direction: "next" | "previous") => {
     const newCategoryId =
       direction === "next" ? categoryId + 1 : categoryId - 1;
+
+    // 선택된 항목들의 텍스트를 콘솔에 출력
+    console.log("Selected items:", Array.from(selectedItems).join(", "));
+
     router.push(`/${newCategoryId}/create`);
   };
 
@@ -68,7 +85,14 @@ export default function CreatePage() {
       {items.length > 0 ? (
         <ButtonList>
           {items.map((item, index) => (
-            <Button key={index} size="s" variant="contained" isToggle={true}>
+            <Button
+              key={index}
+              size="s"
+              variant={
+                selectedItems.has(item.item_name || "") ? "contained" : "line"
+              } // 선택 상태에 따라 variant 변경
+              onClick={() => handleToggle(item.item_name || "")} // 버튼 클릭 시 선택 상태 변경
+            >
               {item.item_name || "No name available"}
             </Button>
           ))}
