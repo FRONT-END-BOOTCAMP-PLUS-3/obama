@@ -10,7 +10,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const shouldShowNavBar = pathname !== "/" && !pathname.endsWith("/create");
   const isAdminPage = pathname.startsWith("/admin");
 
   return (

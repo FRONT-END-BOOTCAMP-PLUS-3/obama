@@ -19,23 +19,26 @@ const Page = styled.div<{ $hasNavBar: boolean }>`
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: ${({ $hasNavBar }) => ($hasNavBar ? "space-between" : "center")};
+  justify-content: ${({ $hasNavBar }) =>
+    $hasNavBar ? "space-between" : "center"};
   align-items: center;
   overflow: hidden;
   padding-bottom: 5rem;
   background-color: var(--white-color);
 `;
 
-
 const LayoutContainer = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const isHiddenNavBar = pathname === "/" || pathname.startsWith("/admin"); 
+  const isHiddenNavBar =
+    pathname === "/" ||
+    pathname.startsWith("/admin") ||
+    pathname.endsWith("/create");
 
   return (
     <Container>
       <Page $hasNavBar={!isHiddenNavBar}>
         {children}
-        {!isHiddenNavBar && <NavBar />} 
+        {!isHiddenNavBar && <NavBar />}
       </Page>
     </Container>
   );
