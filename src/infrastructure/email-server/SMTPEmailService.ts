@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 import { EmailService } from "@/domain/emailVerification/EmailService";
-import { config } from "@/config/env";
+import { serverConfig } from "@/config/serverEnv";
 import { generateEmailHtml } from "@/utils/email/generateEmailHtml";
 
 
@@ -9,12 +9,12 @@ export class SMTPEmailService implements EmailService {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: config.SMTP_HOST,
-      port: config.SMTP_PORT,
+      host: serverConfig.SMTP_HOST,
+      port: serverConfig.SMTP_PORT,
       secure: false,
       auth: {
-        user: config.SMTP_USER_EMAIL,
-        pass: config.SMTP_PASSWORD,
+        user: serverConfig.SMTP_USER_EMAIL,
+        pass: serverConfig.SMTP_PASSWORD,
       },
     });
   }
@@ -22,7 +22,7 @@ export class SMTPEmailService implements EmailService {
   async sendEmail(to: string, verificationCode: string): Promise<void> {
     const emailHtml = generateEmailHtml(verificationCode);
     const mailOptions = {
-      from: `"Sotok Company" <${config.SMTP_USER_EMAIL}>`,
+      from: `"Sotok Company" <${serverConfig.SMTP_USER_EMAIL}>`,
       to,
       subject: "Sotok 이메일 인증 코드",
       html: emailHtml,

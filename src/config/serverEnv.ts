@@ -7,8 +7,6 @@ dotenv.config({ path: ".env.local" });
 
 // 1) 스키마 정의
 const envSchema = z.object({
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().nonempty(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().nonempty(),
   REDIS_URL: z.string().nonempty(),
   SMTP_HOST: z.string().nonempty(),
@@ -26,4 +24,4 @@ if (!parsed.success) {
 }
 
 // 3) 검증된 결과 export
-export const config = parsed.data;
+export const serverConfig = parsed.data;
