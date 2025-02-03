@@ -49,10 +49,10 @@ export const useSignUpForm = () => {
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [verificationCode, setVerificationCode] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
   const [isVerified, setIsVerified] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  const [isDuplicated, setIsDuplicated] = useState<boolean>(false);
 
   const validateForm = useCallback(() => {
     const newErrors: FormErrors = {};
@@ -96,6 +96,29 @@ export const useSignUpForm = () => {
     []
   );
 
+  const handleDuplicateEmail = useCallback(async()=> {
+    console.log("DuplicateEmail Button onClick" , formState.email);
+    try {
+      const response = await apiClient.post("/api/auth/check-email",{email: formState.email});
+      const { isDuplicate, message } = response.data;
+
+      setIsLoading(true);
+
+      if (!isDuplicate) {
+        console.log("인증완료")
+        setIsDuplicated(true);
+        alert(message);
+      } else {
+        setIsDuplicated(false);
+        alert(message);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [formState.email, isDuplicated]);
+
   const handleVerificationCodeChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value.replace(/\s+/g, "");
@@ -104,9 +127,33 @@ export const useSignUpForm = () => {
     []
   );
 
-  const handleSubmitVerificationCode = useCallback(async () => {
+  const sendEmail = useCallback(async() => {
+    console.log(isDuplicated);
+    console.log("sendEmailButton onClick", formState.email)
+    if (!isDuplicated) {
+      console.log("중복확인부터 해주세요");
+      return;
+    }
     try {
-      const response = await apiClient.post("api/auth/verify-code", {
+      const response = await apiClient.post("/api/auth/send-email", {
+        email: formState.email,
+      });
+      console.log("✅ 인증 코드가 발송되었습니다.", response.data);
+    } catch (error: unknown) {
+      console.error(error);
+
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert("알수 없는 서버오류");
+      }
+    }
+  }, [formState.email]);
+
+  const handleSubmitVerificationCode = useCallback(async () => {
+    console.log("sendVerificationCode", verificationCode, formState.email);
+    try {
+      const response = await apiClient.post("/api/auth/verify-code", {
         email: formState.email,
         verificationCode: verificationCode,
       });
@@ -116,36 +163,15 @@ export const useSignUpForm = () => {
       setIsVerified(data.isVerified);
 
       if (data.isVerified) {
-        setMessage(data.message);
+        alert(data.message);
       } else {
-        setMessage(data.error || "인증 코드가 잘못되었습니다.");
+        alert(data.error || "인증 코드가 잘못되었습니다.");
       }
     } catch (error) {
       console.error(error);
     }
   }, [verificationCode]);
-
-  const sendEmail = useCallback(async () => {
-    if (!validateEmail(formState.email)) {
-      console.log("올바른 이메일을 입력하세요.");
-      return;
-    }
-    try {
-      const response = await apiClient.post("api/auth/send-email", {
-        email: formState.email,
-      });
-      console.log("✅ 인증 코드가 발송되었습니다.", response.data);
-    } catch (error: unknown) {
-      console.error(error);
-
-      if (error instanceof Error) {
-        setMessage(error.message);
-      } else {
-        setMessage("알수 없는 서버오류");
-      }
-    }
-  }, [formState.email]);
-
+  
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -174,14 +200,14 @@ export const useSignUpForm = () => {
         const response = await apiClient.post("api/auth/signup", {
           signUpRequest,
         });
-        setMessage(response.data.message || "회원가입 성공");
+        alert(response.data.message || "회원가입 성공");
       } catch (error: unknown) {
         console.error(error);
 
         if (error instanceof Error) {
-          setMessage(error.message);
+          alert(error.message);
         } else {
-          setMessage("알 수 없는 서버 오류 발생");
+          alert("알 수 없는 서버 오류 발생");
         }
       } finally {
         setIsLoading(false);
@@ -194,11 +220,13 @@ export const useSignUpForm = () => {
     formState,
     errors,
     verificationCode,
+    isDuplicated,
     isVerified,
     isLoading,
     isFormValid,
-    message,
+    
     handleChange,
+    handleDuplicateEmail,
     handleVerificationCodeChange,
     handleSubmitVerificationCode,
     sendEmail,
