@@ -1,15 +1,15 @@
+import supabase from '@/infrastructure/databases/supabase/server';
 import { User } from "@/domain/entities/User";
 import { IUserRepository } from "@/domain/repositories/IUserRepository";
-import { SupabaseClient } from "@supabase/supabase-js";
+
 
 export class SbUserRepository implements IUserRepository {
   private readonly tableName = "user";
 
-  constructor(private readonly supabase: SupabaseClient) {}
-
   async createUser(user: User): Promise<void> {
+    const client = await supabase();
 
-    const { error } = await this.supabase.from(this.tableName).insert(user);
+    const { error } = await client.from(this.tableName).insert(user);
 
     if (error) {
       throw new Error(`Failed to create user: ${error.message}`);
@@ -17,7 +17,9 @@ export class SbUserRepository implements IUserRepository {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    const { data, error } = await this.supabase
+    const client = await supabase();
+    
+    const { data, error } = await client
       .from("user")
       .select("*") // 이메일뿐만 아니라 사용자 정보를 가져올 수도 있음
       .eq("email", email)
