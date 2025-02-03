@@ -1,3 +1,5 @@
+"use client";
+
 import styled from "styled-components";
 import NavBar from "./Navbar/Navbar";
 import { usePathname } from "next/navigation";

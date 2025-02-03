@@ -17,3 +17,13 @@ export const Question = styled.h5`
   margin-bottom: 4rem;
 
 `
+
+export const ButtonWrapper = styled.div<{ $isHidden: boolean }>`
+  margin-top: 4rem; 
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center;
+  width: 100%; 
+  padding-right: 1rem; 
+  opacity: ${({ $isHidden }) => ($isHidden ? "0" : "1")};
+`;

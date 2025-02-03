@@ -15,7 +15,7 @@ export const StyledButton = styled.button`
   border-radius: 1.875rem; 
   background: var(--white-color);
   cursor: pointer;
-  text-align: center;
+  text-align: left;
 
   &:hover {
     border: 0.0625rem solid var(--hover-color);
@@ -44,6 +44,7 @@ export const StyledMenu = styled.ul`
    border-radius: 1.875rem; 
    list-style: none;
    overflow-y: auto;
+   z-index: 10;
    &::-webkit-scrollbar {
      width: 6px;
    }
@@ -68,6 +69,7 @@ export const StyledItem = styled.li<StyledItemProps>`
         ? "0 0 1.875rem 1.875rem" 
         : "0"};
   }
+  border: 0.03125rem solid var(--gray-100); 
   &:active{
     background: var(--active-color);
     color: var(--white-color);
