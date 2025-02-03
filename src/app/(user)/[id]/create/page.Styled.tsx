@@ -27,7 +27,6 @@ export const ButtonList = styled.div`
   flex-wrap: wrap; /* 버튼들이 넘칠 경우 아래 줄로 이동 */
   justify-content: center;
   gap: 0.625rem; /* 10px -> 0.625rem */
-  background-color: aliceblue;
 `;
 
 export const BottomButtonContainer = styled.div`
