@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/infrastructure/databases/supabase/server";
 import { GetItemListDto } from "./dto/GetItemListDto";
 
 export class GetItemListUseCase {

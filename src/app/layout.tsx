@@ -11,13 +11,16 @@ export default function RootLayout({
 }) {
   const pathname = usePathname();
   const shouldShowNavBar = pathname !== "/" && !pathname.endsWith("/create");
+  const isAdminPage = pathname.startsWith("/admin");
 
   return (
     <html lang="en">
       <body>
-        <LayoutContainer hasNavBar={shouldShowNavBar}>
-          {children}
-        </LayoutContainer>
+        {!isAdminPage ? (
+          <LayoutContainer>{children}</LayoutContainer>
+        ) : (
+          children
+        )}
       </body>
     </html>
   );

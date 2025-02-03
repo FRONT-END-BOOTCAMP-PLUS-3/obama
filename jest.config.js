@@ -1,13 +1,10 @@
-import dotenv from "dotenv";
-dotenv.config({ path: ".env.test" });
 
 export default {
   preset: "ts-jest",
+  setupFiles: ["dotenv/config"],
   testEnvironment: "node",
   moduleFileExtensions: ["ts", "tsx", "js"],
-  testMatch: process.env.TEST_FILE
-  ? [`**/${process.env.TEST_FILE}.test.ts`]
-  : ["**/tests/**/*.test.ts"],
+  testMatch: ['**/__tests__/**/*.test.ts'], 
   transform: {
     "^.+\\.tsx?$": "ts-jest",
   },

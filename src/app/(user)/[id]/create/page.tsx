@@ -42,7 +42,7 @@ export default function CreatePage() {
         const filteredItems = response.items.filter(
           (item) => item.category_id === categoryId
         );
-
+        console.log("Filtered items:", filteredItems);
         setItems(filteredItems);
       } catch (error) {
         console.error("Error fetching items:", error);
