@@ -4,6 +4,7 @@ const PASSWORD_MAX_LENGTH = 20;
 const PHONE_REGEX = /^[0-9]+$/;
 const NAME_REGEX = /^[a-zA-Z가-힣]+$/;
 const VERIFICATION_CODE_REGEX = /^\d{6}$/;
+const BIRTH_DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
 export const validateEmail = (email: string): string | undefined => {
 
@@ -67,5 +68,26 @@ export const validateVerificationCode = (code: string): string | undefined => {
 
     if (!VERIFICATION_CODE_REGEX.test(verificationCodeValue)) {
         return "인증 코드는 숫자 6자리여야 합니다.";
+    }
+};
+
+export const validateBirthDate = (birthDate: string): string | undefined => {
+    const birthDateValue = birthDate.trim();
+    if (!birthDateValue) return "생년월일을 입력해주세요.";
+    if (!BIRTH_DATE_REGEX.test(birthDateValue)) return "생년월일은 YYYY-MM-DD 형식이어야 합니다.";
+
+    const dateParts = birthDateValue.split("-").map(Number);
+    const year = dateParts[0];
+    const month = dateParts[1];
+    const day = dateParts[2];
+
+    const dateObject = new Date(year, month - 1, day);
+
+    if (
+        dateObject.getFullYear() !== year ||
+        dateObject.getMonth() + 1 !== month ||
+        dateObject.getDate() !== day
+    ) {
+        return "올바른 날짜를 입력해주세요.";
     }
 };

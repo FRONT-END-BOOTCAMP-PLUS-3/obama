@@ -3,8 +3,6 @@
 import { useSignUpForm } from "./useSignForm";
 
 const SignUpForm: React.FC = () => {
-
-
   const {
     formState,
     errors,
@@ -12,13 +10,15 @@ const SignUpForm: React.FC = () => {
     isVerified,
     isLoading,
     isFormValid,
+    message,
     handleChange,
     handleVerificationCodeChange,
     handleSubmitVerificationCode,
     sendEmail,
     handleSubmit,
   } = useSignUpForm();
-  
+
+  console.log(message);
 
   return (
     <form onSubmit={handleSubmit} noValidate>
@@ -54,12 +54,16 @@ const SignUpForm: React.FC = () => {
           required
           disabled={isLoading || isVerified}
         />
-        <button type="button" disabled={isLoading || isVerified} onClick={sendEmail}>
+        <button
+          type="button"
+          disabled={isLoading || isVerified}
+          onClick={sendEmail}
+        >
           인증번호 발송
         </button>
         <button
           type="button"
-          disabled={isLoading ||  isVerified || verificationCode.length !== 6}
+          disabled={isLoading || isVerified || verificationCode.length !== 6}
           onClick={handleSubmitVerificationCode}
         >
           인증하기
@@ -111,6 +115,20 @@ const SignUpForm: React.FC = () => {
         {errors.name && <p>{errors.name}</p>}
       </div>
 
+      <div>
+        <label htmlFor="birthDate">이름</label>
+        <input
+          type="text"
+          id="birthDate"
+          placeholder="이름을 입력하세요"
+          value={formState.birthDate}
+          onChange={handleChange("birthDate")}
+          required
+          disabled={isLoading}
+        />
+        {errors.birthDate && <p>{errors.birthDate}</p>}
+      </div>
+
       {/* 전화번호 입력 */}
       <div>
         <label htmlFor="phone">전화번호</label>
@@ -123,15 +141,18 @@ const SignUpForm: React.FC = () => {
           required
           disabled={isLoading}
         />
-          {errors.phone && <p>{errors.phone}</p>}
+        {errors.phone && <p>{errors.phone}</p>}
       </div>
 
       {/* 버튼 그룹 */}
       <div>
-        <button type="submit" disabled={isLoading || !isFormValid || !isVerified}>
+        <button
+          type="submit"
+          disabled={isLoading || !isFormValid || !isVerified}
+        >
           {isLoading ? "회원가입 중..." : "회원가입"}
         </button>
-        <button type="button" onClick={() => alert("이전으로가기")}> 
+        <button type="button" onClick={() => alert("이전으로가기")}>
           이전으로 가기
         </button>
       </div>
