@@ -1,24 +1,25 @@
 "use client";
 
-import { useSignUpForm } from "./useSignForm";
+import { useSignUpForm } from "./useSignUpForm";
 
 const SignUpForm: React.FC = () => {
   const {
     formState,
     errors,
     verificationCode,
+    isDuplicated,
     isVerified,
     isLoading,
     isFormValid,
-    message,
+    
     handleChange,
+    handleDuplicateEmail,
     handleVerificationCodeChange,
     handleSubmitVerificationCode,
     sendEmail,
     handleSubmit,
   } = useSignUpForm();
 
-  console.log(message);
 
   return (
     <form onSubmit={handleSubmit} noValidate>
@@ -36,10 +37,11 @@ const SignUpForm: React.FC = () => {
           required
           disabled={isLoading || isVerified}
         />
-        <button type="button" disabled={isLoading}>
+        <button type="button" disabled={isLoading} onClick={handleDuplicateEmail}>
           중복확인
         </button>
         {errors.email && <p>{errors.email}</p>}
+        {isDuplicated && <p>인증되었습니다.</p>}
       </div>
 
       {/* 인증코드 */}
@@ -56,7 +58,7 @@ const SignUpForm: React.FC = () => {
         />
         <button
           type="button"
-          disabled={isLoading || isVerified}
+          disabled={isLoading}
           onClick={sendEmail}
         >
           인증번호 발송
@@ -116,11 +118,11 @@ const SignUpForm: React.FC = () => {
       </div>
 
       <div>
-        <label htmlFor="birthDate">이름</label>
+        <label htmlFor="birthDate">생일</label>
         <input
           type="text"
           id="birthDate"
-          placeholder="이름을 입력하세요"
+          placeholder="생일을 입력하세요"
           value={formState.birthDate}
           onChange={handleChange("birthDate")}
           required
