@@ -17,10 +17,10 @@ export async function POST(req: NextRequest) {
         const isValid = await verifyCodeUseCase.execute(email, verificationCode);
 
         if(!isValid) {
-            return NextResponse.json({error: "인증 코드가 올바르지 않습니다."}, {status: 400});
+            return NextResponse.json({ error: "인증 코드가 잘못되었습니다.", isVerified: false }, { status: 400 });
         }
 
-        return NextResponse.json({message: "이메일 인증이 완료되었습니다."}, {status: 200});
+        return NextResponse.json({ message: "인증이 완료되었습니다.", isVerified: true }, { status: 200 });
 
     } catch (error) {
         console.error("❌ 인증 코드 검증 오류:", error);
