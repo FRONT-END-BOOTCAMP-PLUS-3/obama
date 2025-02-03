@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { GetItemListUseCase } from "@/application/usecases/item/GetItemListUseCase";
 import { GetItemListDto } from "@/application/usecases/item/dto/GetItemListDto";
+import { GetCategoryListUseCase } from "@/application/usecases/category/GetCategoryListUseCase";
 import { Button } from "@/components/common/Button";
 import {
   Container,
@@ -14,26 +15,43 @@ import {
 } from "./page.Styled";
 
 export default function CreatePage() {
-  const { id } = useParams(); // URL의 [id] 값을 가져옴
-  const categoryId = Number(id); // 숫자로 변환
+  const { id } = useParams();
+  const categoryId = Number(id);
   const router = useRouter();
 
   const [items, setItems] = useState<GetItemListDto["items"]>([]);
-  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set()); // 선택된 버튼 텍스트 관리
-
-  // 카테고리 ID에 따른 질문 매핑
-  const categoryQuestions: Record<number, string> = {
-    1: "Q1. 나의 취미는?",
-    3: "Q3. 좋아하는 동물은?",
-    7: "Q7. 어떤 여행을 선호하나요?",
-    8: "Q8. 좋아하는 음식은?",
-    9: "Q9. 관심있는 대화 주제는?",
-  };
-
-  const question = categoryQuestions[categoryId] || "No Question available"; // 기본값 설정
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [question, setQuestion] = useState<string>("");
 
   useEffect(() => {
-    if (isNaN(categoryId)) return; // 유효하지 않은 ID면 실행 안 함
+    const fetchCategories = async () => {
+      try {
+        const useCase = new GetCategoryListUseCase();
+        const response = await useCase.execute({ offset: 0, limit: 10 });
+
+        const category = response.categories.find(
+          (category: { category_id: number }) =>
+            category.category_id === categoryId
+        );
+
+        if (category) {
+          console.log(
+            `Category Question for ID ${categoryId}: ${category.category_question}`
+          );
+          setQuestion(category.category_question);
+        } else {
+          setQuestion("No Question available");
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, [categoryId]);
+
+  useEffect(() => {
+    if (isNaN(categoryId)) return;
 
     const fetchItems = async () => {
       try {
@@ -42,7 +60,6 @@ export default function CreatePage() {
         const filteredItems = response.items.filter(
           (item) => item.category_id === categoryId
         );
-        console.log("Filtered items:", filteredItems);
         setItems(filteredItems);
       } catch (error) {
         console.error("Error fetching items:", error);
@@ -50,15 +67,15 @@ export default function CreatePage() {
     };
 
     fetchItems();
-  }, [categoryId]); // categoryId가 변경될 때마다 실행
+  }, [categoryId]);
 
   const handleToggle = (itemName: string) => {
     setSelectedItems((prevSelectedItems) => {
       const newSelectedItems = new Set(prevSelectedItems);
       if (newSelectedItems.has(itemName)) {
-        newSelectedItems.delete(itemName); // 이미 선택된 항목은 취소
+        newSelectedItems.delete(itemName);
       } else {
-        newSelectedItems.add(itemName); // 새 항목 선택
+        newSelectedItems.add(itemName);
       }
       return newSelectedItems;
     });
@@ -68,19 +85,18 @@ export default function CreatePage() {
     const newCategoryId =
       direction === "next" ? categoryId + 1 : categoryId - 1;
 
-    // 선택된 항목들의 텍스트를 콘솔에 출력
-    console.log("Selected items:", Array.from(selectedItems).join(", "));
-
     router.push(`/${newCategoryId}/create`);
   };
 
   return (
     <Container>
-      {/* 프로필 생성 섹션 */}
       <ProfileSection>
         <ProfileTitle>나를 소개하는 프로필 생성하기</ProfileTitle>
       </ProfileSection>
-      <h5>{question}</h5>
+
+      <h5>
+        Q{categoryId}. {question}
+      </h5>
 
       {items.length > 0 ? (
         <ButtonList>
@@ -90,8 +106,8 @@ export default function CreatePage() {
               size="s"
               variant={
                 selectedItems.has(item.item_name || "") ? "contained" : "line"
-              } // 선택 상태에 따라 variant 변경
-              onClick={() => handleToggle(item.item_name || "")} // 버튼 클릭 시 선택 상태 변경
+              }
+              onClick={() => handleToggle(item.item_name || "")}
             >
               {item.item_name || "No name available"}
             </Button>
