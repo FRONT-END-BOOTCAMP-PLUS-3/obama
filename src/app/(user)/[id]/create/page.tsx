@@ -29,6 +29,7 @@ export default function CreatePage() {
   const [items, setItems] = useState<GetItemListDto["items"]>([]);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [question, setQuestion] = useState<string>("");
+  const [introText, setIntroText] = useState<string>("");
 
   const mbtiOptions = [
     "INTJ",
@@ -96,6 +97,8 @@ export default function CreatePage() {
     if (direction === "next") {
       if (categoryId === 4) {
         console.log("선택한 MBTI:", selectedType); // MBTI 출력
+      } else if (categoryId === 11) {
+        console.log("소개 입력 값:", introText); // IntroduceInput 값 출력
       } else {
         console.log("선택된 아이템:", Array.from(selectedItems)); // 아이템 리스트 출력
       }
@@ -148,7 +151,7 @@ export default function CreatePage() {
             ))}
           </MBTIButtonList>
         ) : categoryId === 11 ? (
-          <IntroduceInput />
+          <IntroduceInput value={introText} onChange={setIntroText} />
         ) : items.length > 0 ? (
           <ButtonList>
             {items.map((item, index) => (
