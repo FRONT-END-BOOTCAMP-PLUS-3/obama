@@ -5,39 +5,41 @@ export const Container = styled.div`
   padding: 2rem; /* 32px -> 2rem */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   min-height: 100%;
 `;
 
-export const ProfileSection = styled.div`
-  /*
-  프로필 타이틀 섹션
-  */
-`;
+export const ProfileSection = styled.div``;
 
 export const ProfileTitle = styled.h3`
   display: inline-block;
   width: 11.75rem;
   height: 4.75rem;
+  margin-bottom: 6.56rem;
 `;
 
 export const ButtonList = styled.div`
-  padding: 0.625rem; /* 10px -> 0.625rem */
   display: flex;
   flex-wrap: wrap; /* 버튼들이 넘칠 경우 아래 줄로 이동 */
   justify-content: center;
-  gap: 0.625rem; /* 10px -> 0.625rem */
+  gap: 0.625rem;
+  padding: 0.625rem;
+`;
+
+export const BottomSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 `;
 
 export const BottomButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  min-width: 100%;
+  width: 100%;
 `;
 
 export const TextFieldSection = styled.div`
-  display: flex;
-  justify-content: center;
+  margin-top: 6rem;
 `;
 
 export const MBTIButtonList = styled.div`
@@ -47,4 +49,8 @@ export const MBTIButtonList = styled.div`
   gap: 0.625rem;
   justify-content: center;
   padding: 0.625rem; /* 10px -> 0.625rem */
+`;
+
+export const QuestionSection = styled.div`
+  margin-bottom: 2.43rem;
 `;

@@ -13,8 +13,12 @@ import {
   BottomButtonContainer,
   ProfileSection,
   MBTIButtonList,
+  TextFieldSection,
+  QuestionSection,
+  BottomSection,
 } from "./page.Styled";
 import MBTISelectButton from "./components/mbtibutton";
+import { TextField } from "@/components/common/TextField";
 
 export default function CreatePage() {
   const { id } = useParams();
@@ -125,56 +129,65 @@ export default function CreatePage() {
         <ProfileTitle>나를 소개하는 프로필 생성하기</ProfileTitle>
       </ProfileSection>
 
-      <h5>
-        Q{categoryId}. {question}
-      </h5>
+      <QuestionSection>
+        <h5>
+          Q{categoryId}. {question}
+        </h5>
+      </QuestionSection>
+      <BottomSection>
+        {categoryId === 4 ? (
+          <MBTIButtonList>
+            {mbtiOptions.map((mbti, index) => (
+              <MBTISelectButton
+                key={index}
+                label={mbti}
+                selected={selectedType === mbti} // 선택된 MBTI와 현재 버튼의 MBTI 비교
+                onClick={() => toggleSelection(mbti)} // 클릭 시 해당 MBTI를 선택
+              />
+            ))}
+          </MBTIButtonList>
+        ) : items.length > 0 ? (
+          <ButtonList>
+            {items.map((item, index) => (
+              <Button
+                key={index}
+                size="s"
+                variant={
+                  selectedItems.has(item.item_name || "") ? "contained" : "line"
+                }
+                onClick={() => handleToggle(item.item_name || "")}
+              >
+                {item.item_name || "No name available"}
+              </Button>
+            ))}
+          </ButtonList>
+        ) : (
+          <TextFieldSection>
+            <TextField
+              size="L"
+              name="textfield"
+              placeholder="질문에 대한 답변을 해주세요."
+            ></TextField>
+          </TextFieldSection>
+        )}
 
-      {categoryId === 4 ? (
-        <MBTIButtonList>
-          {mbtiOptions.map((mbti, index) => (
-            <MBTISelectButton
-              key={index}
-              label={mbti}
-              selected={selectedType === mbti} // 선택된 MBTI와 현재 버튼의 MBTI 비교
-              onClick={() => toggleSelection(mbti)} // 클릭 시 해당 MBTI를 선택
-            />
-          ))}
-        </MBTIButtonList>
-      ) : items.length > 0 ? (
-        <ButtonList>
-          {items.map((item, index) => (
-            <Button
-              key={index}
-              size="s"
-              variant={
-                selectedItems.has(item.item_name || "") ? "contained" : "line"
-              }
-              onClick={() => handleToggle(item.item_name || "")}
-            >
-              {item.item_name || "No name available"}
-            </Button>
-          ))}
-        </ButtonList>
-      ) : (
-        <p>No items found</p>
-      )}
-
-      <BottomButtonContainer>
-        <Button
-          size="m"
-          variant="line"
-          onClick={() => handleNavigation("previous")}
-        >
-          이전
-        </Button>
-        <Button
-          size="m"
-          variant="contained"
-          onClick={() => handleNavigation("next")}
-        >
-          다음
-        </Button>
-      </BottomButtonContainer>
+        <BottomButtonContainer>
+          <Button
+            size="m"
+            variant="line"
+            onClick={() => handleNavigation("previous")}
+          >
+            이전
+          </Button>
+          <Button
+            size="m"
+            variant="contained"
+            onClick={() => handleNavigation("next")}
+          >
+            다음
+          </Button>
+        </BottomButtonContainer>
+      </BottomSection>
     </Container>
   );
 }
