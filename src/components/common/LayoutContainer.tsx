@@ -1,3 +1,5 @@
+"use client";
+
 import styled from "styled-components";
 import NavBar from "./Navbar/Navbar";
 import { usePathname } from "next/navigation";
@@ -8,23 +10,31 @@ const Container = styled.div`
   align-items: center;
   height: 100%;
   width: 100%;
-  overflow: hidden;
   background-color: var(--gray-500);
 `;
 
 const Page = styled.div<{ $hasNavBar: boolean }>`
   position: relative;
   width: 390px;
-  height: ${({ $hasNavBar }) => ($hasNavBar ? "100vh" : "100%")};
-  text-align: center;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: ${({ $hasNavBar }) =>
-    $hasNavBar ? "space-between" : "center"};
+  justify-content: center;
   align-items: center;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding-top: 1rem;
   padding-bottom: 5rem;
   background-color: var(--white-color);
+  margin-top: 0;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  & {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 `;
 
 const LayoutContainer = ({ children }: { children: React.ReactNode }) => {
