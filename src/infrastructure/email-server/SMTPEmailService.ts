@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { EmailService } from "@/domain/emailVerification/EmailService";
 import { serverConfig } from "@/config/serverEnv";
-import { generateEmailHtml } from "@/utils/email/generateEmailHtml";
+import { sendEmailTemplate } from "@/styles/email/sendEmailTemplate";
 
 
 export class SMTPEmailService implements EmailService {
@@ -20,7 +20,7 @@ export class SMTPEmailService implements EmailService {
   }
 
   async sendEmail(to: string, verificationCode: string): Promise<void> {
-    const emailHtml = generateEmailHtml(verificationCode);
+    const emailHtml = sendEmailTemplate(verificationCode);
     const mailOptions = {
       from: `"Sotok Company" <${serverConfig.SMTP_USER_EMAIL}>`,
       to,
