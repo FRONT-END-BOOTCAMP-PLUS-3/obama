@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
-// import { cookies } from "next/headers";
+import { clientConfig } from "@/config/clientEnv";
+import { serverConfig } from "@/config/serverEnv";
 
 let supabaseClientSingleton: ReturnType<typeof createSupabaseClient> | null =
   null;
