@@ -13,6 +13,7 @@ const BaseButtonStyled = styled.button<{
     justify-content: center;
     height: 2.5rem;
     padding: 0.625rem 1.25rem;
+    font-size: var(--font-size-sm);
     font-weight: bold;
     border-radius: 3.125rem;
     border: 1px solid var(--primary-color);
