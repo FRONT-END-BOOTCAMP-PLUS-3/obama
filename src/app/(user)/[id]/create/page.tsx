@@ -31,6 +31,8 @@ export default function CreatePage() {
   const [question, setQuestion] = useState<string>("");
   const [introText, setIntroText] = useState<string>("");
 
+  const [textFieldValue, setTextFieldValue] = useState<string>("");
+
   const mbtiOptions = [
     "INTJ",
     "INTP",
@@ -95,12 +97,14 @@ export default function CreatePage() {
 
   const handleNavigation = (direction: "next" | "previous") => {
     if (direction === "next") {
-      if (categoryId === 4) {
-        console.log("선택한 MBTI:", selectedType); // MBTI 출력
-      } else if (categoryId === 11) {
-        console.log("소개 입력 값:", introText); // IntroduceInput 값 출력
-      } else {
+      if (selectedItems.size > 0) {
         console.log("선택된 아이템:", Array.from(selectedItems)); // 아이템 리스트 출력
+      } else if (textFieldValue) {
+        console.log("TextField 입력값:", textFieldValue); // 텍스트필드 입력값 출력
+      } else if (introText) {
+        console.log("소개 입력 값:", introText); // IntroduceInput 값 출력
+      } else if (selectedType) {
+        console.log("선택한 MBTI:", selectedType); // MBTI 출력
       }
     }
 
@@ -108,6 +112,7 @@ export default function CreatePage() {
       direction === "next" ? categoryId + 1 : categoryId - 1;
     router.push(`/${newCategoryId}/create`);
   };
+
 
   const handleToggle = (itemName: string) => {
     setSelectedItems((prevSelectedItems) => {
@@ -173,6 +178,8 @@ export default function CreatePage() {
               size="L"
               name="textfield"
               placeholder="질문에 대한 답변을 해주세요."
+              value={textFieldValue}
+              onChange={(name, value) => setTextFieldValue(value)}
             />
           </TextFieldSection>
         )}
