@@ -1,5 +1,7 @@
+import { SmalltalkSubjectDto } from "@/application/common/usecases/smalltalkSubject/dto/SmalltalkSubjectDto";
+
 export interface DropdownProps {
-  options: string[];
+  options: SmalltalkSubjectDto[];
   onSelect: (option: string) => void;
   selected?: string | null;
   onToggle: (isOpen : boolean) => void;

@@ -2,50 +2,49 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import LayoutContainer from "@/components/common/LayoutContainer";
 import Dropdown from "@/components/common/Dropdown/Dropdown";
-import { SmalltalkSubject } from "@/domain/entities/SmalltalkSubject";
 import { Title, SuggestExplain, Question, ButtonWrapper } from "@/app/(anon)/smalltalks/select/select.Styled";
 import { Button } from "@/components/common/Button";
+import apiClient from "@/infrastructure/api/apiClient";
+import { SmalltalkSubjectDto } from "@/application/common/usecases/smalltalkSubject/dto/SmalltalkSubjectDto";
 
 export default function SmalltalkSelect() {
   const router = useRouter();
-  const [subjects, setSubjects] = useState<SmalltalkSubject[]>([]);
+  const [subjects, setSubjects] = useState<SmalltalkSubjectDto[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const fetchSubjects = async () => {
     try {
-      const res = await axios.get("/api/smalltalkSubjects");
-      const subjectData = res.data.data;
-
-      if (subjectData.length > 0) {
-        setSubjects(subjectData);
-        setSelectedSubject(subjectData[0].subject_name); 
+      const res = await apiClient.get("/api/smalltalkSubjects");
+      
+      if (res.data.data.length > 0) {
+        setSubjects(res.data.data); 
       }
     } catch (err) {
-      console.error("Failed to fetch subjects:", err);
+      console.error("❌ Failed to fetch subjects:", err);
     }
   };
-
+  
   useEffect(() => {
     fetchSubjects();
   }, []);
 
-  const handleSelect = (selectedName: string) => {
-    setSelectedSubject(selectedName); 
-  };
-
+  useEffect(() => {
+    if (subjects.length > 0 && !selectedSubject) {
+      setSelectedSubject(subjects[0].subjectName);
+    }
+  }, [subjects]);
+  
   const handleNavigate = () => {
-    const selectedSubjectId = subjects.find((s) => s.subject_name === selectedSubject)?.subject_id;
+    const selectedSubjectId = subjects.find((s) => s.subjectName === selectedSubject)?.subjectId;
 
     if (selectedSubjectId) {
       router.push(`/smalltalks/${selectedSubjectId}`);
     }
   };
-
-  const subjectNames = subjects.map((s) => s.subject_name);
+ 
 
   const handleDropdownToggle = (isOpen: boolean) => {
     setIsDropdownOpen(isOpen);
@@ -62,7 +61,11 @@ export default function SmalltalkSelect() {
       </SuggestExplain>
       <Question>어떤 큰 주제로 대화하고 싶으신가요?</Question>
 
-      <Dropdown options={subjectNames} onSelect={handleSelect} selected={selectedSubject} onToggle={handleDropdownToggle} />
+      <Dropdown
+        options={subjects} 
+        onSelect={(selected) => setSelectedSubject(selected)} 
+        selected={selectedSubject}
+        onToggle={handleDropdownToggle} />
 
       <ButtonWrapper $isHidden={isDropdownOpen}>
         <Button size="m" variant="contained" onClick={handleNavigate}>

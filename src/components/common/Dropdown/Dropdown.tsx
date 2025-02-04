@@ -4,6 +4,8 @@ import { DropdownWrapper, StyledButton, StyledMenu, StyledItem, DropdownArrow } 
 import { DropdownProps } from "@/types/dropdown";
 
 const Dropdown: React.FC<DropdownProps> = ({ options, onSelect, selected, onToggle }) => {
+
+  
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLUListElement | null>(null);
 
@@ -12,6 +14,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, onSelect, selected, onTogg
       menuRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
   }, [isOpen]);
+
 
   return (
     <DropdownWrapper>
@@ -29,17 +32,17 @@ const Dropdown: React.FC<DropdownProps> = ({ options, onSelect, selected, onTogg
         {isOpen && (
           <MenuItems as={StyledMenu} ref={menuRef}>
             {options.map((option, index) => (
-              <MenuItem key={option} as="div">
+              <MenuItem key={option.subjectId} as="div">
                 <StyledItem
-                  onClick={() => {
-                    onSelect(option);
-                    setIsOpen(false);
-                    onToggle && onToggle(false);
-                  }}
+                onClick={() => {
+                  onSelect(option.subjectName); 
+                  setIsOpen(false);
+                  onToggle && onToggle(false);
+                }}
                   $isFirst={index === 0}
                   $isLast={index === options.length - 1}
                 >
-                  {option}
+                  {option.subjectName}
                 </StyledItem>
               </MenuItem>
             ))}
