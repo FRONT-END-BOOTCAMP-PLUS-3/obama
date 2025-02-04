@@ -19,6 +19,7 @@ import {
 } from "./page.Styled";
 import MBTISelectButton from "./components/mbtibutton";
 import { TextField } from "@/components/common/TextField";
+import IntroduceInput from "./components/introduceInput";
 
 export default function CreatePage() {
   const { id } = useParams();
@@ -52,7 +53,7 @@ export default function CreatePage() {
     const fetchCategories = async () => {
       try {
         const useCase = new GetCategoryListUseCase();
-        const response = await useCase.execute({ offset: 0, limit: 10 });
+        const response = await useCase.execute({ offset: 0, limit: 12 });
 
         const category = response.categories.find(
           (category: { category_id: number }) =>
@@ -141,11 +142,13 @@ export default function CreatePage() {
               <MBTISelectButton
                 key={index}
                 label={mbti}
-                selected={selectedType === mbti} // 선택된 MBTI와 현재 버튼의 MBTI 비교
-                onClick={() => toggleSelection(mbti)} // 클릭 시 해당 MBTI를 선택
+                selected={selectedType === mbti}
+                onClick={() => toggleSelection(mbti)}
               />
             ))}
           </MBTIButtonList>
+        ) : categoryId === 11 ? (
+          <IntroduceInput />
         ) : items.length > 0 ? (
           <ButtonList>
             {items.map((item, index) => (
@@ -167,7 +170,7 @@ export default function CreatePage() {
               size="L"
               name="textfield"
               placeholder="질문에 대한 답변을 해주세요."
-            ></TextField>
+            />
           </TextFieldSection>
         )}
 

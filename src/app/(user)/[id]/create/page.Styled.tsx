@@ -39,7 +39,7 @@ export const BottomButtonContainer = styled.div`
 `;
 
 export const TextFieldSection = styled.div`
-  margin-top: 6rem;
+  margin-top: 5rem;
 `;
 
 export const MBTIButtonList = styled.div`
