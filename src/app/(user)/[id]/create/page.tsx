@@ -12,7 +12,9 @@ import {
   ProfileTitle,
   BottomButtonContainer,
   ProfileSection,
+  MBTIButtonList,
 } from "./page.Styled";
+import MBTISelectButton from "./components/mbtibutton";
 
 export default function CreatePage() {
   const { id } = useParams();
@@ -22,6 +24,25 @@ export default function CreatePage() {
   const [items, setItems] = useState<GetItemListDto["items"]>([]);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [question, setQuestion] = useState<string>("");
+
+  const mbtiOptions = [
+    "INTJ",
+    "INTP",
+    "ENTJ",
+    "ENTP",
+    "INFJ",
+    "INFP",
+    "ENFJ",
+    "ENFP",
+    "ISTJ",
+    "ISFJ",
+    "ESTJ",
+    "ESFJ",
+    "ISTP",
+    "ISFP",
+    "ESTP",
+    "ESFP",
+  ];
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -35,9 +56,6 @@ export default function CreatePage() {
         );
 
         if (category) {
-          console.log(
-            `Category Question for ID ${categoryId}: ${category.category_question}`
-          );
           setQuestion(category.category_question);
         } else {
           setQuestion("No Question available");
@@ -51,7 +69,7 @@ export default function CreatePage() {
   }, [categoryId]);
 
   useEffect(() => {
-    if (isNaN(categoryId)) return;
+    if (isNaN(categoryId) || categoryId === 4) return;
 
     const fetchItems = async () => {
       try {
@@ -69,6 +87,20 @@ export default function CreatePage() {
     fetchItems();
   }, [categoryId]);
 
+  const handleNavigation = (direction: "next" | "previous") => {
+    if (direction === "next") {
+      if (categoryId === 4) {
+        console.log("선택한 MBTI:", selectedType); // MBTI 출력
+      } else {
+        console.log("선택된 아이템:", Array.from(selectedItems)); // 아이템 리스트 출력
+      }
+    }
+
+    const newCategoryId =
+      direction === "next" ? categoryId + 1 : categoryId - 1;
+    router.push(`/${newCategoryId}/create`);
+  };
+
   const handleToggle = (itemName: string) => {
     setSelectedItems((prevSelectedItems) => {
       const newSelectedItems = new Set(prevSelectedItems);
@@ -81,11 +113,10 @@ export default function CreatePage() {
     });
   };
 
-  const handleNavigation = (direction: "next" | "previous") => {
-    const newCategoryId =
-      direction === "next" ? categoryId + 1 : categoryId - 1;
+  const [selectedType, setSelectedType] = useState<string | null>(null);
 
-    router.push(`/${newCategoryId}/create`);
+  const toggleSelection = (type: string) => {
+    setSelectedType((prev) => (prev === type ? null : type)); // 선택된 MBTI만 토글
   };
 
   return (
@@ -98,7 +129,18 @@ export default function CreatePage() {
         Q{categoryId}. {question}
       </h5>
 
-      {items.length > 0 ? (
+      {categoryId === 4 ? (
+        <MBTIButtonList>
+          {mbtiOptions.map((mbti, index) => (
+            <MBTISelectButton
+              key={index}
+              label={mbti}
+              selected={selectedType === mbti} // 선택된 MBTI와 현재 버튼의 MBTI 비교
+              onClick={() => toggleSelection(mbti)} // 클릭 시 해당 MBTI를 선택
+            />
+          ))}
+        </MBTIButtonList>
+      ) : items.length > 0 ? (
         <ButtonList>
           {items.map((item, index) => (
             <Button

@@ -34,3 +34,17 @@ export const BottomButtonContainer = styled.div`
   justify-content: space-between;
   min-width: 100%;
 `;
+
+export const TextFieldSection = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const MBTIButtonList = styled.div`
+  width: 23.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  justify-content: center;
+  padding: 0.625rem; /* 10px -> 0.625rem */
+`;
