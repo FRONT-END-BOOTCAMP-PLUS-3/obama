@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import { TextFieldProps } from "@/types/textfield";
-import { StyledWrapper, StyledInput } from "./TextFiled.Styled";
+import { StyledWrapper, StyledInput } from "./TextField.Styled";
 
 const TextField: React.FC<TextFieldProps> = ({
   size = "M",
@@ -42,12 +42,12 @@ const TextField: React.FC<TextFieldProps> = ({
     onChange(name, e.target.value);
   };
 
-  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
+  const handleFocus = () => {
     setIsFocused(true);
     onFocus(name, value.toString());
   };
 
-  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+  const handleBlur = () => {
     setIsFocused(false);
     onBlur(name, value.toString());
   };
