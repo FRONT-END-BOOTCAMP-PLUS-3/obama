@@ -14,16 +14,25 @@
 
 /* initial reset */
 * {
-  box-sizing: border-box;
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
+  -ms-overflow-style: none; 
 }
 
 html,
 body {
+  width: 100%;
   max-width: 100vw;
-  overflow-x: hidden;
   height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge에서 스크롤바 제거 */
 }
 
 /* variable*/
@@ -149,6 +158,18 @@ input, button , textarea, select {
   border: 1px solid var(--gray-600); 
   padding: 0;
   text-align: center;
+  outline: none;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* ✅ Firefox 숫자 스핀 버튼 제거 */
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
   }
 
 
