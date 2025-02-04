@@ -8,7 +8,7 @@ export async function GET() {
     const usecase = new GetSmalltalkSubjectsUsecase(repository);
     const subjects = await usecase.execute(); 
 
-    return NextResponse.json({ data: subjects }, { status: 200 });
+    return NextResponse.json({ subject: subjects }, { status: 200 });
   } catch (err) {
     console.error("Failed to fetch:", err);
     return NextResponse.json({ error: "Failed to fetch" }, { status: 500 });

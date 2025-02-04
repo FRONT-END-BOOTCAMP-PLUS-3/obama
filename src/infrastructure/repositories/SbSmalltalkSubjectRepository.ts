@@ -14,7 +14,7 @@ export class SbSmalltalkRepository implements IsmalltalkSubjectRepository {
       throw new Error("Database error while fetching subjects");
     }
 
-    return data as SmalltalkSubject[];
+    return data ;
     }
 
     async findById(id: number): Promise<SmalltalkSubject | null> {
@@ -34,6 +34,6 @@ export class SbSmalltalkRepository implements IsmalltalkSubjectRepository {
         throw new Error("Database error while finding subject by ID");
       }
 
-      return data as SmalltalkSubject;
+      return data;
     }
 }
