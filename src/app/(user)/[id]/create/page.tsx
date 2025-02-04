@@ -20,6 +20,7 @@ import {
 import MBTISelectButton from "./components/mbtibutton";
 import { TextField } from "@/components/common/TextField";
 import IntroduceInput from "./components/introduceInput";
+import ProfileImageUploader from "./components/profileUploader";
 
 export default function CreatePage() {
   const { id } = useParams();
@@ -113,7 +114,6 @@ export default function CreatePage() {
     router.push(`/${newCategoryId}/create`);
   };
 
-
   const handleToggle = (itemName: string) => {
     setSelectedItems((prevSelectedItems) => {
       const newSelectedItems = new Set(prevSelectedItems);
@@ -172,6 +172,8 @@ export default function CreatePage() {
               </Button>
             ))}
           </ButtonList>
+        ) : categoryId === 12 ? (
+          <ProfileImageUploader></ProfileImageUploader>
         ) : (
           <TextFieldSection>
             <TextField
