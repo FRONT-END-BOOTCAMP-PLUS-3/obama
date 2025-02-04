@@ -1,6 +1,9 @@
 "use client";
+import TextField from "@/components/common/TextField/TextField";
 
 import { useSignUpForm } from "./useSignUpForm";
+import { Button } from "@/components/common/Button";
+import { SectionEmailProps, SignUpWrapper } from "./SignUp.Styled";
 
 const SignUpForm: React.FC = () => {
   const {
@@ -11,7 +14,7 @@ const SignUpForm: React.FC = () => {
     isVerified,
     isLoading,
     isFormValid,
-    
+
     handleChange,
     handleDuplicateEmail,
     handleVerificationCodeChange,
@@ -20,14 +23,80 @@ const SignUpForm: React.FC = () => {
     handleSubmit,
   } = useSignUpForm();
 
-
   return (
-    <form onSubmit={handleSubmit} noValidate>
-      <h1>회원가입</h1>
+    <SignUpWrapper onSubmit={handleSubmit} noValidate>
+      <h2>회원가입</h2>
+      <SectionEmailProps>
+        <TextField
+          name="email"
+          placeholder="Email"
+          type="email"
+          size="M"
+          state="default"
+          autoFocus={true}
+        />
+        <Button size="s" variant="line">
+          중복확인
+        </Button>
+      </SectionEmailProps>
+      <TextField
+        name="verificationCode"
+        placeholder="인증코드"
+        type="number"
+        size="L"
+        state="default"
+      />
+
+      <TextField
+        name="password"
+        placeholder="비밀번호"
+        type="password"
+        size="L"
+        state="default"
+      />
+      <TextField
+        name="passwordConfirm"
+        placeholder="비밀번호 확인"
+        type="password"
+        size="L"
+        state="default"
+      />
+      <TextField
+        name="birhDate"
+        placeholder="생년월일"
+        type="text"
+        size="L"
+        state="default"
+      />
+      <TextField
+        name="name"
+        placeholder="이름"
+        type="text"
+        size="L"
+        state="default"
+      />
+
+      <TextField
+        name="phone-first"
+        placeholder="010"
+        type="number"
+        size="S"
+        state="default"
+      />
+
+      <TextField
+        name="phone-second"
+        placeholder="1234"
+        type="number"
+        size="S"
+      />
+
+      <TextField name="phone-third" placeholder="5678" type="number" size="S" />
 
       {/* 이메일 입력 */}
       <div>
         <label htmlFor="email">이메일</label>
+
         <input
           type="email"
           id="email"
@@ -37,13 +106,16 @@ const SignUpForm: React.FC = () => {
           required
           disabled={isLoading || isVerified}
         />
-        <button type="button" disabled={isLoading} onClick={handleDuplicateEmail}>
+        <button
+          type="button"
+          disabled={isLoading}
+          onClick={handleDuplicateEmail}
+        >
           중복확인
         </button>
         {errors.email && <p>{errors.email}</p>}
         {isDuplicated && <p>인증되었습니다.</p>}
       </div>
-
       {/* 인증코드 */}
       <div>
         <label htmlFor="verificationCode">인증코드</label>
@@ -56,11 +128,7 @@ const SignUpForm: React.FC = () => {
           required
           disabled={isLoading || isVerified}
         />
-        <button
-          type="button"
-          disabled={isLoading}
-          onClick={sendEmail}
-        >
+        <button type="button" disabled={isLoading} onClick={sendEmail}>
           인증번호 발송
         </button>
         <button
@@ -72,7 +140,6 @@ const SignUpForm: React.FC = () => {
         </button>
         {errors.verificationCode && <p>{errors.verificationCode}</p>}
       </div>
-
       {/* 비밀번호 입력 */}
       <div>
         <label htmlFor="password">비밀번호</label>
@@ -87,7 +154,6 @@ const SignUpForm: React.FC = () => {
         />
         {errors.password && <p>{errors.password}</p>}
       </div>
-
       {/* 비밀번호 확인 */}
       <div>
         <label htmlFor="passwordConfirm">비밀번호 확인</label>
@@ -101,7 +167,6 @@ const SignUpForm: React.FC = () => {
           disabled={isLoading}
         />
       </div>
-
       {/* 이름 입력 */}
       <div>
         <label htmlFor="name">이름</label>
@@ -116,7 +181,6 @@ const SignUpForm: React.FC = () => {
         />
         {errors.name && <p>{errors.name}</p>}
       </div>
-
       <div>
         <label htmlFor="birthDate">생일</label>
         <input
@@ -130,7 +194,6 @@ const SignUpForm: React.FC = () => {
         />
         {errors.birthDate && <p>{errors.birthDate}</p>}
       </div>
-
       {/* 전화번호 입력 */}
       <div>
         <label htmlFor="phone">전화번호</label>
@@ -145,7 +208,6 @@ const SignUpForm: React.FC = () => {
         />
         {errors.phone && <p>{errors.phone}</p>}
       </div>
-
       {/* 버튼 그룹 */}
       <div>
         <button
@@ -158,7 +220,7 @@ const SignUpForm: React.FC = () => {
           이전으로 가기
         </button>
       </div>
-    </form>
+    </SignUpWrapper>
   );
 };
 export default SignUpForm;
