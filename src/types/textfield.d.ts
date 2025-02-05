@@ -2,6 +2,7 @@ export interface TextFieldProps {
   className?: string;
   children?: React.ReactNode;
   name: string;
+  maxLength?: number;
   value?: string | number;
   type?: "text" | "password" | "number" | "email";
   size?: "L" | "M" | "S";

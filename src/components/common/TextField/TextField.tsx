@@ -1,6 +1,6 @@
 import React, {
   ChangeEvent,
-  FocusEvent,
+  // FocusEvent,
   useEffect,
   useRef,
   useState,
@@ -14,6 +14,7 @@ const TextField: React.FC<TextFieldProps> = ({
   className = "",
   children,
   name,
+  maxLength,
   value: initialValue = "",
   type = "text",
   autoFocus = false,
@@ -60,6 +61,7 @@ const TextField: React.FC<TextFieldProps> = ({
         ref={inputRef}
         type={type}
         name={name}
+        maxLength={maxLength}
         size={size}
         state={state}
         value={value}

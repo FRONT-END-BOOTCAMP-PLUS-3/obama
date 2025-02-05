@@ -12,13 +12,15 @@ const BaseButtonStyled = styled.button<{
     align-items: center;
     justify-content: center;
     height: 2.5rem;
-    padding: 0.625rem 1.25rem;
+    padding: 0.5rem 1rem;
+    line-height: 1.4;
     font-size: var(--font-size-sm);
     font-weight: bold;
     border-radius: 3.125rem;
     border: 1px solid var(--primary-color);
     cursor: pointer;
     transition: all 0.3s ease;
+    letter-spacing: 0.1rem;
 
   /* size에 따른 width 설정*/
   ${({ size }) => css`

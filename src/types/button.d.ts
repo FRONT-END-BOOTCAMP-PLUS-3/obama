@@ -7,5 +7,6 @@ export interface ButtonProps extends React.ButtonHTMLAttributes <HTMLButtonEleme
     className? : string;
     children?: React.ReactNode;
     isLoading?: boolean;
+    isToggle?: boolean;
     disabled?: boolean;
 }
