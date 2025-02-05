@@ -14,11 +14,11 @@ export const MBTIButton = styled.button<{ selected: boolean }>`
   transition: all 0.3s ease-in-out;
   border: 1px solid var(--gray-700);
   background-color: ${({ selected }) =>
-    selected ? "var(--primary-700)" : "#fff"};
+    selected ? "var(--primary-700)" : "var(--white-color)"};
   color: ${({ selected }) =>
     selected
-      ? "var(--Foundation-Grey-grey-50, #F5F5F5)"
-      : "var(--Foundation-Grey-grey-700, #6D6D6D)"};
+      ? "var(--Foundation-Grey-grey-50)"
+      : "var(--Foundation-Grey-grey-700)"};
   &:hover {
     border-color: var(--gray-500);
   }

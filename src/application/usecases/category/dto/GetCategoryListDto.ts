@@ -1,5 +1,5 @@
 export interface GetCategoryListDto {
-  offset?: number;
+  startIndex?: number;
   limit?: number;
   categories?: any[];
 }

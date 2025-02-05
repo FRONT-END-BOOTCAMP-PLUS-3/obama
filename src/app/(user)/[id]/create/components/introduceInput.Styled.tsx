@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const TextInputContainer = styled.div`
   width: 20.125rem;
   padding: 1.25rem;
   border-radius: 3.125rem;
@@ -25,8 +25,16 @@ export const Textarea = styled.textarea`
   border: none;
   font-size: 1rem;
   min-height: 7.5rem;
+  max-height: 15rem; /* 최대 높이 설정 */
   padding: 0.625rem;
   box-sizing: border-box;
+  overflow-y: auto; /* 내부 스크롤 활성화 */
+  scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
+  -ms-overflow-style: none; /* IE에서 스크롤바 숨기기 */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari에서 스크롤바 숨기기 */
+  }
 
   &:focus + div {
     display: none;

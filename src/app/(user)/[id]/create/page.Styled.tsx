@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const ProfileCreateContainer = styled.div`
   margin-top: 5rem;
   padding: 2rem; /* 32px -> 2rem */
   display: flex;

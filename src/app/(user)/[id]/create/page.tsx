@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { GetItemListUseCase } from "@/application/usecases/item/GetItemListUseCase";
-import { GetItemListDto } from "@/application/usecases/item/dto/GetItemListDto";
-import { GetCategoryListUseCase } from "@/application/usecases/category/GetCategoryListUseCase";
+import { fetchItemsByCategory } from "@/infrastructure/adapters/ItemAdapter";
+import { fetchCategoryQuestion } from "@/infrastructure/adapters/CategoryAdapter";
 import { Button } from "@/components/common/Button";
 import {
-  Container,
+  ProfileCreateContainer,
   ButtonList,
   ProfileTitle,
   BottomButtonContainer,
@@ -54,59 +53,33 @@ export default function CreatePage() {
   ];
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const useCase = new GetCategoryListUseCase();
-        const response = await useCase.execute({ offset: 0, limit: 12 });
-
-        const category = response.categories.find(
-          (category: { category_id: number }) =>
-            category.category_id === categoryId
-        );
-
-        if (category) {
-          setQuestion(category.category_question);
-        } else {
-          setQuestion("No Question available");
-        }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
+    const getQuestion = async () => {
+      const question = await fetchCategoryQuestion(categoryId);
+      setQuestion(question);
     };
-
-    fetchCategories();
+    getQuestion();
   }, [categoryId]);
 
   useEffect(() => {
-    if (isNaN(categoryId) || categoryId === 4) return;
-
-    const fetchItems = async () => {
-      try {
-        const useCase = new GetItemListUseCase();
-        const response = await useCase.execute({ offset: 0 });
-        const filteredItems = response.items.filter(
-          (item) => item.category_id === categoryId
-        );
-        setItems(filteredItems);
-      } catch (error) {
-        console.error("Error fetching items:", error);
-      }
+    const getItems = async () => {
+      const items = await fetchItemsByCategory(categoryId);
+      setItems(items);
     };
-
-    fetchItems();
+    getItems();
   }, [categoryId]);
 
   const handleNavigation = (direction: "next" | "previous") => {
     if (direction === "next") {
-      if (selectedItems.size > 0) {
-        console.log("선택된 아이템:", Array.from(selectedItems)); // 아이템 리스트 출력
-      } else if (textFieldValue) {
-        console.log("TextField 입력값:", textFieldValue); // 텍스트필드 입력값 출력
-      } else if (introText) {
-        console.log("소개 입력 값:", introText); // IntroduceInput 값 출력
-      } else if (selectedType) {
-        console.log("선택한 MBTI:", selectedType); // MBTI 출력
-      }
+      // if (selectedItems.size > 0) {
+      //   console.log("선택된 아이템:", Array.from(selectedItems)); // 아이템 리스트 출력
+      // } else if (textFieldValue) {
+      //   console.log("TextField 입력값:", textFieldValue); // 텍스트필드 입력값 출력
+      // } else if (introText) {
+      //   console.log("소개 입력 값:", introText); // IntroduceInput 값 출력
+      // } else if (selectedType) {
+      //   console.log("선택한 MBTI:", selectedType); // MBTI 출력
+      // }
+      // API 연결하기
     }
 
     const newCategoryId =
@@ -132,8 +105,20 @@ export default function CreatePage() {
     setSelectedType((prev) => (prev === type ? null : type)); // 선택된 MBTI만 토글
   };
 
+  const PreviousButton = ({ onClick }: { onClick: () => void }) => (
+    <Button size="m" variant="line" onClick={onClick}>
+      이전
+    </Button>
+  );
+
+  const NextButton = ({ onClick }: { onClick: () => void }) => (
+    <Button size="m" variant="contained" onClick={onClick}>
+      다음
+    </Button>
+  );
+
   return (
-    <Container>
+    <ProfileCreateContainer>
       <ProfileSection>
         <ProfileTitle>나를 소개하는 프로필 생성하기</ProfileTitle>
       </ProfileSection>
@@ -187,22 +172,10 @@ export default function CreatePage() {
         )}
 
         <BottomButtonContainer>
-          <Button
-            size="m"
-            variant="line"
-            onClick={() => handleNavigation("previous")}
-          >
-            이전
-          </Button>
-          <Button
-            size="m"
-            variant="contained"
-            onClick={() => handleNavigation("next")}
-          >
-            다음
-          </Button>
+          <PreviousButton onClick={() => handleNavigation("previous")} />
+          <NextButton onClick={() => handleNavigation("next")} />
         </BottomButtonContainer>
       </BottomSection>
-    </Container>
+    </ProfileCreateContainer>
   );
 }

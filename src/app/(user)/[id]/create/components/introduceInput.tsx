@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import * as S from "./introduceInput.Styled";
+import * as S from "@/app/(user)/[id]/create/components/introduceInput.Styled";
 
 interface IntroduceInputProps {
   value: string;
@@ -13,7 +13,7 @@ const IntroduceInput = ({ value, onChange }: IntroduceInputProps) => {
   const handleBlur = () => setIsFocused(false);
 
   return (
-    <S.Container>
+    <S.TextInputContainer>
       <S.TextareaWrapper>
         {value.length === 0 && !isFocused && (
           <S.StyledPlaceholder>
@@ -30,7 +30,7 @@ const IntroduceInput = ({ value, onChange }: IntroduceInputProps) => {
           maxLength={500}
         />
       </S.TextareaWrapper>
-    </S.Container>
+    </S.TextInputContainer>
   );
 };
 

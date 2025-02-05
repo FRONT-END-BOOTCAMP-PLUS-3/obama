@@ -43,7 +43,3 @@ export const ProfilePlusIcon = styled.img`
   z-index: 10; /* 플러스 아이콘 z-index 높게 설정 */
   cursor: pointer;
 `;
-
-export const HiddenInput = styled.input`
-  display: none;
-`;
