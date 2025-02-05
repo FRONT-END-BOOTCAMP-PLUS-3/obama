@@ -1,10 +1,10 @@
-import { clientConfig } from "@/config/clientEnv";
-import { serverConfig } from "@/config/serverEnv";
 import { createServerClient } from "@supabase/ssr";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
-import { cookies } from "next/headers";
+import { clientConfig } from "@/config/clientEnv";
+import { serverConfig } from "@/config/serverEnv";
 
-let supabaseClientSingleton: ReturnType<typeof createSupabaseClient> | null = null;
+let supabaseClientSingleton: ReturnType<typeof createSupabaseClient> | null =
+  null;
 
 export default async function supabase() {
   
@@ -67,6 +67,9 @@ export default async function supabase() {
       },
     }
   );
+<<<<<<< HEAD
+}
+=======
   return createServerClient(
     clientConfig.NEXT_PUBLIC_SUPABASE_URL,
     clientConfig.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -86,3 +89,4 @@ export default async function supabase() {
     }
   );
 }
+>>>>>>> 14151e65e22f8e763d5510930a2cf844ff3e7768

@@ -1,9 +1,7 @@
 import dotenv from "dotenv"; // dotenv .env.local 로드
 import { z } from "zod";
 
-
 dotenv.config({ path: ".env.local" });
-
 
 // 1) 스키마 정의
 const envSchema = z.object({
@@ -18,10 +16,12 @@ const envSchema = z.object({
 // 2) 검증
 const parsed = envSchema.safeParse(process.env);
 
-if (!parsed.success) {
-  console.error("환경 변수 오류:", parsed.error.format());
-  throw new Error("환경 변수 검증 실패!");
-}
+console.log(process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+// if (!parsed.success) {
+//   console.error("환경 변수 오류:", parsed.error.format());
+//   throw new Error("환경 변수 검증 실패!");
+// }
 
 // 3) 검증된 결과 export
 export const serverConfig = parsed.data;
