@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import LayoutContainer from "@/components/common/LayoutContainer";
 import Dropdown from "@/components/common/Dropdown/Dropdown";
-import { Title, SuggestExplain, Question, ButtonWrapper } from "@/app/(anon)/smalltalks/select/select.Styled";
+import { Title, SuggestExplain, Question, ButtonWrapper } from "@/components/smaltalk/Select.Styled";
 import { Button } from "@/components/common/Button";
 import apiClient from "@/infrastructure/api/apiClient";
-import { SmalltalkSubjectDto } from "@/application/common/usecases/smalltalkSubject/dto/SmalltalkSubjectDto";
+import { SmalltalkSubjectDto } from "@/application/smalltalk/smalltalkSubject/dto/SmalltalkSubjectDto";
 
 export default function SmalltalkSelect() {
   const router = useRouter();

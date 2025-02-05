@@ -1,5 +1,5 @@
 import { IsmalltalkSubjectRepository } from "@/domain/repositories/ISmalltalkSubjectRepository";
-import { SmalltalkSubjectDto } from "@/application/common/usecases/smalltalkSubject/dto/SmalltalkSubjectDto";
+import { SmalltalkSubjectDto } from "@/application/smalltalk/smalltalkSubject/dto/SmalltalkSubjectDto";
 
 export class GetSmalltalkSubjectsUsecase {
   constructor(private readonly repository: IsmalltalkSubjectRepository) {}
