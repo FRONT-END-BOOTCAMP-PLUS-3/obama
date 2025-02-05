@@ -1,8 +1,8 @@
 ---
 name: "[BUG] 버그 리포트 이슈"
 about: 버그 발생에 대한 설명과 해결이 필요할 때 사용해주세요.
-title: ''
-labels: bug
+title: "[BUG] 버그 설명 제목"
+labels: ":bug: Bug"
 assignees: ''
 
 ---
