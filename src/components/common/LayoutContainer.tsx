@@ -19,7 +19,7 @@ const Page = styled.div<{ $hasNavBar: boolean }>`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -28,25 +28,27 @@ const Page = styled.div<{ $hasNavBar: boolean }>`
   background-color: var(--white-color);
   margin-top: 0;
   &::-webkit-scrollbar {
-    display: none; 
+    display: none;
   }
 
   & {
-    -ms-overflow-style: none; 
-    scrollbar-width: none; 
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 `;
 
-
 const LayoutContainer = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const isHiddenNavBar = pathname === "/" || pathname.startsWith("/admin"); 
+  const isHiddenNavBar =
+    pathname === "/" ||
+    pathname.startsWith("/admin") ||
+    pathname.endsWith("/create");
 
   return (
     <Container>
       <Page $hasNavBar={!isHiddenNavBar}>
         {children}
-        {!isHiddenNavBar && <NavBar />} 
+        {!isHiddenNavBar && <NavBar />}
       </Page>
     </Container>
   );
