@@ -1,9 +1,9 @@
 ---
 name: "[FEAT] 기능 요청 이슈"
 about: 기능 추가 및 요청이 필요할 때 사용해주세요.
-title: ''
-labels: enhancement
-assignees: ggoldJeongg
+title: "[Feat] 추가 기능명"
+labels: ''
+assignees: ''
 
 ---
 
