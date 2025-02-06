@@ -23,7 +23,7 @@ export default function SmalltalkSelect() {
         setSubjects(res.data.subject); 
       }
     } catch (err) {
-      console.error("❌ Failed to fetch subjects:", err);
+      console.error(" Failed to fetch subjects:", err);
     }
   };
   
