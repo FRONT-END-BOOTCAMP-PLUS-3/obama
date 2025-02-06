@@ -23,7 +23,6 @@ const Page = styled.div<{ $hasNavBar: boolean }>`
   align-items: center;
   overflow-x: hidden;
   overflow-y: scroll;
-  padding-top: 1rem;
   padding-bottom: 5rem;
   background-color: var(--white-color);
   margin-top: 0;
