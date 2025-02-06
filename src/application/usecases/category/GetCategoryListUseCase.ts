@@ -1,7 +1,7 @@
 import supabase from "@/infrastructure/databases/supabase/server";
 import { GetCategoryListDto } from "./dto/GetCategoryListDto";
 
-export class GetcategoryListUseCase {
+export class GetCategoryListUseCase {
   async execute(requestDto: GetCategoryListDto): Promise<GetCategoryListDto> {
     const client = await supabase();
 
