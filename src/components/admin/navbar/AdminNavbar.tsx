@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { adminNavbarItems } from "@/data/adminNavbar";
-import AdminNavbarItem from "./AdminNavbarItem";
+import AdminNavbarItem from "@/components/admin/navbar/AdminNavbarItem";
 import Link from "next/link";
 import {
   Sidebar,
@@ -12,7 +12,7 @@ import {
   Submenu,
   SubmenuItem,
   ArrowIcon,
-} from "@/app/admin/components/Navbar/AdminNarvbar.styled";
+} from "@/components/admin/navbar/AdminNarvbar.styled";
 
 const AdminNavbar = () => {
   const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
