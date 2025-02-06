@@ -1,8 +1,8 @@
 import supabase from "@/infrastructure/databases/supabase/server";
-import { GetcategoryListDto } from "./dto/GetCategoryListDto";
+import { GetCategoryListDto } from "./dto/GetCategoryListDto";
 
 export class GetcategoryListUseCase {
-  async execute(requestDto: GetcategoryListDto): Promise<GetcategoryListDto> {
+  async execute(requestDto: GetCategoryListDto): Promise<GetCategoryListDto> {
     const client = await supabase();
 
     const startIndex = requestDto.startIndex ?? 0; // 기본값 설정
