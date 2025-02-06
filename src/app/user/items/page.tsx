@@ -25,7 +25,8 @@ import ProfileImageUploader from "./components/profileUploader";
 export default function CreatePage() {
   const router = useRouter();
   const searchParams = useSearchParams(); // useSearchParams를 사용
-  const categoryId = Number(searchParams.get("id")); // 쿼리 파라미터에서 'id' 값을 가져옵니다.
+  const categoryName = searchParams.get("cn"); // 'cn' 쿼리 파라미터에서 값을 가져옵니다.
+  const [categoryId, setCategoryId] = useState<number | null>(null);
 
   const [items, setItems] = useState<GetItemListDto["items"]>([]);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
@@ -54,17 +55,18 @@ export default function CreatePage() {
   ];
 
   useEffect(() => {
-    const fetchcategorys = async () => {
+    const fetchCategory = async () => {
       try {
         const useCase = new GetcategoryListUseCase();
         const response = await useCase.execute({ startIndex: 0, limit: 12 });
 
         const category = response.categories?.find(
-          (category: { category_id: number }) =>
-            category.category_id === categoryId
+          (category: { category_name_en: string }) =>
+            category.category_name_en === categoryName
         );
 
         if (category) {
+          setCategoryId(category.category_id);
           setQuestion(category.category_question);
         } else {
           setQuestion("No Question available");
@@ -74,11 +76,13 @@ export default function CreatePage() {
       }
     };
 
-    fetchcategorys();
-  }, [categoryId]);
+    if (categoryName) {
+      fetchCategory();
+    }
+  }, [categoryName]);
 
   useEffect(() => {
-    if (isNaN(categoryId) || categoryId === 4) return;
+    if (categoryId === null || isNaN(categoryId) || categoryId === 4) return;
 
     const fetchItems = async () => {
       try {
@@ -96,10 +100,27 @@ export default function CreatePage() {
     fetchItems();
   }, [categoryId]);
 
-  const handleNavigation = (direction: "next" | "previous") => {
+  const handleNavigation = async (direction: "next" | "previous") => {
+    if (!categoryId) return;
+
     const newCategoryId =
       direction === "next" ? categoryId + 1 : categoryId - 1;
-    router.push(`?id=${newCategoryId}`); // URL 쿼리 파라미터로 변경
+
+    try {
+      const useCase = new GetcategoryListUseCase();
+      const response = await useCase.execute({ startIndex: 0, limit: 12 });
+      const newCategory = response.categories?.find(
+        (category) => category.category_id === newCategoryId
+      );
+
+      if (newCategory) {
+        router.push(`/user/items?cn=${newCategory.category_name_en}`);
+      } else {
+        console.error("Category not found");
+      }
+    } catch (error) {
+      console.error("Error fetching new category:", error);
+    }
   };
 
   const handleToggle = (itemName: string) => {
@@ -117,7 +138,7 @@ export default function CreatePage() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
 
   const toggleSelection = (type: string) => {
-    setSelectedType((prev) => (prev === type ? null : type)); // 선택된 MBTI만 토글
+    setSelectedType((prev) => (prev === type ? null : type));
   };
 
   return (
