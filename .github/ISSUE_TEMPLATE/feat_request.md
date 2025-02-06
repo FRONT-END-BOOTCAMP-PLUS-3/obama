@@ -1,10 +1,9 @@
 ---
-name: "[FEAT] 기능 요청 이슈"
+name: "[Feat] 기능 요청 이슈"
 about: 기능 추가 및 요청이 필요할 때 사용해주세요.
 title: "[Feat] 기능 요청 이슈"
 labels: ":sparkles: Feat"
 assignees: ''
-
 ---
 
 ## 어떤 기능인가요?
