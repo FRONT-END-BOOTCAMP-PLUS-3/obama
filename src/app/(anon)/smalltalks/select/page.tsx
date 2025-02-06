@@ -6,7 +6,7 @@ import LayoutContainer from "@/components/common/LayoutContainer";
 import Dropdown from "@/components/common/Dropdown/Dropdown";
 import { Title, SuggestExplain, Question, ButtonWrapper } from "@/components/smaltalk/Select.Styled";
 import { Button } from "@/components/common/Button";
-import apiClient from "@/infrastructure/api/apiClient";
+import apiClient from "@/utils/api/apiClient";
 import { SmalltalkSubjectDto } from "@/application/smalltalk/smalltalkSubject/dto/SmalltalkSubjectDto";
 
 export default function SmalltalkSelect() {
