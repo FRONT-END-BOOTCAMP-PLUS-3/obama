@@ -8,7 +8,7 @@ import {
   IconContainer,
   Title,
   ButtonWrapper,
-} from "./Home.Styled";
+} from "./Home.styled";
 import Link from "next/link";
 import { Button } from "@/components/common/button";
 const Home = () => {
