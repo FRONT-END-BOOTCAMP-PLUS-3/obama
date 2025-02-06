@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { GetItemListUseCase } from "@/application/usecases/item/GetItemListUseCase";
 import { GetItemListDto } from "@/application/usecases/item/dto/GetItemListDto";
-import { GetCategoryListUseCase } from "@/application/usecases/category/GetCategoryListUseCase";
+import { GetCharacterListUseCase } from "@/application/usecases/character/GetCharacterListUseCase";
 import { Button } from "@/components/common/Button";
 import {
   ProfileCreateContainer,
@@ -24,7 +24,7 @@ import ProfileImageUploader from "./components/profileUploader";
 
 export default function CreatePage() {
   const { id } = useParams();
-  const categoryId = Number(id);
+  const characterId = Number(id);
   const router = useRouter();
 
   const [items, setItems] = useState<GetItemListDto["items"]>([]);
@@ -54,38 +54,38 @@ export default function CreatePage() {
   ];
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchCharacters = async () => {
       try {
-        const useCase = new GetCategoryListUseCase();
+        const useCase = new GetCharacterListUseCase();
         const response = await useCase.execute({ startIndex: 0, limit: 12 });
 
-        const category = response.categories.find(
-          (category: { category_id: number }) =>
-            category.category_id === categoryId
+        const character = response.characters.find(
+          (character: { character_id: number }) =>
+            character.character_id === characterId
         );
 
-        if (category) {
-          setQuestion(category.category_question);
+        if (character) {
+          setQuestion(character.character_question);
         } else {
           setQuestion("No Question available");
         }
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching characters:", error);
       }
     };
 
-    fetchCategories();
-  }, [categoryId]);
+    fetchCharacters();
+  }, [characterId]);
 
   useEffect(() => {
-    if (isNaN(categoryId) || categoryId === 4) return;
+    if (isNaN(characterId) || characterId === 4) return;
 
     const fetchItems = async () => {
       try {
         const useCase = new GetItemListUseCase();
         const response = await useCase.execute({ startIndex: 0 });
         const filteredItems = response.items.filter(
-          (item) => item.category_id === categoryId
+          (item) => item.character_id === characterId
         );
         setItems(filteredItems);
       } catch (error) {
@@ -94,7 +94,7 @@ export default function CreatePage() {
     };
 
     fetchItems();
-  }, [categoryId]);
+  }, [characterId]);
 
   const handleNavigation = (direction: "next" | "previous") => {
     if (direction === "next") {
@@ -109,9 +109,9 @@ export default function CreatePage() {
       // }
     }
 
-    const newCategoryId =
-      direction === "next" ? categoryId + 1 : categoryId - 1;
-    router.push(`/${newCategoryId}/create`);
+    const newCharacterId =
+      direction === "next" ? characterId + 1 : characterId - 1;
+    router.push(`/${newCharacterId}/create`);
   };
 
   const handleToggle = (itemName: string) => {
@@ -140,11 +140,11 @@ export default function CreatePage() {
 
       <QuestionSection>
         <h5>
-          Q{categoryId}. {question}
+          Q{characterId}. {question}
         </h5>
       </QuestionSection>
       <BottomSection>
-        {categoryId === 4 ? (
+        {characterId === 4 ? (
           <MBTIButtonList>
             {mbtiOptions.map((mbti, index) => (
               <MBTISelectButton
@@ -155,7 +155,7 @@ export default function CreatePage() {
               />
             ))}
           </MBTIButtonList>
-        ) : categoryId === 11 ? (
+        ) : characterId === 11 ? (
           <IntroduceInput value={introText} onChange={setIntroText} />
         ) : items.length > 0 ? (
           <ButtonList>
@@ -172,7 +172,7 @@ export default function CreatePage() {
               </Button>
             ))}
           </ButtonList>
-        ) : categoryId === 12 ? (
+        ) : characterId === 12 ? (
           <ProfileImageUploader></ProfileImageUploader>
         ) : (
           <TextFieldSection>
