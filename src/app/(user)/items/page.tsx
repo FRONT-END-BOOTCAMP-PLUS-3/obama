@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation"; // useSearchParams로 변경
 import { GetItemListUseCase } from "@/application/usecases/item/GetItemListUseCase";
 import { GetItemListDto } from "@/application/usecases/item/dto/GetItemListDto";
 import { GetCategoryListUseCase } from "@/application/usecases/category/GetCategoryListUseCase";
@@ -23,9 +23,9 @@ import IntroduceInput from "./components/introduceInput";
 import ProfileImageUploader from "./components/profileUploader";
 
 export default function CreatePage() {
-  const { id } = useParams();
-  const categoryId = Number(id);
   const router = useRouter();
+  const searchParams = useSearchParams(); // useSearchParams를 사용
+  const categoryId = Number(searchParams.get("id")); // 쿼리 파라미터에서 'id' 값을 가져옵니다.
 
   const [items, setItems] = useState<GetItemListDto["items"]>([]);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
@@ -59,7 +59,7 @@ export default function CreatePage() {
         const useCase = new GetCategoryListUseCase();
         const response = await useCase.execute({ startIndex: 0, limit: 12 });
 
-        const category = response.categories.find(
+        const category = response.categories?.find(
           (category: { category_id: number }) =>
             category.category_id === categoryId
         );
@@ -84,7 +84,7 @@ export default function CreatePage() {
       try {
         const useCase = new GetItemListUseCase();
         const response = await useCase.execute({ startIndex: 0 });
-        const filteredItems = response.items.filter(
+        const filteredItems = response.items?.filter(
           (item) => item.category_id === categoryId
         );
         setItems(filteredItems);
@@ -97,21 +97,9 @@ export default function CreatePage() {
   }, [categoryId]);
 
   const handleNavigation = (direction: "next" | "previous") => {
-    if (direction === "next") {
-      // if (selectedItems.size > 0) {
-      //   console.log("선택된 아이템:", Array.from(selectedItems)); // 아이템 리스트 출력
-      // } else if (textFieldValue) {
-      //   console.log("TextField 입력값:", textFieldValue); // 텍스트필드 입력값 출력
-      // } else if (introText) {
-      //   console.log("소개 입력 값:", introText); // IntroduceInput 값 출력
-      // } else if (selectedType) {
-      //   console.log("선택한 MBTI:", selectedType); // MBTI 출력
-      // }
-    }
-
     const newCategoryId =
       direction === "next" ? categoryId + 1 : categoryId - 1;
-    router.push(`/${newCategoryId}/create`);
+    router.push(`?id=${newCategoryId}`); // URL 쿼리 파라미터로 변경
   };
 
   const handleToggle = (itemName: string) => {
@@ -157,7 +145,7 @@ export default function CreatePage() {
           </MBTIButtonList>
         ) : categoryId === 11 ? (
           <IntroduceInput value={introText} onChange={setIntroText} />
-        ) : items.length > 0 ? (
+        ) : items && items.length > 0 ? (
           <ButtonList>
             {items.map((item, index) => (
               <Button

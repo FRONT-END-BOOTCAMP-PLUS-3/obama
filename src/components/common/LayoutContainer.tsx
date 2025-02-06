@@ -42,7 +42,7 @@ const LayoutContainer = ({ children }: { children: React.ReactNode }) => {
   const isHiddenNavBar =
     pathname === "/" ||
     pathname.startsWith("/admin") ||
-    pathname.endsWith("/create");
+    pathname.startsWith("/items");
 
   return (
     <Container>
