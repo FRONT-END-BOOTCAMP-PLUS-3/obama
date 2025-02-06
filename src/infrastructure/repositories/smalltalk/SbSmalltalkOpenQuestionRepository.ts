@@ -8,7 +8,7 @@ export class SbOpenQuestionRepository implements IsmalltalkOpenQuestionRepositor
     const { data, error } = await client
       .from("smalltalkSuggestOpenquestion")
       .select("*")
-      .eq("subject_id", subjectId); 
+      .eq("subject_id", subjectId);
 
     if (error) {
       console.error("Error fetching open questions:", error);
