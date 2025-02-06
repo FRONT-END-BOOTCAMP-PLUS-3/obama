@@ -1,9 +1,7 @@
 import dotenv from "dotenv"; // dotenv .env.local 로드
 import { z } from "zod";
 
-
 dotenv.config({ path: ".env.local" });
-
 
 // 1) 스키마 정의
 const envSchema = z.object({
