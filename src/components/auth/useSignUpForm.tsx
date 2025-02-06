@@ -7,9 +7,9 @@ import {
   validatePhone,
   validateVerificationCode,
 } from "@/utils/auth/validate";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import {  useCallback, useEffect, useState } from "react";
 
-type FromType = "email" | "password" | "passwordConfirm"| "birthDate" | "name" | "phone";
+
 
 interface FormState {
   email: string;
@@ -18,6 +18,12 @@ interface FormState {
   birthDate: string;
   name: string;
   phone: string;
+}
+
+interface PhoneSegments {
+  first: string;
+  second: string;
+  third: string;
 }
 interface FormErrors {
   email?: string;
@@ -45,6 +51,12 @@ export const useSignUpForm = () => {
     birthDate: "",
     name: "",
     phone: "",
+  });
+
+  const [phoneSegments, setPhoneSegments] = useState<PhoneSegments>({
+    first: "",
+    second: "",
+    third: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -77,63 +89,95 @@ export const useSignUpForm = () => {
       newErrors.verificationCode = verificationCodeError;
 
     const birthDateError = validateBirthDate(formState.birthDate);
-  if (birthDateError) newErrors.birthDate = birthDateError;
+    if (birthDateError) newErrors.birthDate = birthDateError;
 
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
   }, [formState, verificationCode]);
 
+
   useEffect(() => {
     setIsFormValid(validateForm());
   }, [formState, verificationCode, validateForm]);
 
-  const handleChange = useCallback(
-    (key: FromType) => (e: ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value.replace(/\s+/g, "");
-      setFormState((prev) => ({ ...prev, [key]: value }));
+  useEffect(() => {
+    setFormState((prev) => ({
+      ...prev,
+      phone: phoneSegments.first + phoneSegments.second + phoneSegments.third,
+    }));
+  }, [phoneSegments]);
+
+
+  const handleFormChange = useCallback(
+    (name: string, value: string) => {
+      console.log(`Field ${name} changed to ${value}`);
+      setFormState((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }, []
+  );
+
+
+  const handlePhoneChange = useCallback(
+    (segment: "first" | "second" | "third", value: string) => {
+      setPhoneSegments((prev) => ({
+        ...prev,
+        [segment]: value,
+      }));
     },
     []
   );
 
-  const handleDuplicateEmail = useCallback(async()=> {
-    console.log("DuplicateEmail Button onClick" , formState.email);
+const getFieldState = (
+    value: string,
+    errorMessage?: string
+  ): "default" | "error" => {
+    if (value.trim() === "") {
+      return "default";
+    }
+    return errorMessage ? "error" : "default";
+  };
+
+  const handleDuplicateEmail = useCallback(async () => {
+    console.log("DuplicateEmail Button onClick", formState.email);
     try {
-      const response = await apiClient.post("/api/auth/check-email",{email: formState.email});
+      const response = await apiClient.post("/api/auth/check-email", {
+        email: formState.email,
+      });
       const { isDuplicate, message } = response.data;
 
       setIsLoading(true);
 
       if (!isDuplicate) {
-        console.log("인증완료")
+        console.log("인증완료");
+        alert(message);
         setIsDuplicated(true);
-        alert(message);
+        
       } else {
-        setIsDuplicated(false);
         alert(message);
+        setIsDuplicated(false);
+        
       }
     } catch (error) {
       console.error(error);
+
     } finally {
       setIsLoading(false);
     }
-  }, [formState.email, isDuplicated]);
+  }, [formState.email]);
 
   const handleVerificationCodeChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value.replace(/\s+/g, "");
-      setVerificationCode(value);
+    (name: string, value: string) => {
+      setVerificationCode(value.replace(/\s+/g, ""));
     },
     []
   );
-
-  const sendEmail = useCallback(async() => {
-    console.log(isDuplicated);
-    console.log("sendEmailButton onClick", formState.email)
-    if (!isDuplicated) {
-      console.log("중복확인부터 해주세요");
-      return;
-    }
+  
+  const sendEmail = useCallback(async () => {
+    console.log("sendEmailButton onClick", formState.email);
+    
     try {
       const response = await apiClient.post("/api/auth/send-email", {
         email: formState.email,
@@ -171,7 +215,7 @@ export const useSignUpForm = () => {
       console.error(error);
     }
   }, [verificationCode]);
-  
+
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -186,6 +230,7 @@ export const useSignUpForm = () => {
 
       if (!isFormValid) {
         console.log("모든 입력 필드를 올바르게 작성해주세요.");
+        console.log(formState);
         return;
       }
 
@@ -219,17 +264,20 @@ export const useSignUpForm = () => {
   return {
     formState,
     errors,
+    phoneSegments,    
     verificationCode,
     isDuplicated,
     isVerified,
     isLoading,
     isFormValid,
-    
-    handleChange,
+
+    handleFormChange,
+    handlePhoneChange,
     handleDuplicateEmail,
     handleVerificationCodeChange,
     handleSubmitVerificationCode,
     sendEmail,
+    getFieldState,
     handleSubmit,
   };
 };

@@ -14,11 +14,13 @@ const TextField: React.FC<TextFieldProps> = ({
   className = "",
   children,
   name,
-  maxLength,
   value: initialValue = "",
   type = "text",
   autoFocus = false,
   placeholder = "",
+  maxLength,
+  required = false,
+  disabled = false,
   onChange = () => {},
   onFocus = () => {},
   onBlur = () => {},
@@ -66,6 +68,8 @@ const TextField: React.FC<TextFieldProps> = ({
         state={state}
         value={value}
         placeholder={isFocused || value ? "" : placeholder}
+        required={required}
+        disabled={disabled}
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}

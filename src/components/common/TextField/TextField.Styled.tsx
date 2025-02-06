@@ -28,9 +28,8 @@ export const StyledInput = styled.input<{
       state === "error" ? "var(--error-color)" : "var(--primary-color)"};
    
   }
-  
 
   &::placeholder {
-    text-align: left;  /* placeholder 왼쪽 정렬 */
+    text-align: ${({ size }) => (size === "S" ? "center" : "left")};
   }
 `;
