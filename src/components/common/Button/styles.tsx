@@ -48,6 +48,7 @@ export const variantStyles: Record<ButtonVariant, ReturnType<typeof css>> = {
     &:disabled{
         background-color: var(--gray-200);
         border-color: var(--gray-200);
+        color: var(--white-color);
         cursor: not-allowed;
     }
     `,

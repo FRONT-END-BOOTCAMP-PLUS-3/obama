@@ -1,12 +1,12 @@
 import React, {
   ChangeEvent,
-  FocusEvent,
+  // FocusEvent,
   useEffect,
   useRef,
   useState,
 } from "react";
 import { TextFieldProps } from "@/types/textfield";
-import { StyledWrapper, StyledInput } from "./TextFiled.Styled";
+import { StyledWrapper, StyledInput } from "./TextField.Styled";
 
 const TextField: React.FC<TextFieldProps> = ({
   size = "M",
@@ -18,6 +18,9 @@ const TextField: React.FC<TextFieldProps> = ({
   type = "text",
   autoFocus = false,
   placeholder = "",
+  maxLength,
+  required = false,
+  disabled = false,
   onChange = () => {},
   onFocus = () => {},
   onBlur = () => {},
@@ -42,12 +45,12 @@ const TextField: React.FC<TextFieldProps> = ({
     onChange(name, e.target.value);
   };
 
-  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
+  const handleFocus = () => {
     setIsFocused(true);
     onFocus(name, value.toString());
   };
 
-  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+  const handleBlur = () => {
     setIsFocused(false);
     onBlur(name, value.toString());
   };
@@ -60,10 +63,13 @@ const TextField: React.FC<TextFieldProps> = ({
         ref={inputRef}
         type={type}
         name={name}
+        maxLength={maxLength}
         size={size}
         state={state}
         value={value}
         placeholder={isFocused || value ? "" : placeholder}
+        required={required}
+        disabled={disabled}
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}

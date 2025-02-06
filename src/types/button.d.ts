@@ -1,13 +1,12 @@
 export type ButtonSize = "s" | "m" | "l";
 export type ButtonVariant = "contained" | "line";
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: ButtonSize;
-  variant?: ButtonVariant;
-  className?: string;
-  children: React.ReactNode;
-  isLoading?: boolean;
-  disabled?: boolean;
-  isToggle?: boolean; // isToggle 추가
+export interface ButtonProps extends React.ButtonHTMLAttributes <HTMLButtonElement> {
+    size?: ButtonSize;
+    variant?: ButtonVariant;
+    className? : string;
+    children?: React.ReactNode;
+    isLoading?: boolean;
+    isToggle?: boolean;
+    disabled?: boolean;
 }
