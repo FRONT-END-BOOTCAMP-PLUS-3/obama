@@ -23,7 +23,6 @@ const Page = styled.div<{ $hasNavBar: boolean }>`
   align-items: center;
   overflow-x: hidden;
   overflow-y: scroll;
-  padding-top: 1rem;
   padding-bottom: 5rem;
   background-color: var(--white-color);
   margin-top: 0;
@@ -41,8 +40,8 @@ const LayoutContainer = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const isHiddenNavBar =
     pathname === "/" ||
-    pathname.startsWith("/admin") ||
-    pathname.endsWith("/create");
+    pathname.startsWith("/user/admin") ||
+    pathname.startsWith("/user/items");
 
   return (
     <Container>

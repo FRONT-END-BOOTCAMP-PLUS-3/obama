@@ -17,7 +17,7 @@ export class GetCategoryListUseCase {
     const { data, error } = await query;
 
     if (error) {
-      throw new Error(`Failed to fetch categories: ${error.message}`);
+      throw new Error(`Failed to fetch categorys: ${error.message}`);
     }
 
     return { categories: data }; // 카테고리 반환
