@@ -10,8 +10,8 @@ export interface ProfileDTO {
     hobbies: string[];
     interests: string[];
     tripStyle: string[];
-    food: string;
-    topic: string; 
+    food: string[];
+    topic: string[]; 
     worry: string;
     lifeMovie: string;
     ideal: string; 

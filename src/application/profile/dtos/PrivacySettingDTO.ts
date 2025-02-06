@@ -1,5 +1,5 @@
 export interface PrivacySettingDTO {
     category: string;
-    content: string;
+    answer: string;
     isPublic: boolean;
 }
