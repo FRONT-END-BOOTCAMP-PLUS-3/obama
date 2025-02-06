@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation"; // useSearchParams로 변경
 import { GetItemListUseCase } from "@/application/usecases/item/GetItemListUseCase";
 import { GetItemListDto } from "@/application/usecases/item/dto/GetItemListDto";
-import { GetCategoryListUseCase } from "@/application/usecases/category/GetCategoryListUseCase";
+import { GetcategoryListUseCase } from "@/application/usecases/category/GetCategoryListUseCase";
 import { Button } from "@/components/common/Button";
 import {
   ProfileCreateContainer,
@@ -54,9 +54,9 @@ export default function CreatePage() {
   ];
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchcategorys = async () => {
       try {
-        const useCase = new GetCategoryListUseCase();
+        const useCase = new GetcategoryListUseCase();
         const response = await useCase.execute({ startIndex: 0, limit: 12 });
 
         const category = response.categories?.find(
@@ -70,11 +70,11 @@ export default function CreatePage() {
           setQuestion("No Question available");
         }
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching categorys:", error);
       }
     };
 
-    fetchCategories();
+    fetchcategorys();
   }, [categoryId]);
 
   useEffect(() => {
