@@ -9,7 +9,7 @@ export const IconContainer = styled.div`
   display: flex;
   align-self: flex-start;
   margin-left: 1rem;
-  margin-top: 3.5rem;
+  margin-top: 5rem;
 `
 
 export const BalanceGameQuestion = styled.h5`
@@ -49,8 +49,8 @@ export const ButtonContainer = styled.div`
   margin-right: 1.125rem;
 `
 export const LogoSmalltalk = styled.img`
- width: 200px;
- height: 200px;
+ width: 12.5rem;
+ height: 12.5rem;
 `
 
 export const QuestionMark = styled.img`
