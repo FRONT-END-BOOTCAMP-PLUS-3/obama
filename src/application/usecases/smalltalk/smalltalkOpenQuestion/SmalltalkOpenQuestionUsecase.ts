@@ -1,4 +1,4 @@
-import { IsmalltalkOpenQuestionRepository } from "@/domain/repositories/smalltalk/IsmalltalkOpenQuestionRepository";
+import { IsmalltalkOpenQuestionRepository } from "@/domain/repositories/smalltalk/ISmalltalkOpenQuestionRepository";
 import { SmalltalkOpenQuestionDto } from "@/application/usecases/smalltalk/smalltalkOpenQuestion/dto/SmalltalkOpenQuestion";
 
 export class OpenQuestionsUsecase {

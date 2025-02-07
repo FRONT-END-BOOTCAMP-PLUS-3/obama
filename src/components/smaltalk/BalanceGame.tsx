@@ -1,31 +1,68 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { BalanceGameQuestion, BalanceGameAnswer, AnswerTitle, Answer } from "@/components/smaltalk/Suggest.Styled";
+import apiClient from "@/utils/api/apiClient";
 
+interface BalanceGameProps {
+  subjectId: number;
+  refreshKey: number; 
+}
 
-export default function BalanceGame() {
+export default function BalanceGame({ subjectId, refreshKey }: BalanceGameProps) {
+  const [question, setQuestion] = useState<string>("질문을 불러오는 중...");
+  const [answers, setAnswers] = useState<{ balancegameanswerTitle: string; balancegameanswerText: string }[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchBalanceGame = async () => {
+    setLoading(true);
+    try {
+      
+      const response = await apiClient.get(`/api/smalltalk/balancegameQuestion?subjectId=${subjectId}`);
+      const questionData = response.data;
+  
+      if (!questionData || !Array.isArray(questionData.question) || questionData.question.length === 0) {
+        setQuestion("등록된 질문이 없습니다.");
+        setAnswers([]);
+        return;
+      }
+  
+      const randomIndex = Math.floor(Math.random() * questionData.question.length);
+      const selectedQuestion = questionData.question[randomIndex];
+  
+      setQuestion(selectedQuestion.balancegamequestionText);
+  
+      const answerResponse = await apiClient.get(`/api/smalltalk/balancegameAnswer?questionId=${selectedQuestion.balancegamequestionId}`);
+  
+      setAnswers(answerResponse.data.answers);
+
+    } catch (error) {
+      setQuestion("질문을 가져오는 중 오류가 발생했습니다.");
+      setAnswers([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    fetchBalanceGame();
+  }, [subjectId, refreshKey]);
+
+  
+
   return (
     <div>
-      <BalanceGameQuestion>당신이 사귀고 싶은 연인 유형은?</BalanceGameQuestion>
-      <BalanceGameAnswer>
-        <AnswerTitle>A . 자동차를 너무 좋아하는 연인</AnswerTitle>
-        <Answer>
-            어디를 가도 무조건 차로 가야함. 
-            집 앞 편의점을 가도 차 끌고 다님. 
-            해외도 차로 횡단함. 다른 교통수단 안됨.
-            집에 놀러온다고 했을 때 진짜 차로 문을 
-            부수고 들어온 적이 있음
-        </Answer>
-      </BalanceGameAnswer>
-      <BalanceGameAnswer>
-        <AnswerTitle>B . 걷는것을 너무 좋아하는 연인</AnswerTitle>
-        <Answer>
-          어디를 가도 걸어가야함. 
-          비행기 외 다른 교통수단 이용 못함
-          부산까지 걸어서 30일 걸린 적이 있음
-          집 갈때에도 걸어서 10일정도 걸음
-          해외 정도는 비행기 탑승가능함
-          단, 공항까진 걸어서 가야함
-        </Answer>
-      </BalanceGameAnswer>
+      <BalanceGameQuestion>{question}</BalanceGameQuestion>
+      {loading ? (
+        <p>로딩 중...</p>
+      ) : (
+        answers.map((answer, index) => (
+          <BalanceGameAnswer key={index}>
+            <AnswerTitle>{index === 0 ? "A" : "B"} . {answer.balancegameanswerTitle}</AnswerTitle>
+            <Answer>{answer.balancegameanswerText}</Answer>
+          </BalanceGameAnswer>
+        ))
+      )}
     </div>
   );
 }

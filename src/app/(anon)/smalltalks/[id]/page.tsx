@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { IconContainer, Title, ButtonContainer } from "@/components/smaltalk/Suggest.Styled";
-import { Button } from "@/components/common/button";
+import Button  from "@/components/common/Button/Button";
 import React, { useState } from "react";
 import LayoutContainer from "@/components/common/LayoutContainer";
 import OpenQuestion from "@/components/smaltalk/OpenQuestion";
@@ -10,13 +10,13 @@ import BalanceGame from "@/components/smaltalk/BalanceGame";
 
 export default function SmalltalkPage() {
   const { id } = useParams();
-  const selectedSubjectId = Number(id); 
+  const selectedSubjectId = Number(id);
   const router = useRouter();
 
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleNewQuestion = () => {
-    setRefreshKey(prev => prev + 1); 
+    setRefreshKey((prev) => prev + 1);
   };
 
   return (
@@ -26,9 +26,9 @@ export default function SmalltalkPage() {
       </IconContainer>
       <Title>대화주제 추천받기</Title>
       {selectedSubjectId === 1 ? (
-        <BalanceGame />
+        <BalanceGame subjectId={selectedSubjectId} refreshKey={refreshKey} />
       ) : (
-        <OpenQuestion key={refreshKey} subjectId={selectedSubjectId} />
+        <OpenQuestion subjectId={selectedSubjectId} refreshKey={refreshKey} />
       )}
       <ButtonContainer>
         <Button size="m" variant="contained" onClick={handleNewQuestion}>
