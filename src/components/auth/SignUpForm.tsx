@@ -1,164 +1,187 @@
 "use client";
+import TextField from "@/components/common/textField/TextField";
 
 import { useSignUpForm } from "./useSignUpForm";
+import { Button } from "@/components/common/button";
+import {
+  SectionEmailLayer,
+  SignUpWrapper,
+  VerifyCodeButtonLayer,
+  SectionPasswordLayer,
+  SectionPhoneLayer,
+  SectionButtonLayer,
+  Title,
+} from "@/components/auth/SignUp.Styled";
 
 const SignUpForm: React.FC = () => {
   const {
     formState,
     errors,
+    phoneSegments,
     verificationCode,
     isDuplicated,
     isVerified,
     isLoading,
     isFormValid,
-    
-    handleChange,
+
+    handleFormChange,
+    handlePhoneChange,
     handleDuplicateEmail,
     handleVerificationCodeChange,
     handleSubmitVerificationCode,
     sendEmail,
+    getFieldState,
     handleSubmit,
   } = useSignUpForm();
 
-
+  const {email, password, passwordConfirm, birthDate, name} = formState;
   return (
-    <form onSubmit={handleSubmit} noValidate>
-      <h1>회원가입</h1>
-
-      {/* 이메일 입력 */}
-      <div>
-        <label htmlFor="email">이메일</label>
-        <input
+    <SignUpWrapper onSubmit={handleSubmit} noValidate>
+      <Title>회원가입</Title>
+      <SectionEmailLayer>
+        <TextField
+          name="email"
+          placeholder="Email"
           type="email"
-          id="email"
-          placeholder="이메일을 입력하세요"
-          value={formState.email}
-          onChange={handleChange("email")}
-          required
-          disabled={isLoading || isVerified}
+          size="M"
+          state={getFieldState(email, errors.email)}
+          required={true}
+          autoFocus={true}
+          value={email}
+          onChange={handleFormChange}
+          disabled={isVerified}
         />
-        <button type="button" disabled={isLoading} onClick={handleDuplicateEmail}>
+        <Button size="s" variant="line" onClick={handleDuplicateEmail}>
           중복확인
-        </button>
-        {errors.email && <p>{errors.email}</p>}
-        {isDuplicated && <p>인증되었습니다.</p>}
-      </div>
+        </Button>
+        <p>{errors.email ? errors.email : "올바른 형식입니다."}</p>
+      </SectionEmailLayer>
 
-      {/* 인증코드 */}
-      <div>
-        <label htmlFor="verificationCode">인증코드</label>
-        <input
-          type="text"
-          id="verificationCode"
-          placeholder="인증코드를 입력하세요"
-          value={verificationCode}
-          onChange={handleVerificationCodeChange}
-          required
-          disabled={isLoading || isVerified}
-        />
-        <button
+      <TextField
+        name="verificationCode"
+        placeholder="인증코드"
+        type="number"
+        size="L"
+        required={true}
+        value={verificationCode}
+        state={getFieldState(verificationCode, errors.verificationCode)}
+        onChange={handleVerificationCodeChange}
+        disabled={!isDuplicated || isVerified}
+      />
+      <VerifyCodeButtonLayer>
+        <Button
+          size="m"
+          variant="line"
           type="button"
-          disabled={isLoading}
           onClick={sendEmail}
+          disabled={!isDuplicated || isVerified || isLoading}
         >
-          인증번호 발송
-        </button>
-        <button
+          인증 번호발송
+        </Button>
+        <Button
+          size="m"
+          variant="line"
           type="button"
-          disabled={isLoading || isVerified || verificationCode.length !== 6}
           onClick={handleSubmitVerificationCode}
+          disabled={!isDuplicated || isVerified}
         >
-          인증하기
-        </button>
-        {errors.verificationCode && <p>{errors.verificationCode}</p>}
-      </div>
+          인증 하기
+        </Button>
+      </VerifyCodeButtonLayer>
 
-      {/* 비밀번호 입력 */}
-      <div>
-        <label htmlFor="password">비밀번호</label>
-        <input
+      <SectionPasswordLayer>
+        <TextField
+          name="password"
+          placeholder="비밀번호"
           type="password"
-          id="password"
-          placeholder="비밀번호를 입력하세요"
-          value={formState.password}
-          onChange={handleChange("password")}
-          required
-          disabled={isLoading}
+          size="L"
+          state={getFieldState(password, errors.password)}
+          required={true}
+          value={password}
+          onChange={handleFormChange}
         />
-        {errors.password && <p>{errors.password}</p>}
-      </div>
-
-      {/* 비밀번호 확인 */}
-      <div>
-        <label htmlFor="passwordConfirm">비밀번호 확인</label>
-        <input
+        <TextField
+          name="passwordConfirm"
+          placeholder="비밀번호 확인"
           type="password"
-          id="passwordConfirm"
-          placeholder="비밀번호를 다시 입력하세요"
-          value={formState.passwordConfirm}
-          onChange={handleChange("passwordConfirm")}
-          required
-          disabled={isLoading}
+          size="L"
+          state={getFieldState(password, errors.passwordConfirm)}
+          required={true}
+          value={passwordConfirm}
+          onChange={handleFormChange}
         />
-      </div>
+        <p>{errors.password || errors.passwordConfirm
+          ?errors.password || errors.passwordConfirm : 
+          "비밀번호가 일치합니다."
+          }</p>
+      </SectionPasswordLayer>
 
-      {/* 이름 입력 */}
-      <div>
-        <label htmlFor="name">이름</label>
-        <input
+      <TextField
+        name="birthDate"
+        placeholder="생년월일"
+        type="date"
+        size="L"
+        required={true}
+        state={getFieldState(birthDate, errors.birthDate)}
+        value={birthDate}
+        onChange={handleFormChange}
+      />
+      <TextField
+        name="name"
+        placeholder="이름"
+        type="text"
+        size="L"
+        state={getFieldState(birthDate, errors.birthDate)}
+        required={true}
+        value={name}
+        onChange={handleFormChange}
+      />
+      <SectionPhoneLayer>
+        <TextField
+          name="phone-first"
+          placeholder="010"
           type="text"
-          id="name"
-          placeholder="이름을 입력하세요"
-          value={formState.name}
-          onChange={handleChange("name")}
-          required
-          disabled={isLoading}
+          size="S"
+          state="default"
+          required={true}
+          value={phoneSegments.first}
+          onChange={(name, value) => handlePhoneChange("first", value)}
+          maxLength={3}
         />
-        {errors.name && <p>{errors.name}</p>}
-      </div>
-
-      <div>
-        <label htmlFor="birthDate">생일</label>
-        <input
+        <span className="hyphen" />
+        <TextField
+          name="phone-second"
+          placeholder="1234"
           type="text"
-          id="birthDate"
-          placeholder="생일을 입력하세요"
-          value={formState.birthDate}
-          onChange={handleChange("birthDate")}
-          required
-          disabled={isLoading}
+          size="S"
+          required={true}
+          value={phoneSegments.second}
+          onChange={(name, value) => handlePhoneChange("second", value)}
+          maxLength={4}
         />
-        {errors.birthDate && <p>{errors.birthDate}</p>}
-      </div>
-
-      {/* 전화번호 입력 */}
-      <div>
-        <label htmlFor="phone">전화번호</label>
-        <input
+        <span className="hyphen" />
+        <TextField
+          name="phone-third"
+          placeholder="5678"
           type="text"
-          id="phone"
-          placeholder="전화번호를 입력하세요"
-          value={formState.phone}
-          onChange={handleChange("phone")}
-          required
-          disabled={isLoading}
+          size="S"
+          required={true}
+          value={phoneSegments.third}
+          onChange={(name, value) => handlePhoneChange("third", value)}
+          maxLength={4}
         />
-        {errors.phone && <p>{errors.phone}</p>}
-      </div>
+      </SectionPhoneLayer>
 
-      {/* 버튼 그룹 */}
-      <div>
-        <button
-          type="submit"
-          disabled={isLoading || !isFormValid || !isVerified}
-        >
-          {isLoading ? "회원가입 중..." : "회원가입"}
-        </button>
-        <button type="button" onClick={() => alert("이전으로가기")}>
-          이전으로 가기
-        </button>
-      </div>
-    </form>
+      <SectionButtonLayer>
+        <Button size="l" variant="line" type="submit" disabled={!isFormValid}>
+          회원 가입하기
+        </Button>
+        <Button size="l" variant="contained">
+          취 소
+        </Button>
+      </SectionButtonLayer>
+    </SignUpWrapper>
   );
 };
+
 export default SignUpForm;

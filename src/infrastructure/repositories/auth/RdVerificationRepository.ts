@@ -1,6 +1,6 @@
 import  redisClient from '@/infrastructure/databases/redis/server';
 
-import { IVerificationRepository } from '@/domain/repositories/IVerificationRepository';
+import { IVerificationRepository } from '@/domain/repositories/auth/IVerificationRepository';
 
 export class RdVerificationRepository implements IVerificationRepository {
 

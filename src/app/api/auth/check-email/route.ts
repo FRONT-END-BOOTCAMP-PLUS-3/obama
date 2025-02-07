@@ -1,6 +1,6 @@
-import { IDuplicateEmailUseCase } from "@/application/auth/interfaces/IDuplicateEmailUseCase";
-import { DuplicateEmailUseCase } from "@/application/auth/usecases/DuplicateEmailUseCase";
-import { IUserRepository } from "@/domain/repositories/IUserRepository";
+import { IDuplicateEmailUseCase } from "@/application/usecases/auth/interfaces/IDuplicateEmailUseCase";
+import { DuplicateEmailUseCase } from "@/application/usecases/auth/DuplicateEmailUseCase";
+import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 

@@ -23,6 +23,7 @@ export const Question = styled.h5`
   margin-bottom: 1.25rem;
   margin-top: 3rem;
   text-align: center;
+  padding: 0 1.25rem;
 `
 
 export const BalanceGameAnswer = styled.div`

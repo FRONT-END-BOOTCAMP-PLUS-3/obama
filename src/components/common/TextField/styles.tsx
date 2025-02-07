@@ -2,16 +2,18 @@ import { css } from "styled-components";
 
 export const sizeStyles = {
   L: css`
-    width: 20rem;
+    width: 320px;
     height: 2.5rem;
   `,
   M: css`
-    width: 13.75rem;
+    width: 220px;
     height: 2.5rem;
   `,
   S: css`
-    width: 5.625rem;
+    width: 90px;
     height: 2.5rem;
+    padding: 0.625rem;
+    
   `,
 };
 

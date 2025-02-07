@@ -1,5 +1,5 @@
 import { SbSmalltalkRepository } from "@/infrastructure/repositories/smalltalk/SbSmalltalkSubjectRepository";
-import { GetSmalltalkSubjectsUsecase } from "@/application/smalltalk/smalltalkSubject/GetSmalltalkSubjectsUsecase";
+import { GetSmalltalkSubjectsUsecase } from "@/application/usecases/smalltalk/smalltalkSubject/SmalltalkSubjectsUsecase";
 import { NextResponse } from "next/server";
 
 export async function GET() {
