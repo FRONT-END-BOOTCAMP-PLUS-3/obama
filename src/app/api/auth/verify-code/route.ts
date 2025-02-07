@@ -1,5 +1,5 @@
-import { CheckVerificationCodeUseCase } from "@/application/auth/usecases/CheckVerificationCodeUseCase";
-import { DeleteVerificationCodeUseCase } from "@/application/auth/usecases/DeleteVerificationCodeUseCase";
+import { CheckVerificationCodeUseCase } from "@/application/usecases/auth/CheckVerificationCodeUseCase";
+import { DeleteVerificationCodeUseCase } from "@/application/usecases/auth/DeleteVerificationCodeUseCase";
 import { RdVerificationRepository } from "@/infrastructure/repositories/auth/RdVerificationRepository";
 import { NextRequest, NextResponse } from "next/server";
 

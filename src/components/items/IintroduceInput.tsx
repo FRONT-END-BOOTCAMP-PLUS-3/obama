@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import * as S from "@/app/user/items/components/introduceInput.Styled";
+import * as S from "@/components/items/IntroduceInput.Styled";
 
 interface IntroduceInputProps {
   value: string;

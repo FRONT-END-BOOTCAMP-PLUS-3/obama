@@ -2,7 +2,7 @@ import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepos
 import { createClient } from "@/utils/supabase/server";
 import { v7 as uuidv7 } from "uuid";
 import { SupabaseClient } from "@supabase/supabase-js";
-import { User } from "@/domain/entities/User";
+import { User } from "@/domain/entities/user/User";
 
 describe("SbUserRepository (Integration Test)", () => {
   let supabase: SupabaseClient;

@@ -1,5 +1,5 @@
 import React from "react";
-import { MBTIButton } from "./mbtibutton.Styled";
+import { MBTIButton } from "@/components/items/Mbtibutton.Styled";
 import { MBTIButtonProps } from "@/types/mbtibutton";
 
 const MBTISelectButton: React.FC<MBTIButtonProps> = ({

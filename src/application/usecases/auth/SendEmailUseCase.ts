@@ -1,13 +1,13 @@
 import  nodemailer  from 'nodemailer';
-import { EmailService } from "@/domain/emailVerification/EmailService";
-import { GenerateVerificationCodeUseCase } from "@/application/auth/usecases/GenerateVerificationCodeUseCase";
-import { IVerificationRepository } from "@/domain/repositories/IVerificationRepository";
+import { GenerateVerificationCodeUseCase } from "@/application/usecases/auth/GenerateVerificationCodeUseCase";
+import { IVerificationRepository } from "@/domain/repositories/auth/IVerificationRepository";
 import { serverConfig } from '@/config/serverEnv';
 import { sendEmailTemplate } from '@/styles/email/sendEmailTemplate';
+import { ISendEmailUseCase } from '@/application/usecases/auth/interfaces/ISendEmailUseCase';
 
 export class SendEmailUseCase {
   private transporter;
-  constructor(private emailService: EmailService,
+  constructor(private emailService: ISendEmailUseCase,
     private generateVerificationCodeUseCase : GenerateVerificationCodeUseCase,
     private verificationRepository : IVerificationRepository
   ) {

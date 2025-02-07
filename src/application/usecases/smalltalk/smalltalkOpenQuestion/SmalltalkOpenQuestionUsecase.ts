@@ -1,5 +1,5 @@
-import { IsmalltalkOpenQuestionRepository } from "@/domain/repositories/IsmalltalkOpenQuestionRepository";
-import { SmalltalkOpenQuestionDto } from "@/application/smalltalk/smalltalkOpenQuestion/dto/SmalltalkOpenQuestion";
+import { IsmalltalkOpenQuestionRepository } from "@/domain/repositories/smalltalk/IsmalltalkOpenQuestionRepository";
+import { SmalltalkOpenQuestionDto } from "@/application/usecases/smalltalk/smalltalkOpenQuestion/dto/SmalltalkOpenQuestion";
 
 export class OpenQuestionsUsecase {
   constructor(private readonly repository:  IsmalltalkOpenQuestionRepository) {}
