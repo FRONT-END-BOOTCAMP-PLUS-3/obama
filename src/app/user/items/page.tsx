@@ -1,10 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation"; // useSearchParams로 변경
-import { GetItemListUseCase } from "@/application/usecases/item/GetItemListUseCase";
-import { GetItemListDto } from "@/application/usecases/item/dto/GetItemListDto";
-import { GetCategoryListUseCase } from "@/application/usecases/category/GetCategoryListUseCase";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/components/common/Button";
 import {
   ProfileCreateContainer,
@@ -28,7 +25,7 @@ export default function CreatePage() {
   const categoryName = searchParams.get("cn"); // 'cn' 쿼리 파라미터에서 값을 가져옵니다.
   const [categoryId, setCategoryId] = useState<number | null>(null);
 
-  const [items, setItems] = useState<GetItemListDto["items"]>([]);
+  const [items, setItems] = useState<any[]>([]); // update with your actual type
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [question, setQuestion] = useState<string>("");
   const [introText, setIntroText] = useState<string>("");
@@ -57,10 +54,10 @@ export default function CreatePage() {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const useCase = new GetCategoryListUseCase();
-        const response = await useCase.execute({ startIndex: 0, limit: 12 });
+        const response = await fetch("/api/category");
+        const data = await response.json();
 
-        const category = response.categories?.find(
+        const category = data.categories?.find(
           (category: { category_name_en: string }) =>
             category.category_name_en === categoryName
         );
@@ -71,8 +68,9 @@ export default function CreatePage() {
         } else {
           setQuestion("No Question available");
         }
+        console.log("category", category);
       } catch (error) {
-        console.error("Error fetching categorys:", error);
+        console.error("Error fetching categories:", error);
       }
     };
 
@@ -86,9 +84,9 @@ export default function CreatePage() {
 
     const fetchItems = async () => {
       try {
-        const useCase = new GetItemListUseCase();
-        const response = await useCase.execute({ startIndex: 0 });
-        const filteredItems = response.items?.filter(
+        const response = await fetch(`/api/items?categoryId=${categoryId}`);
+        const data = await response.json();
+        const filteredItems = data.items?.filter(
           (item) => item.category_id === categoryId
         );
         setItems(filteredItems);
@@ -107,9 +105,9 @@ export default function CreatePage() {
       direction === "next" ? categoryId + 1 : categoryId - 1;
 
     try {
-      const useCase = new GetCategoryListUseCase();
-      const response = await useCase.execute({ startIndex: 0, limit: 12 });
-      const newCategory = response.categories?.find(
+      const response = await fetch(`/api/category?startIndex=0&limit=12`);
+      const data = await response.json();
+      const newCategory = data.categories?.find(
         (category) => category.category_id === newCategoryId
       );
 

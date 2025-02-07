@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import * as S from "@/app/user/items/components/introduceInput.Styled";
 
