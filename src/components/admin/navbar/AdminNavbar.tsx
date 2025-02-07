@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { adminNavbarItems } from "@/data/adminNavbar";
+import { adminNavbarItems } from "@/mock/adminNavbar";
 import AdminNavbarItem from "@/components/admin/navbar/AdminNavbarItem";
 import Link from "next/link";
 import {

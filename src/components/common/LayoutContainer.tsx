@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import NavBar from "./Navbar/Navbar";
+import NavBar from "./navbar/Navbar";
 import { usePathname } from "next/navigation";
 
 const Container = styled.div`

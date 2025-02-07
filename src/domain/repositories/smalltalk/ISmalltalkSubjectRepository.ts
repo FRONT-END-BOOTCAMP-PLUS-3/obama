@@ -1,4 +1,4 @@
-import { SmalltalkSubject } from "../entities/SmalltalkSubject";
+import { SmalltalkSubject } from "../../entities/smalltalk/SmalltalkSubject";
 
 export interface IsmalltalkSubjectRepository {
   findAll():Promise<SmalltalkSubject[]>;

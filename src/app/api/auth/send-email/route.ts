@@ -1,5 +1,5 @@
-import { GenerateVerificationCodeUseCase } from "@/application/auth/usecases/GenerateVerificationCodeUseCase";
-import { SendEmailUseCase } from "@/application/auth/usecases/SendEmailUseCase";
+import { GenerateVerificationCodeUseCase } from "@/application/usecases/auth/GenerateVerificationCodeUseCase";
+import { SendEmailUseCase } from "@/application/usecases/auth/SendEmailUseCase";
 import { SMTPEmailService } from "@/infrastructure/email-server/SMTPEmailService";
 import { RdVerificationRepository } from "@/infrastructure/repositories/auth/RdVerificationRepository";
 import { NextRequest, NextResponse } from "next/server";

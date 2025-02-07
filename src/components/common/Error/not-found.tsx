@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { LogoContainer, Message, ButtonWrapper } from "@/components/common/Error/NotFound.Styled";
-import Button from "@/components/common/Button/Button";
+import { LogoContainer, Message, ButtonWrapper } from "@/components/common/error/NotFound.Styled";
+import Button from "@/components/common/button/Button";
 import Link from "next/link";
 
 const NotFound = () => {

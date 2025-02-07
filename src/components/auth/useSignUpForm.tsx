@@ -1,4 +1,4 @@
-import apiClient from "@/infrastructure/api/apiClient";
+import apiClient from "@/utils/api/apiClient";
 import {
   validateBirthDate,
   validateEmail,
