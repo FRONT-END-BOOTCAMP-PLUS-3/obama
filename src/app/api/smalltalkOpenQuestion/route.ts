@@ -16,12 +16,15 @@ export async function GET(request: Request) {
     }
 
     const repository = new SbOpenQuestionRepository();
-    const usecase = new OpenQuestionsUsecase(repository);
-    const questions = await usecase.execute(numericSubjectId);
+    const ItemListUsecase = new OpenQuestionsUsecase(repository);
+    const questions = await ItemListUsecase.execute(numericSubjectId);
 
     return NextResponse.json({ questions }, { status: 200 });
   } catch (err) {
     console.error("Failed to fetch open questions:", err);
-    return NextResponse.json({ error: "Failed to fetch open questions" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch open questions" },
+      { status: 500 }
+    );
   }
 }

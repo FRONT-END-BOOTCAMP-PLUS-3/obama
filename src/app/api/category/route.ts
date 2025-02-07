@@ -13,8 +13,8 @@ export async function GET(request: Request) {
       : undefined;
 
     const categoryRepository = new SbCategoryRepository();
-    const useCase = new CategoryListUseCase(categoryRepository);
-    const categories = await useCase.execute(startIndex, limit);
+    const categoryUseCase = new CategoryListUseCase(categoryRepository);
+    const categories = await categoryUseCase.execute(startIndex, limit);
 
     return NextResponse.json({ categories });
   } catch (error) {
