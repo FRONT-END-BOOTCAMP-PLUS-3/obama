@@ -1,6 +1,14 @@
 import { css } from "styled-components";
 
 export const sizeStyles = {
+  XXL: css` 
+  width: 650px;
+  height: 2.5rem;
+`,
+  XL: css` 
+  width: 540px;
+  height: 2.5rem;
+`,
   L: css`
     width: 320px;
     height: 2.5rem;
@@ -13,7 +21,6 @@ export const sizeStyles = {
     width: 90px;
     height: 2.5rem;
     padding: 0.625rem;
-    
   `,
 };
 

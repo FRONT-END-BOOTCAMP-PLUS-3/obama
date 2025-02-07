@@ -1,10 +1,13 @@
+import { UserRole } from "@/types/auth";
+
 export interface User {
-    user_id: string;
+    userId: string;
     email: string;
     name: string;
     password: string;
-    birth_date: string;
+    birthDate: string;
     phone: string;
-    created_at?: Date;
-    updated_at?: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
+    role?: UserRole;
 }

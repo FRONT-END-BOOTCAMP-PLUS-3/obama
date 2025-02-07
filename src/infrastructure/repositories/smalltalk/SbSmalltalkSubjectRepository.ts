@@ -4,7 +4,7 @@ import { SmalltalkSubject } from "@/domain/entities/smalltalk/SmalltalkSubject";
 import { toCamelCase } from "@/utils/convert/convertToCase"; 
 
 export class SbSmalltalkRepository implements IsmalltalkSubjectRepository {
-  async findAll(): Promise<SmalltalkSubject[]> {
+  async findAll(): Promise<SmalltalkSubject[] |null> {
     const client = await supabase();
     const { data, error } = await client
       .from("smalltalkSubject")
@@ -15,7 +15,7 @@ export class SbSmalltalkRepository implements IsmalltalkSubjectRepository {
       throw new Error("Database error while fetching subjects");
     }
 
-    return toCamelCase(data); 
+    return data ? toCamelCase(data) : null; 
   }
 
   async findById(id: number): Promise<SmalltalkSubject | null> {

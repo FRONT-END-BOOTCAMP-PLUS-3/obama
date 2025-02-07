@@ -6,7 +6,7 @@ const Container = styled.div`
   display: block; 
   height: 100vh;
   width: 100%;
-  overflow: hidden;
+  overflow: auto;
   background-color: var(--white-color);
 `;
 

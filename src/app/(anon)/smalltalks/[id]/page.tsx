@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { IconContainer, Title, ButtonContainer } from "@/components/smaltalk/Suggest.Styled";
-import Button  from "@/components/common/Button/Button";
+import Button  from "@/components/common/button/Button";
 import React, { useState } from "react";
 import LayoutContainer from "@/components/common/LayoutContainer";
 import OpenQuestion from "@/components/smaltalk/OpenQuestion";
