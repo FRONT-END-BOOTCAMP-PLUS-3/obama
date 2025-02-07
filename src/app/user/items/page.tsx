@@ -103,9 +103,59 @@ export default function CreatePage() {
   const handleNavigation = async (direction: "next" | "previous") => {
     if (!categoryId) return;
 
+    // 선택한 답변 결정
+    let answer = "";
+    if (categoryId === 4) {
+      answer = selectedType || "";
+    } else if (categoryId === 11) {
+      answer = introText;
+    } else if (categoryId === 12) {
+      answer = "Uploaded Image"; // 프로필 이미지 업로드 경우 (추후 수정 가능)
+    } else if (items.length > 0) {
+      answer = Array.from(selectedItems).join(", ");
+    } else {
+      answer = textFieldValue;
+    }
+
+    if (!answer) {
+      alert("답변을 입력하거나 선택해주세요!");
+      return;
+    }
+
+    // POST 요청으로 데이터 저장
+    try {
+      const response = await fetch("/api/profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          category_id: categoryId,
+          user_id: "1d1867cd-526c-4de5-97e4-4a0c8f386f78",
+          answer,
+        }),
+      });
+
+      const result = await response.json();
+      console.log("📥 저장 결과:", result);
+
+      if (!response.ok) {
+        throw new Error(result.error || "데이터 저장 실패");
+      }
+    } catch (error) {
+      console.error("❌ 저장 중 오류 발생:", error);
+      return;
+    }
+
+    // ✅ 상태 초기화 (값 누적 방지)
+    setSelectedItems(new Set());
+    setSelectedType(null);
+    setIntroText("");
+    setTextFieldValue("");
+
+    // 다음 or 이전 카테고리 이동
     const newCategoryId =
       direction === "next" ? categoryId + 1 : categoryId - 1;
-
     const query = new URLSearchParams({
       startIndex: "0",
       limit: "12",
