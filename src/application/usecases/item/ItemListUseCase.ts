@@ -1,11 +1,11 @@
 import { IItemRepository } from "@/domain/repositories/item/IItemRepository";
 import { Item } from "@/domain/entities/item/Item";
-import { GetItemListDto } from "./dto/ItemListDto";
+import { ItemListDto } from "./dto/ItemListDto";
 
-export class GetItemListUseCase {
+export class ItemListUseCase {
   constructor(private itemRepository: IItemRepository) {}
 
-  async execute(dto: GetItemListDto): Promise<Item[]> {
+  async execute(dto: ItemListDto): Promise<Item[]> {
     return this.itemRepository.getItems(dto.categoryId); // ✅ DTO 사용
   }
 }

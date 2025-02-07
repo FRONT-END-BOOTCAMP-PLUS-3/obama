@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { GetCategoryListUseCase } from "@/application/usecases/category/GetCategoryListUseCase";
+import { CategoryListUseCase } from "@/application/usecases/category/CategoryListUseCase";
 import { SbCategoryRepository } from "@/infrastructure/repositories/category/SbCategoryRepository";
 
 export async function GET(request: Request) {
@@ -13,7 +13,7 @@ export async function GET(request: Request) {
       : undefined;
 
     const categoryRepository = new SbCategoryRepository();
-    const useCase = new GetCategoryListUseCase(categoryRepository);
+    const useCase = new CategoryListUseCase(categoryRepository);
     const categories = await useCase.execute(startIndex, limit);
 
     return NextResponse.json({ categories });

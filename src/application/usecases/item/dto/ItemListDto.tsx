@@ -1,3 +1,3 @@
-export interface GetItemListDto {
+export interface ItemListDto {
   categoryId?: number;
 }

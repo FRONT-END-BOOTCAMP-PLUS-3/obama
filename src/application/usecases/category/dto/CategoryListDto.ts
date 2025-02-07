@@ -1,4 +1,4 @@
-export interface GetCategoryListDto {
+export interface CategoryListDto {
   startIndex?: number;
   limit?: number;
   categories?: any[];

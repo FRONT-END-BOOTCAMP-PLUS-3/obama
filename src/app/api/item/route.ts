@@ -1,6 +1,6 @@
 import { SbItemRepository } from "@/infrastructure/repositories/item/SbItemRepository";
-import { GetItemListUseCase } from "@/application/usecases/item/GetItemListUseCase";
-import { GetItemListDto } from "@/application/usecases/item/dto/ItemListDto"; // ✅ DTO 가져오기
+import { ItemListUseCase } from "@/application/usecases/item/ItemListUseCase";
+import { ItemListDto } from "@/application/usecases/item/dto/ItemListDto"; // ✅ DTO 가져오기
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -8,14 +8,14 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const categoryIdParam = searchParams.get("categoryId");
 
-    const dto: GetItemListDto = {
+    const dto: ItemListDto = {
       categoryId: categoryIdParam ? Number(categoryIdParam) : undefined,
     };
 
     console.log(`🔍 Fetching items with DTO:`, dto); // ✅ 디버깅 로그 추가
 
     const repository = new SbItemRepository();
-    const useCase = new GetItemListUseCase(repository);
+    const useCase = new ItemListUseCase(repository);
 
     const items = await useCase.execute(dto);
 
