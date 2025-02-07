@@ -14,10 +14,10 @@ export async function GET(req: Request) {
 
     console.log(`🔍 Fetching items with DTO:`, dto); // ✅ 디버깅 로그 추가
 
-    const repository = new SbItemRepository();
-    const useCase = new ItemListUseCase(repository);
+    const itemRepository = new SbItemRepository();
+    const itemListUseCase = new ItemListUseCase(itemRepository);
 
-    const items = await useCase.execute(dto);
+    const items = await itemListUseCase.execute(dto);
 
     console.log("✅ Filtered items:", items); // ✅ 필터링된 아이템 로그 출력
 

@@ -106,8 +106,13 @@ export default function CreatePage() {
     const newCategoryId =
       direction === "next" ? categoryId + 1 : categoryId - 1;
 
+    const query = new URLSearchParams({
+      startIndex: "0",
+      limit: "12",
+    }).toString();
+
     try {
-      const response = await fetch(`/api/category?startIndex=0&limit=12`);
+      const response = await fetch(`/api/category?${query}`);
       const data = await response.json();
       const newCategory = data.categories?.find(
         (category) => category.category_id === newCategoryId

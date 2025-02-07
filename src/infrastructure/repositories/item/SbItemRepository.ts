@@ -8,8 +8,7 @@ export class SbItemRepository implements IItemRepository {
 
     let query = client.from("item").select("*");
 
-    // ✅ categoryId가 올바른 숫자일 경우만 필터 적용
-    if (typeof categoryId === "number" && !isNaN(categoryId)) {
+    if (categoryId !== undefined) {
       query = query.eq("category_id", categoryId);
     }
 
@@ -19,7 +18,7 @@ export class SbItemRepository implements IItemRepository {
       throw new Error(`Failed to fetch items: ${error.message}`);
     }
 
-    console.log(`📌 Filtered Data for categoryId ${categoryId}:`, data); // ✅ 디버깅 로그 추가
+    console.log(`📌 Filtered Data for categoryId ${categoryId}:`, data);
 
     return data;
   }

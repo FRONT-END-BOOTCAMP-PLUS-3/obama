@@ -6,6 +6,13 @@ export class ItemListUseCase {
   constructor(private itemRepository: IItemRepository) {}
 
   async execute(dto: ItemListDto): Promise<Item[]> {
-    return this.itemRepository.getItems(dto.categoryId); // ✅ DTO 사용
+    if (
+      dto.categoryId !== undefined &&
+      (typeof dto.categoryId !== "number" || isNaN(dto.categoryId))
+    ) {
+      throw new Error("Invalid categoryId: must be a valid number");
+    }
+
+    return this.itemRepository.getItems(dto.categoryId);
   }
 }
