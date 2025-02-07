@@ -9,7 +9,7 @@ export interface ProfileDTO {
     mbti: string;
     hobbies: string[];
     interests: string[];
-    tripStyle: string[];
+    trip: string[];
     food: string[];
     topic: string[]; 
     worry: string;
