@@ -1,6 +1,5 @@
 import { LoginRequestDto } from "@/application/usecases/auth/dtos/LoginRequestDto";
 import { LoginError, LoginErrorType } from "@/application/usecases/auth/errors/LoginError";
-import { ILoginUseCase } from "@/application/usecases/auth/interfaces/ILoginUseCase";
 import { IPasswordHasherUseCase } from "@/application/usecases/auth/interfaces/IPasswordHasherUseCase";
 import { LoginUseCase } from "@/application/usecases/auth/LoginUseCase";
 import { PasswordHasherUseCase } from "@/application/usecases/auth/PasswordHasherUseCase";
@@ -26,7 +25,7 @@ export async function POST(req: NextRequest) {
     const passwordHasherUseCase: IPasswordHasherUseCase = new PasswordHasherUseCase();
     
     // LoginUseCase DI 적용
-    const loginUseCase:ILoginUseCase  = new LoginUseCase(userRepository, passwordHasherUseCase);
+    const loginUseCase = new LoginUseCase(userRepository, passwordHasherUseCase);
     
     // 로그인 기능 실행
     const user = loginUseCase.execute(request);
@@ -63,6 +62,7 @@ export async function POST(req: NextRequest) {
       const response = errorMapping[error.type] || errorMapping["UNKNOWN_ERROR"];
       return NextResponse.json({error: response.message}, {status: response.status});
     }
+    
     return NextResponse.json(
       {error: "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요."}, {status: 500}
     );
