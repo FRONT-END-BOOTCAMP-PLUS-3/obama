@@ -24,7 +24,7 @@ const rubberBand = keyframes`
   }
 `;
 
-export const LoginWrapper = styled.section`
+export const LoginWrapper = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;

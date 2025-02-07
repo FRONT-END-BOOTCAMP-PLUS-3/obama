@@ -1,14 +1,14 @@
 import { SignUpRequestDTO } from "@/application/usecases/auth/dtos/SignUpRequestDto";
 
 import { IUUIDGeneratorUseCase } from "@/application/usecases/auth/interfaces/IUUIDGeneratorUseCase";
-import { IPasswordHasher } from "@/application/usecases/auth/interfaces/IPasswordHasherUseCase";
+import { IPasswordHasherUseCase } from "@/application/usecases/auth/interfaces/IPasswordHasherUseCase";
 import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 
 export class SignUpUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly uuidGenerator: IUUIDGeneratorUseCase, // UUID 생성 유스케이스
-    private readonly passwordHasher: IPasswordHasher
+    private readonly passwordHasherUseCase: IPasswordHasherUseCase
   ) {}
   async execute(request: SignUpRequestDTO): Promise<void> {
     
@@ -16,7 +16,7 @@ export class SignUpUseCase {
     const userId = this.uuidGenerator.generate();
 
     // 비밀번호 해싱
-    const hashedPassword = await this.passwordHasher.hash(request.password);
+    const hashedPassword = await this.passwordHasherUseCase.hash(request.password);
 
    await this.userRepository.createUser({
       user_id: userId,

@@ -1,6 +1,6 @@
 import { SignUpRequestDTO } from "@/application/usecases/auth/dtos/SignUpRequestDto";
 import { SignUpUseCase } from "@/application/usecases/auth/SignUpUseCase";
-import { IPasswordHasher } from "@/application/usecases/auth/interfaces/IPasswordHasherUseCase";
+import { IPasswordHasherUseCase } from "@/application/usecases/auth/interfaces/IPasswordHasherUseCase";
 import { IUUIDGeneratorUseCase } from "@/application/usecases/auth/interfaces/IUUIDGeneratorUseCase";
 import { PasswordHasherUseCase } from "@/application/usecases/auth/PasswordHasherUseCase";
 import { UUIDGeneratorUseCase } from "@/application/usecases/auth/UUIDGeneratorUseCase";
@@ -16,13 +16,13 @@ export async function POST (req: NextRequest){
         console.log(userData);
         if (!userData.email || !userData.password || !userData.birthDate || !userData.name || !userData.phone) {
             return NextResponse.json({ error: "모든 필드를 입력해야 합니다." }, { status: 400 });
-          }
+        }
 
         //Repository create
         const userRepository:IUserRepository = new SbUserRepository();
         //UseCase service
         const uuidGenerator: IUUIDGeneratorUseCase = new UUIDGeneratorUseCase();
-        const passwordHasher: IPasswordHasher = new PasswordHasherUseCase();
+        const passwordHasher: IPasswordHasherUseCase = new PasswordHasherUseCase();
         
         // useCase (DI 적용)
         const signUpUseCase:SignUpUseCase = new SignUpUseCase(userRepository, uuidGenerator, passwordHasher);

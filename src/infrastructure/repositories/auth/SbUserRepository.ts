@@ -20,7 +20,7 @@ export class SbUserRepository implements IUserRepository {
     const client = await supabase();
     
     const { data, error } = await client
-      .from("user")
+      .from(this.tableName)
       .select("*") // 이메일뿐만 아니라 사용자 정보를 가져올 수도 있음
       .eq("email", email)
       .single();
@@ -35,5 +35,26 @@ export class SbUserRepository implements IUserRepository {
     }
 
     return data ? data : null;
+  }
+
+  // email을 통한 password data 가져오기
+  async findPasswordByEmail(email: string): Promise<string | null> {
+    const client = await supabase();
+    
+    const {data, error} = await client
+      .from(this.tableName)
+      .select("password")
+      .eq("email",email)
+      .single();
+    
+    if (error) {
+      if (error.code === "PGRST116") {
+        // 데이터가 없을 때 발생하는 에러 (PostgREST의 'No rows found' 에러)
+        return null;
+      }
+      console.error("Error finding password:", error.message);
+      throw new Error("Database error while finding password");
+    }
+    return data?.password ?? null;
   }
 }

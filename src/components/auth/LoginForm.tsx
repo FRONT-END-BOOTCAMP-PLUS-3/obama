@@ -8,27 +8,18 @@ import {
   TextButtonLayer,
   Title,
 } from "@/components/auth/LoginForm.Styled";
-import Button  from "@/components/common/button/Button";
-import { useCallback, useState } from "react";
-
-interface FormState {
-  email: string;
-  password: string;
-}
+import Button from "@/components/common/button/Button";
+import { useLoginForm } from "@/components/auth/useLoginForm";
 
 const LoginForm = () => {
-  const [formState, setFormState] = useState<FormState>({
-    email: "",
-    password: "",
-  });
-
-  const handleFormChange = useCallback((name: string, value: string) => {
-    console.log(`Field ${name} changed to ${value}`);
-    setFormState((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }, []);
+  const {
+    formState,
+    isLoading,
+    errors,
+    handleLoginFormChange,
+    handleLoginSubmit,
+    handleClickCancel,
+    } = useLoginForm();
 
   const { email, password } = formState;
 
@@ -45,7 +36,7 @@ const LoginForm = () => {
             required={true}
             autoFocus={true}
             value={email}
-            onChange={handleFormChange}
+            onChange={handleLoginFormChange}
           />
 
           <TextField
@@ -53,16 +44,17 @@ const LoginForm = () => {
             placeholder="비밀번호"
             type="password"
             size="L"
+            maxLength={20}
             required={true}
             value={password}
-            onChange={handleFormChange}
+            onChange={handleLoginFormChange}
           />
         </InputLayer>
         <SectionButtonLayer>
-          <Button size="m" variant="line" type="button">
+          <Button size="m" variant="line" type="button" onClick={handleClickCancel} disabled={isLoading}>
             취 소
           </Button>
-          <Button size="m" variant="contained" type="submit">
+          <Button size="m" variant="contained" type="submit" onClick={handleLoginSubmit} disabled={isLoading}>
             로그인
           </Button>
           <TextButtonLayer>
