@@ -3,6 +3,7 @@ import { LoginRequestDto } from "@/application/usecases/auth/dtos/LoginRequestDt
 import { ILoginUseCase } from "@/application/usecases/auth/interfaces/ILoginUseCase";
 import { IPasswordHasherUseCase } from '@/application/usecases/auth/interfaces/IPasswordHasherUseCase';
 import { UserResponseDto } from "@/application/usecases/auth/dtos/UserResponseDto";
+import { LoginError } from "@/application/usecases/auth/errors/LoginError";
 
 export class LoginUseCase implements ILoginUseCase {
     constructor(
@@ -11,27 +12,24 @@ export class LoginUseCase implements ILoginUseCase {
     ) {}
   
     async execute(request: LoginRequestDto): Promise<UserResponseDto> {
-        
-        const hashedPassword = await this.userRepository.findPasswordByEmail(request.email);
 
-      if (!hashedPassword) {
-        throw new Error("Invalid email or password");
+      if (!request.email || !request.password) {
+        throw new LoginError("MISSING_CREDENTIALS","이메일과 비밀번호를 모두 입력해주세요.")
       }
+        
+      const userWithPassword  = await this.userRepository.findUserWithPasswordByEmail(request.email);
+
+      if (!userWithPassword) {
+        throw new LoginError("EMAIL_NOT_FOUND", "가입되지 않은 이메일입니다.");
+      }
+
+      const {password, user} =userWithPassword
   
       // 3. 비밀번호 비교
-      const isPasswordValid: boolean = await this.passwordHasherUseCase.compare(
-        request.password,
-        hashedPassword
-      );
+      const isValidPassword: boolean = await this.passwordHasherUseCase.compare(request.password, password);
       
-      if (!isPasswordValid) {
-        throw new Error("Invalid email or password");
-      }
-      // 4. 비밀번호 검증 후 사용자 정보 조회
-      const user = await this.userRepository.findByEmail(request.email);
-      
-      if (!user) {
-        throw new Error("User not found after password verification");
+      if (!isValidPassword) {
+        throw new LoginError("INVALID_PASSWORD", "비밀번호가 올바르지 않습니다.");
       }
 
      const userResponseDto = {
