@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
-import { SignUpRequestDTO } from "@/application/auth/dtos/SignUpRequestDto";
-import { SignUpUseCase } from "@/application/auth/usecases/SignUpUseCase";
-import { User } from "@/domain/entities/User";
-import { IUserRepository } from "@/domain/repositories/IUserRepository";
+import { SignUpRequestDTO } from "@/application/usecases/auth/dtos/SignUpRequestDto";
+import { SignUpUseCase } from "@/application/usecases/auth/SignUpUseCase";
+import { User } from "@/domain/entities/user/User";
+import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 import { v7 as uuidv7 } from "uuid";
 
 

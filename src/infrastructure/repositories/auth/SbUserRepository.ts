@@ -1,6 +1,6 @@
 import supabase from '@/infrastructure/databases/supabase/server';
-import { User } from "@/domain/entities/User";
-import { IUserRepository } from "@/domain/repositories/IUserRepository";
+import { User } from "@/domain/entities/user/User";
+import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 
 
 export class SbUserRepository implements IUserRepository {

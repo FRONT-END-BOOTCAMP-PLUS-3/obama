@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation"; // useSearchParams
 import { GetItemListUseCase } from "@/application/usecases/item/GetItemListUseCase";
 import { GetItemListDto } from "@/application/usecases/item/dto/GetItemListDto";
 import { GetCategoryListUseCase } from "@/application/usecases/category/GetCategoryListUseCase";
-import { Button } from "@/components/common/Button";
+import { Button } from "@/components/common/button";
 import {
   ProfileCreateContainer,
   ButtonList,
@@ -16,11 +16,11 @@ import {
   TextFieldSection,
   QuestionSection,
   BottomSection,
-} from "./page.Styled";
-import MBTISelectButton from "./components/mbtibutton";
-import { TextField } from "@/components/common/TextField";
-import IntroduceInput from "./components/introduceInput";
-import ProfileImageUploader from "./components/profileUploader";
+} from "@/components/items/ItemsPage.Styled";
+import MBTISelectButton from "@/components/items/Mbtibutton";
+import { TextField } from "@/components/common/textField";
+import IntroduceInput from "@/components/items/IintroduceInput";
+import ProfileImageUploader from "@/components/items/ProfileUploader";
 
 export default function CreatePage() {
   const router = useRouter();
