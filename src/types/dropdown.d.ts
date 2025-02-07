@@ -1,4 +1,4 @@
-import { SmalltalkSubjectDto } from "@/application/smalltalk/smalltalkSubject/dto/SmalltalkSubjectDto";
+import { SmalltalkSubjectDto } from "@/application/usecases/smalltalk/smalltalkSubject/dto/SmalltalkSubjectDto";
 
 export interface DropdownProps {
   options: SmalltalkSubjectDto[];

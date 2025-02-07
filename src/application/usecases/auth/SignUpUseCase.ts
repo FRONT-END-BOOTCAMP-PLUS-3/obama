@@ -1,8 +1,8 @@
-import { SignUpRequestDTO } from "@/application/auth/dtos/SignUpRequestDto";
+import { SignUpRequestDTO } from "@/application/usecases/auth/dtos/SignUpRequestDto";
 
-import { IUUIDGeneratorUseCase } from "@/application/common/usecases/interfaces/IUUIDGeneratorUseCase";
-import { IPasswordHasher } from "@/application/common/usecases/interfaces/IPasswordHasherUseCase";
-import { IUserRepository } from "@/domain/repositories/IUserRepository";
+import { IUUIDGeneratorUseCase } from "@/application/usecases/auth/interfaces/IUUIDGeneratorUseCase";
+import { IPasswordHasher } from "@/application/usecases/auth/interfaces/IPasswordHasherUseCase";
+import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 
 export class SignUpUseCase {
   constructor(

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Question, QuestionMark, LogoGreySmalltalk, ExclamationMark, LogoSmalltalk } from "@/components/smaltalk/Suggest.Styled";
-import apiClient from "@/infrastructure/api/apiClient"; 
+import apiClient from "@/utils/api/apiClient"; 
 import OpenQuestionProps from "@/types/openQuestionProps";
 
 

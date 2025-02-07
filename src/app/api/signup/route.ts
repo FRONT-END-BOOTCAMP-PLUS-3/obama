@@ -1,10 +1,10 @@
-import { SignUpRequestDTO } from "@/application/auth/dtos/SignUpRequestDto";
-import { SignUpUseCase } from "@/application/auth/usecases/SignUpUseCase";
-import { IPasswordHasher } from "@/application/common/usecases/interfaces/IPasswordHasherUseCase";
-import { IUUIDGeneratorUseCase } from "@/application/common/usecases/interfaces/IUUIDGeneratorUseCase";
-import { PasswordHasherUseCase } from "@/application/common/usecases/PasswordHasherUseCase";
-import { UUIDGeneratorUseCase } from "@/application/common/usecases/UUIDGeneratorUseCase";
-import { IUserRepository } from "@/domain/repositories/IUserRepository";
+import { SignUpRequestDTO } from "@/application/usecases/auth/dtos/SignUpRequestDto";
+import { SignUpUseCase } from "@/application/usecases/auth/SignUpUseCase";
+import { IPasswordHasher } from "@/application/usecases/auth/interfaces/IPasswordHasherUseCase";
+import { IUUIDGeneratorUseCase } from "@/application/usecases/auth/interfaces/IUUIDGeneratorUseCase";
+import { PasswordHasherUseCase } from "@/application/usecases/auth/PasswordHasherUseCase";
+import { UUIDGeneratorUseCase } from "@/application/usecases/auth/UUIDGeneratorUseCase";
+import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 

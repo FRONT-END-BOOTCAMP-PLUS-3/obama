@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import * as S from "./profileUploader.Styled";
+import * as S from "@/components/items/ProfileUploader.Styled";
 
 const ProfileUploader = () => {
   const [image, setImage] = useState("/icons/profilePicture.svg");

@@ -1,6 +1,6 @@
 import supabase from "@/infrastructure/databases/supabase/server";
-import { IsmalltalkSubjectRepository } from "@/domain/repositories/ISmalltalkSubjectRepository";
-import { SmalltalkSubject } from "@/domain/entities/SmalltalkSubject";
+import { IsmalltalkSubjectRepository } from "@/domain/repositories/smalltalk/ISmalltalkSubjectRepository";
+import { SmalltalkSubject } from "@/domain/entities/smalltalk/SmalltalkSubject";
 
 export class SbSmalltalkRepository implements IsmalltalkSubjectRepository {
   async findAll(): Promise<SmalltalkSubject[]> {

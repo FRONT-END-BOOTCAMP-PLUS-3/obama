@@ -1,5 +1,5 @@
 import { SbOpenQuestionRepository } from "@/infrastructure/repositories/smalltalk/SbSmalltalkOpenQuestionRepository";
-import { OpenQuestionsUsecase } from "@/application/smalltalk/smalltalkOpenQuestion/SmalltalkOpenQuestionUsecase";
+import { OpenQuestionsUsecase } from "@/application/usecases/smalltalk/smalltalkOpenQuestion/SmalltalkOpenQuestionUsecase";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {

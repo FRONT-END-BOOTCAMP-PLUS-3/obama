@@ -1,8 +1,8 @@
 "use client";
-import TextField from "@/components/common/TextField/TextField";
+import TextField from "@/components/common/textField/TextField";
 
 import { useSignUpForm } from "./useSignUpForm";
-import { Button } from "@/components/common/Button";
+import { Button } from "@/components/common/button";
 import {
   SectionEmailLayer,
   SignUpWrapper,
