@@ -21,7 +21,7 @@ export const Label = styled.span`
   white-space: normal;
   word-break: keep-all;
   overflow-wrap: anywhere;
-  max-width: 150px; 
+  max-width: 9rem; 
 `;
 
 export const Value = styled.span`
@@ -31,6 +31,6 @@ export const Value = styled.span`
   word-break: keep-all; 
   overflow-wrap: anywhere;
   color: var(--gray-700);
-  max-width: 250px;
+  max-width: 15rem;
 `;
 

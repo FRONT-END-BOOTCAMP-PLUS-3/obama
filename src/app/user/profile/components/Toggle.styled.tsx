@@ -5,8 +5,8 @@ export const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 75px;
-  height: 30px;
+  width: 4.6rem;
+  height: 2rem;
 `;
 
 export const CheckBox = styled.input<{ ischecked: boolean }>`
@@ -15,7 +15,7 @@ export const CheckBox = styled.input<{ ischecked: boolean }>`
   width: 100%;
   height: 100%;
   background-color: ${(props) => (props.ischecked ? "var(--primary-color)" : "var(--disabled-color)")};
-  border-radius: 50px;
+  border-radius: 3rem;
   border: none;
   outline: none;
   cursor: pointer;
@@ -26,8 +26,8 @@ export const CheckBox = styled.input<{ ischecked: boolean }>`
     position: absolute;
     top: 50%;
     left: ${(props) => (props.ischecked ? "calc(100% - 26px)" : "6px")};
-    width: 20px;
-    height: 20px;
+    width: 1.2rem;
+    height: 1.2rem;
     background: white;
     border-radius: 50%;
     transform: translateY(-50%);

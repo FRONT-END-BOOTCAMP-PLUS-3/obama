@@ -17,7 +17,7 @@ export const ActionButton = styled.button<{ $variant: "contained" | "line" }>`
     props.$variant === "contained"
       ? "var(--white-color)"
       : "var(--primary-color)"};
-  padding: 10px 20px;
-  border-radius: 50px;
+  padding: 0.8rem 1rem;
+  border-radius: 3rem;
   cursor: pointer;
 `;
