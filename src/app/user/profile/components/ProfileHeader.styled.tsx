@@ -15,14 +15,14 @@ export const ImageWrapper = styled.div`
 export const Name = styled.h1`
   font-size: var(--font-size-lg);
   color: var(--black-color);
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 `;
 
 export const InfoWrapper = styled.div`
   display: flex;
   flex-direction: center;
   justify-content: center;
-  gap: 10px;
+  gap: 0.7rem;
   width: 100%;
 `;
 
@@ -35,12 +35,12 @@ export const InfoButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
-  border-radius: 50px;
+  padding: 0.4rem;
+  border-radius: 3rem;
   background-color: #f0f8ff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: 390px;
-  gap: 10px;
+  max-width: 24rem;
+  gap: 0.7rem;
 `;
 
 const Label = styled.span`
@@ -76,9 +76,9 @@ const SNSButton = styled.div`
   align-items: center;
   justify-content: center;
   background-color: var(--gray-700);
-  border-radius: 50px;
+  border-radius: 3rem;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 4px 15px;
+  padding: 0.4rem 1rem;
   gap: 0.5rem;
   width: 100%;
   cursor: pointer;
