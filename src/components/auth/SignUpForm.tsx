@@ -2,7 +2,7 @@
 import TextField from "@/components/common/textField/TextField";
 
 import { useSignUpForm } from "./useSignUpForm";
-import { Button } from "@/components/common/button";
+import  Button  from "@/components/common/button/Button";
 import {
   SectionEmailLayer,
   SignUpWrapper,

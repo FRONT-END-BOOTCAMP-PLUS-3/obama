@@ -1,5 +1,5 @@
 "use client";
-import { TextField } from "@/components/common/TextField";
+import  TextField  from "@/components/common/textField/TextField";
 import {
   InputLayer,
   LoginWrapper,
@@ -8,7 +8,7 @@ import {
   TextButtonLayer,
   Title,
 } from "@/components/auth/LoginForm.Styled";
-import { Button } from "@/components/common/Button";
+import Button  from "@/components/common/button/Button";
 import { useCallback, useState } from "react";
 
 interface FormState {
