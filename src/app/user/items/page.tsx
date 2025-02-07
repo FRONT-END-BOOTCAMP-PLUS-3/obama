@@ -16,7 +16,7 @@ import {
 } from "@/components/items/ItemsPage.Styled";
 import MBTISelectButton from "@/components/items/Mbtibutton";
 import { TextField } from "@/components/common/TextField";
-import IntroduceInput from "@/components/items/IintroduceInput";
+import IntroduceInput from "@/components/items/IntroduceInput";
 import ProfileImageUploader from "@/components/items/ProfileUploader";
 
 export default function CreatePage() {
