@@ -12,12 +12,8 @@ export async function POST(req: NextRequest) {
 
   try {
     const request :LoginRequestDto = await req.json()
+    console.log(request);
     
-    // 로그인 요청 시 빈데이터 유효성 검사
-    if (!request.email ||!request.password) {
-      return NextResponse.json({ error: "" }, { status: 401 });
-    }
-
     // Infrastructure UserRepository
     const userRepository: IUserRepository = new SbUserRepository();
 
@@ -28,10 +24,11 @@ export async function POST(req: NextRequest) {
     const loginUseCase = new LoginUseCase(userRepository, passwordHasherUseCase);
     
     // 로그인 기능 실행
-    const user = loginUseCase.execute(request);
+    const userId = await loginUseCase.execute(request);
+    console.log(userId)
     
     // 로그인 성공 시 전달 메시지;
-    return NextResponse.json(user, {status:200});
+    return NextResponse.json({userId}, {status:200});
 
   
     // 로그인 실패 시 전달 메시지
@@ -62,7 +59,7 @@ export async function POST(req: NextRequest) {
       const response = errorMapping[error.type] || errorMapping["UNKNOWN_ERROR"];
       return NextResponse.json({error: response.message}, {status: response.status});
     }
-    
+
     return NextResponse.json(
       {error: "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요."}, {status: 500}
     );

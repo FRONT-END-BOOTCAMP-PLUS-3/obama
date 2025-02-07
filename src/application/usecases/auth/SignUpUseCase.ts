@@ -19,14 +19,14 @@ export class SignUpUseCase {
     const hashedPassword = await this.passwordHasherUseCase.hash(request.password);
 
    await this.userRepository.createUser({
-      user_id: userId,
+      userId: userId,
       email: request.email,
       password: hashedPassword,
       name: request.name,
-      birth_date: request.birthDate,
+      birthDate: request.birthDate,
       phone: request.phone,
-      created_at: new Date(),
-      updated_at: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
   }

@@ -242,7 +242,7 @@ const getFieldState = (
       setIsLoading(true);
 
       try {
-        const response = await apiClient.post("api/auth/signup", {
+        const response = await apiClient.post("api/signup", {
           signUpRequest,
         });
         alert(response.data.message || "회원가입 성공");

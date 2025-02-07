@@ -4,7 +4,7 @@ import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 
 export class SbUserRepository implements IUserRepository {
   private readonly tableName = "user";
-
+  
   // Create
   async createUser(user: User): Promise<void> {
     const client = await supabase();
@@ -63,7 +63,7 @@ export class SbUserRepository implements IUserRepository {
   }
   // email을 통한 userId, password 가져오기
   async findAuthDataByEmail(email: string): Promise<{ userId: string; password: string } | null> {
-
+    console.log("repository mounted")
     const client = await supabase();
 
     const { data, error } = await client

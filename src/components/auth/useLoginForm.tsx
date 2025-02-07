@@ -39,7 +39,6 @@ export const useLoginForm = () => {
   }, [formState]);
 
   const handleLoginFormChange = useCallback((name: string, value: string) => {
-    console.log(`Field ${name} changed to ${value}`);
     setFormState((prev) => ({
       ...prev,
       [name]: value,
@@ -54,13 +53,12 @@ export const useLoginForm = () => {
     setIsLoading(true);
     
     try {
-      const response = await apiClient.post("/api/login", {
+      const response = await apiClient.post("/api/login", 
         formState,
-      });
+      );
 
-      console.log(response.data);
       if(response.status === 200){
-        alert("인증이 완료되었습니다.");
+        console.log(response.data.userId)
         router.push("/");  
       }     
       
