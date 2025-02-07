@@ -1,4 +1,4 @@
-import { IUserInputRepository } from "@/domain/repositories/profile/ISbUserinputRepository";
+import { IUserInputRepository } from "@/domain/repositories/profile/IUserinputRepository";
 import supabase from "@/infrastructure/databases/supabase/server";
 import { UserInput } from "@/domain/entities/profile/UserInput";
 
@@ -7,7 +7,7 @@ export class UserInputRepository implements IUserInputRepository {
     const client = await supabase();
       const { data, error } = await client
         .from("userInput")
-        .select("category_id, answer")
+        .select("*")
         .eq("user_id", userId);
   
       if (error) throw new Error("User input data not found");
