@@ -1,6 +1,6 @@
 import supabase from "@/infrastructure/databases/supabase/server";
-import { ICategoryRepository } from "@/domain/repositories/ICategoryRepository";
-import { Category } from "@/domain/entities/Category";
+import { ICategoryRepository } from "@/domain/repositories/category/ICategoryRepository";
+import { Category } from "@/domain/entities/category/Category";
 
 export class SbCategoryRepository implements ICategoryRepository {
   async getCategories(

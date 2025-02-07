@@ -84,8 +84,10 @@ export default function CreatePage() {
 
     const fetchItems = async () => {
       try {
-        const response = await fetch(`/api/items?categoryId=${categoryId}`);
+        const response = await fetch("/api/item");
         const data = await response.json();
+
+        // Filter items based on categoryId
         const filteredItems = data.items?.filter(
           (item) => item.category_id === categoryId
         );
