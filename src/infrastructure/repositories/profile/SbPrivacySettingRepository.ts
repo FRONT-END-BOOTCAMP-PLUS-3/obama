@@ -1,29 +1,28 @@
-import { IPrivacySettingRepository } from "@/domain/repositories/IPrivacySettingRepository";
-import { PrivacySetting } from "@/domain/entities/PrivacySetting";
-import { createClient } from "@/infrastructure/databases/supabase/server";
+import { IPrivacySettingRepository } from "@/domain/repositories/profile/IPrivacySettingRepository";
+import { PrivacySetting } from "@/domain/entities/profile/PrivacySetting";
+import supabase from '@/infrastructure/databases/supabase/server';
 
 export class SbPrivacySettingRepository implements IPrivacySettingRepository {
-  private supabase = createClient();
 
-  async getPrivacySettings(userId: string): Promise<PrivacySetting[]> {
-    const { data, error } = await (await this.supabase)
+// 개인정보 공개설정 조회
+  async findAllByUserId(userId: string): Promise<PrivacySetting[]> {
+    const client = await supabase();
+    const { data, error } = await client
       .from("isPublic")
       .select("*")
       .eq("user_id", userId);
 
     if (error) throw new Error(error.message);
-    return data;
-  }
+    return data as PrivacySetting[];
 
-  async updatePrivacySetting(
-    userId: string,
-    setting: PrivacySetting
-  ): Promise<void> {
-    const { error } = await (await this.supabase)
+  }
+// 특정 공개 설정 업데이트
+  async update(userId: string, updateData: Record<string, boolean>): Promise<void> {
+    const client = await supabase();
+    const { error } = await client
       .from("isPublic")
-      .update({ [setting.label]: setting.isPublic }) 
-      .eq("user_id", userId)
-      .eq("label", setting.label);
+      .update(updateData)
+      .eq("user_id", userId);
 
     if (error) throw new Error(error.message);
   }
