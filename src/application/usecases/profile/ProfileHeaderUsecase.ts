@@ -1,9 +1,8 @@
-// usecase/GetProfileHeaderUseCase.ts
 import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 import { ISNSRepository } from "@/domain/repositories/profile/ISNSRepository";
 import { ProfileHeaderDTO } from "@/application/usecases/profile/dtos/ProfileHeaderDTO";
 
-export class GetProfileHeaderUseCase {
+export class ProfileHeaderUsecase {
   constructor(
     private userRepository: IUserRepository,
     private snsRepository: ISNSRepository
