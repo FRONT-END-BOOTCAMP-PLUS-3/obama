@@ -84,14 +84,14 @@ export default function CreatePage() {
 
     const fetchItems = async () => {
       try {
-        const response = await fetch("/api/item");
+        console.log(`Fetching items for categoryId: ${categoryId}`); // ✅ 디버깅용 로그 추가
+
+        const response = await fetch(`/api/item?categoryId=${categoryId}`); // ✅ categoryId 전달
         const data = await response.json();
 
-        // Filter items based on categoryId
-        const filteredItems = data.items?.filter(
-          (item) => item.category_id === categoryId
-        );
-        setItems(filteredItems);
+        console.log("Fetched items:", data.items); // ✅ 응답 데이터 확인
+
+        setItems(data.items);
       } catch (error) {
         console.error("Error fetching items:", error);
       }
