@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+export const Title = styled.h2`
+    margin-top: 3.5rem;
+`;
+
 export const SignUpWrapper = styled.form`
   width: 320px;
   height: 100%;
@@ -13,10 +17,7 @@ export const SignUpWrapper = styled.form`
     margin: 0.375rem 0 0 0.625rem;
     font-size: var(--font-size-sm);
   }
-  h2{
-    margin-top: 3.5rem;
-  }
- 
+
 `;
 
 export const SectionEmailLayer = styled.div`

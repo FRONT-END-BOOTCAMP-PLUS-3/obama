@@ -10,6 +10,7 @@ import {
   SectionPasswordLayer,
   SectionPhoneLayer,
   SectionButtonLayer,
+  Title,
 } from "@/components/auth/SignUp.Styled";
 
 const SignUpForm: React.FC = () => {
@@ -36,7 +37,7 @@ const SignUpForm: React.FC = () => {
   const {email, password, passwordConfirm, birthDate, name} = formState;
   return (
     <SignUpWrapper onSubmit={handleSubmit} noValidate>
-      <h2>회원가입</h2>
+      <Title>회원가입</Title>
       <SectionEmailLayer>
         <TextField
           name="email"
