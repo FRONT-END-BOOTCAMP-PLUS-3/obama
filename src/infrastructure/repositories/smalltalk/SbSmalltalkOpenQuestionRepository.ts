@@ -1,5 +1,5 @@
 import { SmalltalkOpenQuestion } from "@/domain/entities/smalltalk/SmalltalkOpenQuestion";
-import { IsmalltalkOpenQuestionRepository } from "@/domain/repositories/smalltalk/IsmalltalkOpenQuestionRepository";
+import { IsmalltalkOpenQuestionRepository } from "@/domain/repositories/smalltalk/ISmalltalkOpenQuestionRepository";
 import supabase from "@/infrastructure/databases/supabase/server";
 
 export class SbOpenQuestionRepository implements IsmalltalkOpenQuestionRepository {

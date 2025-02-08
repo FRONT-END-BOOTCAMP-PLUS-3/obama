@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import LayoutContainer from "@/components/common/LayoutContainer";
-import Dropdown from "@/components/common/dropdown/Dropdown";
+import Dropdown from "@/components/common/Dropdown/Dropdown";
 import { Title, SuggestExplain, Question, ButtonWrapper } from "@/components/smaltalk/Select.Styled";
-import { Button } from "@/components/common/button";
+import  Button  from "@/components/common/Button/Button";
 import apiClient from "@/utils/api/apiClient";
 import { SmalltalkSubjectDto } from "@/application/usecases/smalltalk/smalltalkSubject/dto/SmalltalkSubjectDto";
 
@@ -17,7 +17,7 @@ export default function SmalltalkSelect() {
 
   const fetchSubjects = async () => {
     try {
-      const res = await apiClient.get("/api/smalltalkSubjects");
+      const res = await apiClient.get("/api/smalltalks/select");
       
       if (res.data.subject.length > 0) {
         setSubjects(res.data.subject); 
