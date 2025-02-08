@@ -3,8 +3,8 @@ import { BalancegameQuestionUsecase } from "@/application/usecases/smalltalk/sma
 import { SbBalancegameQuestionRepository } from "@/infrastructure/repositories/smalltalk/SbBalancegameQuestionRepository";
 import { BalancegameAnswerUsecase } from "@/application/usecases/smalltalk/smalltalkBalancegame/BalancegameAnswerUsecase";
 import { SbBalancegameAnswerRepository } from "@/infrastructure/repositories/smalltalk/SbBalancegameAnswerRepository";
-import { SbOpenQuestionRepository } from "@/infrastructure/repositories/smalltalk/SbSmalltalkOpenQuestionRepository";
-import { OpenQuestionsUsecase } from "@/application/usecases/smalltalk/smalltalkOpenQuestion/SmalltalkOpenQuestionUsecase";
+import { SbOpenQuestionRepository } from "@/infrastructure/repositories/smalltalk/SbOpenQuestionRepository";
+import { OpenQuestionsUsecase } from "@/application/usecases/smalltalk/smalltalkOpenQuestion/OpenQuestionUsecase";
 
 export async function GET(
   request: NextRequest,

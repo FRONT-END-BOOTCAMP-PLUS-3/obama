@@ -1,6 +1,7 @@
 import { BalancegameAnswer } from "@/domain/entities/smalltalk/BalancegameAnwer";
 import { IBalancegameAnswerRepository } from "@/domain/repositories/smalltalk/IBalancegameAnswerRepository";
 import supabase from "@/infrastructure/databases/supabase/server";
+import { toCamelCase } from "@/utils/convert/convertToCase";
 
 export class SbBalancegameAnswerRepository implements IBalancegameAnswerRepository {
   async findAnswersByQuestionId(questionId: number): Promise<BalancegameAnswer[]> {
@@ -14,6 +15,6 @@ export class SbBalancegameAnswerRepository implements IBalancegameAnswerReposito
       console.error("Error fetching balancegame answers: ", error)
       throw new Error("Failed to fetch balancegame answers");
     }
-    return data || [];
+    return toCamelCase(data) || [];
   }
 }
