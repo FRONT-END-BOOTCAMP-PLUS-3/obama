@@ -18,6 +18,7 @@ import MBTISelectButton from "@/components/items/Mbtibutton";
 import { TextField } from "@/components/common/TextField";
 import IntroduceInput from "@/components/items/IntroduceInput";
 import ProfileImageUploader from "@/components/items/ProfileUploader";
+import { Item } from "@/domain/entities/item/Item";
 
 export default function CreatePage() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function CreatePage() {
   const categoryName = searchParams.get("cn"); // 'cn' 쿼리 파라미터에서 값을 가져옵니다.
   const [categoryId, setCategoryId] = useState<number | null>(null);
 
-  const [items, setItems] = useState<any[]>([]); // update with your actual type
+  const [items, setItems] = useState<Item[]>([]); // update with your actual type
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [question, setQuestion] = useState<string>("");
   const [introText, setIntroText] = useState<string>("");

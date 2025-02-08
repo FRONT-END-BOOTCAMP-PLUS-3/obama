@@ -20,9 +20,9 @@ export class SbUserInputRepository implements IUserInputRepository {
       .from("userInput")
       .insert([
         {
-          category_id: Number(userInput.category_id), // 🔹 INT 변환
-          answer: userInput.answer, // 🔹 TEXT 그대로 유지
-          user_id: userInput.user_id, // 🔹 UUID (컬럼명 수정)
+          category_id: userInput.category_id, // 🔹 그대로 사용
+          answer: userInput.answer,
+          user_id: userInput.user_id,
         },
       ])
       .select()

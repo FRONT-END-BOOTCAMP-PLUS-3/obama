@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     const categoryUseCase = new CategoryListUseCase(categoryRepository);
     const categories = await categoryUseCase.execute(startIndex, limit);
 
-    return NextResponse.json({ categories });
+    return NextResponse.json({ categories }, { status: 200 });
   } catch (error) {
     console.error("Error in category route:", error); // Log the error for better debugging
     return NextResponse.json({ error: error.message }, { status: 500 });

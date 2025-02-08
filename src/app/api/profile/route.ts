@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { SbUserInputRepository } from "@/infrastructure/repositories/profile/SbUserInputRepository";
 import { UserInput } from "@/domain/entities/profile/UserInput";
 
-const userInputRepository = new SbUserInputRepository();
-
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -30,6 +28,9 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    // ✅ 요청별 repository 인스턴스 생성
+    const userInputRepository = new SbUserInputRepository();
 
     // ✅ 데이터 저장
     const newUserInput: Omit<UserInput, "userInput_id"> = {
