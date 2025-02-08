@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { sizeStyles, stateStyles } from "./styles";
+import { sizeStyles, stateStyles } from "@/components/common/textField/styles";
 
 export const StyledWrapper = styled.div`
   display: inline-flex;
@@ -12,7 +12,7 @@ export const StyledWrapper = styled.div`
 `;
 
 export const StyledInput = styled.input<{
-  size: "L" | "M" | "S";
+  size: "L" | "M" | "S" | "XL";
   state: "default" | "current" | "error";
 }>`
   box-sizing: border-box;

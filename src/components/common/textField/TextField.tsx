@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import { TextFieldProps } from "@/types/textfield";
-import { StyledWrapper, StyledInput } from "./TextField.Styled";
+import { StyledWrapper, StyledInput } from "@/components/common/textField/TextField.Styled";
 
 const TextField: React.FC<TextFieldProps> = ({
   size = "M",

@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
-import { DropdownWrapper, StyledButton, StyledMenu, StyledItem, DropdownArrow } from "@/components/common/dropdown/Dropdown.Styled";
+import { DropdownWrapper, StyledButton, StyledMenu, StyledItem, DropdownArrow } from "@/components/smaltalk/dropdown/Dropdown.Styled";
 import { DropdownProps } from "@/types/dropdown";
 
 const Dropdown: React.FC<DropdownProps> = ({ options, onSelect, selected, onToggle }) => {
@@ -15,11 +15,10 @@ const Dropdown: React.FC<DropdownProps> = ({ options, onSelect, selected, onTogg
     }
   }, [isOpen]);
 
-
   return (
-    <DropdownWrapper>
+    <DropdownWrapper size="default">
       <Menu>
-        <MenuButton
+        <MenuButton size="default"
           as={StyledButton}
           onClick={() => {
             setIsOpen((prev) => !prev);

@@ -13,8 +13,11 @@ export const sizeStyles = {
     width: 90px;
     height: 2.5rem;
     padding: 0.625rem;
-    
   `,
+  XL: css` 
+  width: 540px;
+  height: 2.5rem;
+`,
 };
 
 export const stateStyles = {
