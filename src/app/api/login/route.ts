@@ -1,4 +1,5 @@
 import { LoginRequestDto } from "@/application/usecases/auth/dtos/LoginRequestDto";
+import { LoginResponseDto } from "@/application/usecases/auth/dtos/LoginResponseDto";
 import { LoginError, LoginErrorType } from "@/application/usecases/auth/errors/LoginError";
 import { IPasswordHasherUseCase } from "@/application/usecases/auth/interfaces/IPasswordHasherUseCase";
 import { LoginUseCase } from "@/application/usecases/auth/LoginUseCase";
@@ -24,13 +25,14 @@ export async function POST(req: NextRequest) {
     const loginUseCase = new LoginUseCase(userRepository, passwordHasherUseCase);
     
     // 로그인 기능 실행
-    const userId = await loginUseCase.execute(request);
-    console.log(userId)
+    const loginResponseDto :LoginResponseDto = await loginUseCase.execute(request);
+    
+    // responseDto 데이터 연결 확인
+    console.log(loginResponseDto)
     
     // 로그인 성공 시 전달 메시지;
-    return NextResponse.json({userId}, {status:200});
+    return NextResponse.json(loginResponseDto, {status:200});
 
-  
     // 로그인 실패 시 전달 메시지
 } catch (error) {
     console.error("❌ 로그인 오류", error);
