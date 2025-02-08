@@ -1,5 +1,6 @@
-export interface SmalltalkOpenQuestionDto {
+export interface OpenQuestion {
   openquestionId : number;
   subjectId : number;
   openQuestion : string;
 }
+
