@@ -12,7 +12,7 @@ export const StyledWrapper = styled.div`
 `;
 
 export const StyledInput = styled.input<{
-  size: "L" | "M" | "S" | "XL";
+  size: "L" | "M" | "S" | "XL" | "XXL";
   state: "default" | "current" | "error";
 }>`
   box-sizing: border-box;

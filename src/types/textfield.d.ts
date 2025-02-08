@@ -5,7 +5,7 @@ export interface TextFieldProps {
  
   value?: string | number;
   type?: "text" | "password" | "number" | "email" | "date";
-  size?: "L" | "M" | "S" | "XL";
+  size?: "L" | "M" | "S" | "XL" | "XXL";
   state?: "default" | "current" | "error";
   autoFocus?: boolean;
   placeholder?: string;
