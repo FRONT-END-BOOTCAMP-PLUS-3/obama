@@ -1,6 +1,6 @@
 import { GenerateVerificationCodeUseCase } from "@/application/usecases/auth/GenerateVerificationCodeUseCase";
 import { SendEmailUseCase } from "@/application/usecases/auth/SendEmailUseCase";
-import { SMTPEmailService } from "@/infrastructure/email-server/SMTPEmailService";
+
 import { RdVerificationRepository } from "@/infrastructure/repositories/auth/RdVerificationRepository";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -19,12 +19,10 @@ export async function POST(req: NextRequest) {
     }
 
     // Infrastructure Layer DI 의존성 주입
-    const emailService = new SMTPEmailService();
     const generateVerificationCodeUseCase = new GenerateVerificationCodeUseCase();
     const verificationRepository = new RdVerificationRepository();
 
     const sendEmailUseCase = new SendEmailUseCase(
-      emailService,
       generateVerificationCodeUseCase,
       verificationRepository
     );

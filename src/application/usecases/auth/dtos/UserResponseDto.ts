@@ -1,10 +1,9 @@
-export interface User {
+export interface UserResponseDto {
     userId: string;
     email: string;
     name: string;
-    password: string;
     birthDate: string;
     phone: string;
-    createdAt?: Date;
-    updatedAt?: Date;
+    createdAt: Date;
+    updatedAt: Date;
 }

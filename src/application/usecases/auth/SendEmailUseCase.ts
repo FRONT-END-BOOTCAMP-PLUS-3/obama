@@ -5,9 +5,9 @@ import { serverConfig } from '@/config/serverEnv';
 import { sendEmailTemplate } from '@/styles/email/sendEmailTemplate';
 import { ISendEmailUseCase } from '@/application/usecases/auth/interfaces/ISendEmailUseCase';
 
-export class SendEmailUseCase {
+export class SendEmailUseCase implements ISendEmailUseCase{
   private transporter;
-  constructor(private emailService: ISendEmailUseCase,
+  constructor(
     private generateVerificationCodeUseCase : GenerateVerificationCodeUseCase,
     private verificationRepository : IVerificationRepository
   ) {

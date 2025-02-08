@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import { sizeStyles, variantStyles } from "./styles";
 
 /* Button styled component */
-const BaseButtonStyled = styled.button<{
+export const BaseButtonStyled = styled.button<{
   variant: ButtonVariant;
   size: ButtonSize;
 }>`
@@ -30,5 +30,3 @@ const BaseButtonStyled = styled.button<{
   /* variant에 따른 스타일 */
     ${({ variant }) => variantStyles[variant]}
 `;
-
-export default BaseButtonStyled;
