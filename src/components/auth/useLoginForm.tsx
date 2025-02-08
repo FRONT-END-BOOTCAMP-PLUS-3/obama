@@ -14,12 +14,13 @@ interface LoginFormError {
 }
 
 export const useLoginForm = () => {
+
   const router = useRouter();
+
   const [formState, setFormState] = useState<LoginFormState>({
     email: "",
     password: "",
   });
-
   const [errors, setErrors] = useState<LoginFormError>({})
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -45,30 +46,7 @@ export const useLoginForm = () => {
     }));
   }, []);
 
-  // const handleLoginSubmit = useCallback(async (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   if (!validateForm()) return;
-
-  //   setIsLoading(true);
-    
-  //   try {
-  //     const response = await apiClient.post("/api/login", 
-  //       formState,
-  //     );
-
-  //     if(response.status === 200){
-  //       console.log(response.data.userId)
-  //       router.push("/");  
-  //     }     
-      
-  //   } catch (error) {
-  //     console.error(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // }, [formState, router, validateForm]);
-
+  // 로그인 버튼 눌렀을 시
   const handleLoginSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -86,7 +64,7 @@ export const useLoginForm = () => {
   
       if (response.status === 200 && response.data) {
         console.log("✅ 로그인 성공:", response.data.userId);
-        localStorage.setItem("userId", response.data.userId); // UUID 저장
+        localStorage.setItem("userId", response.data.userId);
         router.push("/");  
       } else {
         console.error("❌ 로그인 실패:", response.error);
@@ -100,16 +78,17 @@ export const useLoginForm = () => {
   }, [formState, router, validateForm]);
   
 
-  const handleClickCancel = useCallback(async () => {
-    router.push("/");
+  const handleClickSignUpPage = useCallback(async () => {
+    router.push("/signup");
   }, [])
 
   return {
     formState,
     errors,
     isLoading,
+
     handleLoginFormChange,
     handleLoginSubmit,
-    handleClickCancel,
+    handleClickSignUpPage,
   };
 };

@@ -18,7 +18,7 @@ const LoginForm = () => {
     errors,
     handleLoginFormChange,
     handleLoginSubmit,
-    handleClickCancel,
+    handleClickSignUpPage,
     } = useLoginForm();
 
   const { email, password } = formState;
@@ -51,8 +51,8 @@ const LoginForm = () => {
           />
         </InputLayer>
         <SectionButtonLayer>
-          <Button size="m" variant="line" type="button" onClick={handleClickCancel} disabled={isLoading}>
-            취 소
+          <Button size="m" variant="line" type="button" onClick={handleClickSignUpPage} disabled={isLoading}>
+            회원 가입
           </Button>
           <Button size="m" variant="contained" type="submit" onClick={handleLoginSubmit} disabled={isLoading}>
             로그인
