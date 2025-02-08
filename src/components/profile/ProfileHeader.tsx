@@ -14,7 +14,7 @@ import {
   SNSLink,
   SNSButton,
   SNSId,
-} from "./ProfileHeader.styled";
+} from "./ProfileHeader.Styled";
 
 interface ProfileHeaderProps {
   profile: Profile;

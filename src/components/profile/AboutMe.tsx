@@ -6,7 +6,7 @@ import {
   Item,
   Label,
   Value,
-} from "./AboutMe.styled";
+} from "./AboutMe.Styled";
 
 interface AboutMeProps {
   aboutMeData: Record<string, string[]>; // 공개된 데이터

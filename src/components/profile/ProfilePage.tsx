@@ -5,7 +5,7 @@ import AboutMe from "./components/AboutMe";
 import PrivacyToggle from "./components/PrivacyToggle";
 import { SbProfileRepository } from "@/infrastructure/repositories/profile/SbProfileRepository";
 import { Profile } from "@/domain/entities/Profile";
-import { PageContainer, Section } from "./page.styled";
+import { PageContainer, Section } from "./ProfilePage.Styled";
 import ProfileActions from "./components/ProfileActions";
 
 const ProfilePage: React.FC = () => {

@@ -9,9 +9,6 @@ import { SbPrivacySettingRepository } from "@/infrastructure/repositories/profil
 const profileRepository = new SbProfileRepository();
 const privacySettingRepository = new SbPrivacySettingRepository();
 
-const getProfileDetailsUsecase = new GetProfileDetailsUsecase(profileRepository);
-const getAboutMeUsecase = new GetAboutMeUsecase(profileRepository);
-const privacySettingsUsecase = new PrivacySettingsUsecase(privacySettingRepository);
 
 export async function GET(req: Request) {
   console.log("✅ API 요청 들어옴 (App Router)");

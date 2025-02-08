@@ -7,7 +7,7 @@ import {
   Label,
   Value,
   ToggleButton,
-} from "./ProfileDetails.styled";
+} from "./ProfileDetails.Styled";
 import { GetProfileDetailsUsecase } from "@/application/profile/usecases/GetProfileDetailsUsecase";
 import { SbProfileRepository } from "@/infrastructure/repositories/profile/SbProfileRepository";
 import { ProfileDetailsDTO } from "@/application/profile/dtos/ProfileDetailsDTO";
