@@ -78,7 +78,7 @@ export const useLoginForm = () => {
     
     try {
       // ✅ fetchClient를 사용하여 로그인 요청
-      const response = await fetchClient<typeof formState, { userId: string }>("/api/login", {
+      const response = await fetchClient<LoginFormState, { userId: string }>("/api/login", {
         method: "POST",
         body: formState,
         requiresAuth: false, // 로그인은 인증 헤더 필요 없음
