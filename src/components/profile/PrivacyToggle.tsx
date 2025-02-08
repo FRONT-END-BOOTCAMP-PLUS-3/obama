@@ -6,7 +6,7 @@ import {
   SettingItem,
   Label,
   Value,
-} from "./PrivacyToggle.styled";
+} from "./PrivacyToggle.Styled";
 import { Profile } from "@/domain/entities/Profile";
 
 interface PrivacyToggleProps {

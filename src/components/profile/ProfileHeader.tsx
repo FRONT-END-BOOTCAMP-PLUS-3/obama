@@ -17,7 +17,7 @@ import {
   SNSLink,
   SNSButton,
   SNSId,
-} from "./ProfileHeader.styled";
+} from "./ProfileHeader.Styled";
 
 const ProfileHeader = ({ userId }: { userId: string }) => {
   const [profileHeader, setProfileHeader] = useState<ProfileHeaderDTO | null>(null);

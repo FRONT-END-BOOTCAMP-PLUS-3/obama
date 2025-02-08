@@ -1,12 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import ProfileHeader from "./components/ProfileHeader";
-import AboutMe from "./components/AboutMe";
-import PrivacyToggle from "./components/PrivacyToggle";
-import { SbProfileRepository } from "@/infrastructure/repositories/profile/SbProfileRepository";
-import { Profile } from "@/domain/entities/Profile";
-import { PageContainer, Section } from "./page.styled";
-import ProfileActions from "./components/ProfileActions";
+import { PageContainer, Section } from "./ProfilePage.Styled";
 
 const ProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<Profile | null>(null);

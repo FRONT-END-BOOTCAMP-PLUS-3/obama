@@ -1,17 +1,5 @@
 import axios from "axios";
 import { NextResponse } from "next/server";
-import { GetProfileDetailsUsecase } from "@/application/profile/usecases/GetProfileDetailsUsecase";
-import { GetAboutMeUsecase } from "@/application/profile/usecases/GetAboutMeUsecase";
-import { PrivacySettingsUsecase } from "@/application/profile/usecases/GetPrivacySettingsUsecase";
-import { SbProfileRepository } from "@/infrastructure/repositories/profile/SbProfileRepository";
-import { SbPrivacySettingRepository } from "@/infrastructure/repositories/profile/SbPrivacySettingRepository";
-
-const profileRepository = new SbProfileRepository();
-const privacySettingRepository = new SbPrivacySettingRepository();
-
-const getProfileDetailsUsecase = new GetProfileDetailsUsecase(profileRepository);
-const getAboutMeUsecase = new GetAboutMeUsecase(profileRepository);
-const privacySettingsUsecase = new PrivacySettingsUsecase(privacySettingRepository);
 
 export async function GET(req: Request) {
   console.log("✅ API 요청 들어옴 (App Router)");

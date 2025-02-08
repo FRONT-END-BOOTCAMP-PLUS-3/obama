@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { CheckBox, Wrapper, Text } from "./Toggle.styled";
+import { CheckBox, Wrapper, Text } from "./Toggle.Styled";
 
 interface ToggleProps {
   ischecked: boolean;

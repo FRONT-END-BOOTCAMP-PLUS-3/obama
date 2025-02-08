@@ -1,5 +1,5 @@
 import React from "react";
-import { ActionsWrapper, ActionButton } from "./ProfileActions.styled";
+import { ActionsWrapper, ActionButton } from "./ProfileActions.Styled";
 
 const ProfileActions: React.FC = () => {
   return (
