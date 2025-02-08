@@ -85,13 +85,10 @@ export default function CreatePage() {
 
     const fetchItems = async () => {
       try {
-        console.log(`Fetching items for categoryId: ${categoryId}`); // ✅ 디버깅용 로그 추가
+        const response = await fetch(`/api/item?categoryId=${categoryId}`);
+        const data: { items: Item[] } = await response.json();
 
-        const response = await fetch(`/api/item?categoryId=${categoryId}`); // ✅ categoryId 전달
-        const data = await response.json();
-
-        console.log("Fetched items:", data.items); // ✅ 응답 데이터 확인
-
+        console.log("Fetched items:", data.items);
         setItems(data.items);
       } catch (error) {
         console.error("Error fetching items:", error);
@@ -229,11 +226,11 @@ export default function CreatePage() {
                 key={index}
                 size="s"
                 variant={
-                  selectedItems.has(item.item_name || "") ? "contained" : "line"
+                  selectedItems.has(item.name || "") ? "contained" : "line"
                 }
-                onClick={() => handleToggle(item.item_name || "")}
+                onClick={() => handleToggle(item.name || "")}
               >
-                {item.item_name || "No name available"}
+                {item.name || "No name available"}
               </Button>
             ))}
           </ButtonList>
