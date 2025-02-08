@@ -1,3 +1,6 @@
+import { LoginRequestDto } from "@/application/usecases/auth/dtos/LoginRequestDto";
+import { LoginResponseDto } from "@/application/usecases/auth/dtos/LoginResponseDto";
+import useAuthStore from "@/store/authStore";
 import { fetchClient } from "@/utils/api/fetchClient";
 import { validateEmail, validatePassword } from "@/utils/auth/validate";
 import { useRouter } from "next/navigation";
@@ -14,7 +17,8 @@ interface LoginFormError {
 }
 
 export const useLoginForm = () => {
-
+  
+  const {setAuth} = useAuthStore.getState();
   const router = useRouter();
 
   const [formState, setFormState] = useState<LoginFormState>({
@@ -40,32 +44,51 @@ export const useLoginForm = () => {
   }, [formState]);
 
   const handleLoginFormChange = useCallback((name: string, value: string) => {
+    
+    // 입력 변경 반영 함수
     setFormState((prev) => ({
       ...prev,
       [name]: value,
     }));
   }, []);
 
-  // 로그인 버튼 눌렀을 시
+  // 로그인 버튼 눌렀을 시 동작 함수
   const handleLoginSubmit = useCallback(async (e: React.FormEvent) => {
+    
+    // 이벤트 시 재랜더링 방지 함수
     e.preventDefault();
     
+    // 유효성 검사
     if (!validateForm()) return;
   
     setIsLoading(true);
     
     try {
+
       // ✅ fetchClient를 사용하여 로그인 요청
-      const response = await fetchClient<LoginFormState, { userId: string }>("/api/login", {
+      const response = await fetchClient<LoginRequestDto, LoginResponseDto>("/api/login", {
         method: "POST",
         body: formState,
         requiresAuth: false, // 로그인은 인증 헤더 필요 없음
       });
   
       if (response.status === 200 && response.data) {
+        // 로그인 성공 디버깅
         console.log("✅ 로그인 성공:", response.data.userId);
-        localStorage.setItem("userId", response.data.userId);
+
+        // 로그인 시 UUID와 UserRole data 출력
+        const { userId, role } = response.data;
+        
+        // 로그인 시 LocalStorage 저장
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("role", role);
+
+        // 전역 상태 로그인 관리
+        setAuth(userId, role)
+        
+        // 로그인 성공시 profile routing
         router.push("/");  
+      
       } else {
         console.error("❌ 로그인 실패:", response.error);
       }

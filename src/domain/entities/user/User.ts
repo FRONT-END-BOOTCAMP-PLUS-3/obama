@@ -1,3 +1,5 @@
+import { UserRole } from "@/types/auth";
+
 export interface User {
     userId: string;
     email: string;
@@ -7,4 +9,5 @@ export interface User {
     phone: string;
     createdAt?: Date;
     updatedAt?: Date;
+    role?: UserRole;
 }

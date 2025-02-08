@@ -4,6 +4,7 @@ export interface UserResponseDto {
     name: string;
     birthDate: string;
     phone: string;
+    role: string;
     createdAt: Date;
     updatedAt: Date;
 }

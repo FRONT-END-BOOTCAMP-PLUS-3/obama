@@ -2,6 +2,7 @@ import supabase from "@/infrastructure/databases/supabase/server";
 import { User } from "@/domain/entities/user/User";
 import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 import { toCamelCase, toSnakeCase } from '@/utils/convert/convertToCase';
+import { UserRole } from "@/types/auth";
 
 export class SbUserRepository implements IUserRepository {
   private readonly tableName = "user";
@@ -67,13 +68,13 @@ export class SbUserRepository implements IUserRepository {
     return { password, user };
   }
   // email을 통한 userId, password 가져오기
-  async findAuthDataByEmail(email: string): Promise<{ userId: string; password: string } | null> {
+  async findAuthDataByEmail(email: string): Promise<{ userId: string; password: string; role: UserRole } | null> {
     console.log("repository mounted")
     const client = await supabase();
 
     const { data, error } = await client
       .from(this.tableName)
-      .select("user_id, password")
+      .select("user_id, password , role")
       .eq("email", email)
       .single();
 
@@ -85,6 +86,6 @@ export class SbUserRepository implements IUserRepository {
       console.error("Error finding password:", error.message);
       throw new Error("EMAIL_NOT_FOUND");
     }
-    return { userId: data.user_id , password: data.password } ;
+    return { userId: data.user_id , password: data.password, role: data.role } ;
   }
 }
