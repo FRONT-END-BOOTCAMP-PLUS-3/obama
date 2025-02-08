@@ -7,7 +7,7 @@ import Dropdown from "@/components/common/dropdown/Dropdown";
 import { Title, SuggestExplain, Question, ButtonWrapper } from "@/components/smaltalk/Select.Styled";
 import  Button  from "@/components/common/Button/Button";
 import apiClient from "@/utils/api/apiClient";
-import { SmalltalkSubjectDto } from "@/application/usecases/smalltalk/smalltalkSubject/dto/SmalltalkSubjectDto";
+import { SmalltalkSubjectDto } from "@/application/usecases/smalltalk/dto/SmalltalkSubjectDto";
 
 export default function SmalltalkSelect() {
   const router = useRouter();

@@ -1,5 +1,5 @@
 import { IBalancegameQuestionRepository } from "@/domain/repositories/smalltalk/IBalancegameQuestionRepository";
-import { BalancegameQuestionDto } from "@/application/usecases/smalltalk/smalltalkBalancegame/dto/BalancegameQuestion";
+import { BalancegameQuestionDto } from "@/application/usecases/smalltalk/dto/BalancegameQuestion";
 
 export class BalancegameQuestionUsecase {
   constructor(private readonly repository: IBalancegameQuestionRepository){}

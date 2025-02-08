@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { BalancegameQuestionUsecase } from "@/application/usecases/smalltalk/smalltalkBalancegame/BalancegameQuestionUsecase";
+import { BalancegameQuestionUsecase } from "@/application/usecases/smalltalk/BalancegameQuestionUsecase";
 import { SbBalancegameQuestionRepository } from "@/infrastructure/repositories/smalltalk/SbBalancegameQuestionRepository";
-import { BalancegameAnswerUsecase } from "@/application/usecases/smalltalk/smalltalkBalancegame/BalancegameAnswerUsecase";
+import { BalancegameAnswerUsecase } from "@/application/usecases/smalltalk/BalancegameAnswerUsecase";
 import { SbBalancegameAnswerRepository } from "@/infrastructure/repositories/smalltalk/SbBalancegameAnswerRepository";
 import { SbOpenQuestionRepository } from "@/infrastructure/repositories/smalltalk/SbOpenQuestionRepository";
-import { OpenQuestionsUsecase } from "@/application/usecases/smalltalk/smalltalkOpenQuestion/OpenQuestionUsecase";
+import { OpenQuestionsUsecase } from "@/application/usecases/smalltalk/OpenQuestionUsecase";
 
 export async function GET(
   request: NextRequest,
