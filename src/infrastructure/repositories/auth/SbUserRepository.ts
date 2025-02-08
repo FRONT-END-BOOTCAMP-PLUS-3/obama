@@ -1,15 +1,20 @@
 import supabase from "@/infrastructure/databases/supabase/server";
 import { User } from "@/domain/entities/user/User";
 import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
+import { toCamelCase, toSnakeCase } from '@/utils/convert/convertToCase';
 
 export class SbUserRepository implements IUserRepository {
   private readonly tableName = "user";
   
   // Create
   async createUser(user: User): Promise<void> {
+    
+    const convertUser = toSnakeCase(user); 
+    console.log(convertUser);
+    
     const client = await supabase();
 
-    const { error } = await client.from(this.tableName).insert(user);
+    const { error } = await client.from(this.tableName).insert(convertUser);
 
     if (error) {
       throw new Error(`Failed to create user: ${error.message}`);
@@ -35,7 +40,7 @@ export class SbUserRepository implements IUserRepository {
       throw new Error("Database error while finding email");
     }
 
-    return data ? data : null;
+    return data ? toCamelCase(data) : null;
   }
   // UUID 값으로 개인 정보 가져오기
   async findUserById(
