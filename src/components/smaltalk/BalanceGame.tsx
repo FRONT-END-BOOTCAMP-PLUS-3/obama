@@ -6,7 +6,7 @@ import apiClient from "@/utils/api/apiClient";
 
 interface BalanceGameProps {
   subjectId: number;
-  refreshKey: number; 
+  refreshKey: number;
 }
 
 export default function BalanceGame({ subjectId, refreshKey }: BalanceGameProps) {
@@ -17,8 +17,7 @@ export default function BalanceGame({ subjectId, refreshKey }: BalanceGameProps)
   const fetchBalanceGame = async () => {
     setLoading(true);
     try {
-      
-      const response = await apiClient.get(`/api/smalltalk/balancegameQuestion?subjectId=${subjectId}`);
+      const response = await apiClient.get(`/api/smalltalks/${subjectId}?route=balancegameQuestion`);
       const questionData = response.data;
   
       if (!questionData || !Array.isArray(questionData.question) || questionData.question.length === 0) {
@@ -32,8 +31,8 @@ export default function BalanceGame({ subjectId, refreshKey }: BalanceGameProps)
   
       setQuestion(selectedQuestion.balancegamequestionText);
   
-      const answerResponse = await apiClient.get(`/api/smalltalk/balancegameAnswer?questionId=${selectedQuestion.balancegamequestionId}`);
-  
+      const answerResponse = await apiClient.get(`/api/smalltalks/${selectedQuestion.balancegamequestionId}?route=balancegameAnswer`);
+
       setAnswers(answerResponse.data.answers);
 
     } catch (error) {
@@ -47,8 +46,6 @@ export default function BalanceGame({ subjectId, refreshKey }: BalanceGameProps)
   useEffect(() => {
     fetchBalanceGame();
   }, [subjectId, refreshKey]);
-
-  
 
   return (
     <div>
