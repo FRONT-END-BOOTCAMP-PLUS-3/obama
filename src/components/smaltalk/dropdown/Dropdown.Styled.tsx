@@ -1,18 +1,18 @@
 import styled from "styled-components";
 import { StyledItemProps } from "@/types/dropdown";
 
-export const DropdownWrapper = styled.div`
+export const DropdownWrapper = styled.div<{ size: "default" | "small" }>`
   position: relative;
-  width: 15.625rem; 
-  height: 2.5rem;    
+  width: ${({ size }) => (size === "small" ? "176px" : "15.625rem")};
+  height: ${({ size }) => (size === "small" ? "40px" : "2.5rem")};
 `;
 
-export const StyledButton = styled.button`
-  position: relative; 
+export const StyledButton = styled.button<{ size: "default" | "small" }>`
+  position: relative;
   width: 100%;
-  padding: 0.625rem; 
-  border: 0.0625rem solid var(--primary-color); 
-  border-radius: 1.875rem; 
+  padding: ${({ size }) => (size === "small" ? "0.5rem" : "0.625rem")};
+  border: 0.0625rem solid var(--primary-color);
+  border-radius: 1.875rem;
   background: var(--white-color);
   cursor: pointer;
   text-align: left;
