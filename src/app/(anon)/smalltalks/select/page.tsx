@@ -17,7 +17,7 @@ export default function SmalltalkSelect() {
 
   const fetchSubjects = async () => {
     try {
-      const res = await apiClient.get("/api/smalltalk/smalltalkSubjects");
+      const res = await apiClient.get("/api/smalltalks/select");
       
       if (res.data.subject.length > 0) {
         setSubjects(res.data.subject); 

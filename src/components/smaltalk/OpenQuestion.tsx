@@ -14,7 +14,7 @@ export default function OpenQuestion({ subjectId, refreshKey }: OpenQuestionProp
 
   const fetchQuestion = async () => {
     try {
-      const response = await apiClient.get(`/api/smalltalk/smalltalkOpenQuestion?subjectId=${subjectId}`);
+      const response = await apiClient.get(`/api/smalltalks/${subjectId}?route=openQuestion`);
       const data = response.data;
 
       if (data.questions.length > 0) {
