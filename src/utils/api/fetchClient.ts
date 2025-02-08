@@ -11,7 +11,7 @@ interface FetchOptions<T> {
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 
 
-export const fetchClient = async <TResponse, TRequest = undefined>(
+export const fetchClient = async <TRequest = undefined, TResponse= unknown>(
   endpoint: string,
   { method = "GET", body, headers = {}, requiresAuth = true, queryParams }: FetchOptions<TRequest> = {}
 ): Promise<{ status: number; data?: TResponse; error?: string }> => {
