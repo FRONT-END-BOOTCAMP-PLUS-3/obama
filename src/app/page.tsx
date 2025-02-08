@@ -10,7 +10,7 @@ import {
   ButtonWrapper,
 } from "./Home.styled";
 import Link from "next/link";
-import { Button } from "@/components/common/button";
+import  Button  from "@/components/common/button/Button";
 const Home = () => {
   return (
     <>

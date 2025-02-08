@@ -9,7 +9,7 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const ImageWrapper = styled.div`
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 `;
 
 export const Name = styled.h1`
