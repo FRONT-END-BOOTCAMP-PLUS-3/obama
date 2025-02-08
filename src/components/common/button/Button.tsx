@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ButtonProps } from "@/types/button";
-import BaseButtonStyled from "./Button.Styled";
+import { BaseButtonStyled } from "@/components/common/button/Button.Styled";
 
 const Button: React.FC<ButtonProps> = ({
   size = "m",

@@ -30,4 +30,3 @@ export const BaseButtonStyled = styled.button<{
   /* variant에 따른 스타일 */
     ${({ variant }) => variantStyles[variant]}
 `;
-
