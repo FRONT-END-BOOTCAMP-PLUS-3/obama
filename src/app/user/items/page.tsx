@@ -18,6 +18,7 @@ import MBTISelectButton from "@/components/items/Mbtibutton";
 import { TextField } from "@/components/common/TextField";
 import IntroduceInput from "@/components/items/IntroduceInput";
 import ProfileImageUploader from "@/components/items/ProfileUploader";
+import { Item } from "@/domain/entities/item/Item";
 
 export default function CreatePage() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function CreatePage() {
   const categoryName = searchParams.get("cn"); // 'cn' 쿼리 파라미터에서 값을 가져옵니다.
   const [categoryId, setCategoryId] = useState<number | null>(null);
 
-  const [items, setItems] = useState<any[]>([]); // update with your actual type
+  const [items, setItems] = useState<Item[]>([]); // update with your actual type
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [question, setQuestion] = useState<string>("");
   const [introText, setIntroText] = useState<string>("");
@@ -84,13 +85,10 @@ export default function CreatePage() {
 
     const fetchItems = async () => {
       try {
-        console.log(`Fetching items for categoryId: ${categoryId}`); // ✅ 디버깅용 로그 추가
+        const response = await fetch(`/api/item?categoryId=${categoryId}`);
+        const data: { items: Item[] } = await response.json();
 
-        const response = await fetch(`/api/item?categoryId=${categoryId}`); // ✅ categoryId 전달
-        const data = await response.json();
-
-        console.log("Fetched items:", data.items); // ✅ 응답 데이터 확인
-
+        console.log("Fetched items:", data.items);
         setItems(data.items);
       } catch (error) {
         console.error("Error fetching items:", error);
@@ -228,11 +226,11 @@ export default function CreatePage() {
                 key={index}
                 size="s"
                 variant={
-                  selectedItems.has(item.item_name || "") ? "contained" : "line"
+                  selectedItems.has(item.name || "") ? "contained" : "line"
                 }
-                onClick={() => handleToggle(item.item_name || "")}
+                onClick={() => handleToggle(item.name || "")}
               >
-                {item.item_name || "No name available"}
+                {item.name || "No name available"}
               </Button>
             ))}
           </ButtonList>
