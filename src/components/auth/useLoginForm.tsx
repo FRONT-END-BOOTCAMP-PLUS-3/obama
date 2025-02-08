@@ -1,4 +1,4 @@
-import apiClient from "@/utils/api/apiClient";
+import { fetchClient } from "@/utils/api/fetchClient";
 import { validateEmail, validatePassword } from "@/utils/auth/validate";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
@@ -45,29 +45,60 @@ export const useLoginForm = () => {
     }));
   }, []);
 
+  // const handleLoginSubmit = useCallback(async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   if (!validateForm()) return;
+
+  //   setIsLoading(true);
+    
+  //   try {
+  //     const response = await apiClient.post("/api/login", 
+  //       formState,
+  //     );
+
+  //     if(response.status === 200){
+  //       console.log(response.data.userId)
+  //       router.push("/");  
+  //     }     
+      
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }, [formState, router, validateForm]);
+
   const handleLoginSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     if (!validateForm()) return;
-
+  
     setIsLoading(true);
     
     try {
-      const response = await apiClient.post("/api/login", 
-        formState,
-      );
-
-      if(response.status === 200){
-        console.log(response.data.userId)
+      // ✅ fetchClient를 사용하여 로그인 요청
+      const response = await fetchClient<typeof formState, { userId: string }>("/api/login", {
+        method: "POST",
+        body: formState,
+        requiresAuth: false, // 로그인은 인증 헤더 필요 없음
+      });
+  
+      if (response.status === 200 && response.data) {
+        console.log("✅ 로그인 성공:", response.data.userId);
+        localStorage.setItem("userId", response.data.userId); // UUID 저장
         router.push("/");  
-      }     
+      } else {
+        console.error("❌ 로그인 실패:", response.error);
+      }
       
     } catch (error) {
-      console.error(error);
+      console.error("❌ API 요청 오류:", error);
     } finally {
       setIsLoading(false);
     }
   }, [formState, router, validateForm]);
+  
 
   const handleClickCancel = useCallback(async () => {
     router.push("/");
