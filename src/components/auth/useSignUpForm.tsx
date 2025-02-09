@@ -7,7 +7,6 @@ import {
   validatePhone,
   validateVerificationCode,
 } from "@/utils/auth/validate";
-import { useRouter } from "next/navigation";
 import {  useCallback, useEffect, useState } from "react";
 
 
@@ -66,8 +65,6 @@ export const useSignUpForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [isDuplicated, setIsDuplicated] = useState<boolean>(false);
-
-  const router = useRouter();
 
   const validateForm = useCallback(() => {
     const newErrors: FormErrors = {};
@@ -232,13 +229,13 @@ const getFieldState = (
       };
 
       if (!isFormValid) {
-        alert("모든 입력 필드를 올바르게 작성해주세요.");
+        console.log("모든 입력 필드를 올바르게 작성해주세요.");
         console.log(formState);
         return;
       }
 
       if (!isVerified) {
-        alert("인증이 완료되지 않았습니다.");
+        console.log("인증이 완료되지 않았습니다.");
         return;
       }
 
@@ -249,7 +246,6 @@ const getFieldState = (
           signUpRequest,
         });
         alert(response.data.message || "회원가입 성공");
-        router.push("/signup/result");
       } catch (error: unknown) {
         console.error(error);
 
