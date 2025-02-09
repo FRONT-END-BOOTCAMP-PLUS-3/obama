@@ -2,10 +2,12 @@ import React from "react";
 import { PaginationContainer, PageButton } from "@/components/admin/pagenation/Pagenation.Style";
 
 interface PaginationProps {
-  totalPages: number;
+  totalPages: number; 
   currentPage: number;
-  onPageChange: (page: number) => void;
+  onPageChange: (page: number) => void; 
 }
+
+const MAX_VISIBLE_PAGES = 5; 
 
 const Pagination: React.FC<PaginationProps> = ({
   totalPages,
@@ -21,8 +23,12 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   const renderPageNumbers = () => {
-    return Array.from({ length: totalPages }, (_, index) => {
-      const pageNumber = index + 1;
+    const currentGroup = Math.floor((currentPage - 1) / MAX_VISIBLE_PAGES);
+    const startPage = currentGroup * MAX_VISIBLE_PAGES + 1;
+    const endPage = Math.min(startPage + MAX_VISIBLE_PAGES - 1, totalPages);
+
+    return Array.from({ length: endPage - startPage + 1 }, (_, index) => {
+      const pageNumber = startPage + index;
       return (
         <PageButton
           key={pageNumber}
