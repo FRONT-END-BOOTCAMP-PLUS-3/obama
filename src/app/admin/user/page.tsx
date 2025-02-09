@@ -5,7 +5,7 @@ import SearchBar from "@/components/admin/searchbar/Searchbar";
 import AdminLayoutContainer from "@/components/admin/AdminLayoutContainer";
 import ConfirmDeleteModal from "@/components/admin/deletemodal/ConfirmDeleteModal";
 import AdminTable from "@/components/admin/table/Table";
-import { Icon } from "@/components/AdminOpenQuestion.Style";
+import { Icon } from "@/components/admin/AdminOpenQuestion.Style";
 
 // DB연결 및 BE 과정에서 usecase로 분리 및 수정이 이루어질 페이지 입니다.
 

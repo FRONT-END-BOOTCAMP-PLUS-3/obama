@@ -7,9 +7,9 @@ import OpenQuestionModal from "@/components/admin/openquestionmodal/OpenQuestion
 import ConfirmDeleteModal from "@/components/admin/deletemodal/ConfirmDeleteModal";
 import TextField from "@/components/common/textField/TextField";
 import { Button } from "@/components/common/button";
-import { Icon } from "@/components/AdminOpenQuestion.Style";
+import { Icon } from "@/components/admin/AdminOpenQuestion.Style";
 import AdminTable from "@/components/admin/table/Table";
-import { AddButton } from "@/components/AdminOpenQuestion.Style";
+import { AddButton } from "@/components/admin/AdminOpenQuestion.Style";
 
 // DB연결 및 BE 과정에서 usecase로 분리 및 수정이 이루어질 페이지 입니다.
 
