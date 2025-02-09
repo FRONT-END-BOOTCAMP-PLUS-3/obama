@@ -7,9 +7,9 @@ export class UserInputUseCase {
 
   async execute(dto: UserInputDto): Promise<UserInput> {
     const newUserInput: Omit<UserInput, "userInput_id"> = {
-      category_id: Number(dto.categoryId), // 🔹 여기서 변환
+      categoryId: Number(dto.categoryId), // 🔹 여기서 변환
       answer: dto.answer,
-      user_id: dto.userId,
+      userId: dto.userId,
     };
 
     return this.userInputRepository.create(newUserInput);
