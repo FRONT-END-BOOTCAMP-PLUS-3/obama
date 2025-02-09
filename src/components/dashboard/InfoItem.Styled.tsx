@@ -12,8 +12,11 @@ export const InfoLayer = styled.div`
   display: inline-flex;
   flex-wrap: wrap;
   height: fit-content;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
+  padding:0 1rem;
+ 
 `;
 
 export const InfoTitle = styled.h6`
@@ -30,8 +33,11 @@ export const InfoText = styled.p`
   white-space: pre-line;
 `;
 
-export const IconLayer = styled.span`
+export const IconLayer = styled.span<{ $isEdit:boolean }>`
   display: inline-flex;
   align-items: center;
+  align-self: ${({$isEdit})=> $isEdit? "end" : "center" };
   justify-content: center;
+  gap: 10px;
+  cursor: pointer;
 `;

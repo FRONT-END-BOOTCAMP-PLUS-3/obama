@@ -10,6 +10,8 @@ import {
 
 import InfoItem from "@/components/dashboard/InfoItem";
 import AccountSection from "./AccountSection";
+import { useEffect, useState } from "react";
+import { defaultUser } from "@/mock/mockData";
 // import useAuthStore from "@/store/authStore";
 
 const DashBoard = () => {
@@ -17,6 +19,20 @@ const DashBoard = () => {
   // useEffect(()=> {
   //     const { userId } = useAuthStore.getState();
   // }, []);
+
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    birthDate: "",
+    phone: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    setUser(defaultUser);
+  }, []);
+
+  console.log(user);
 
   return (
     <>
@@ -26,11 +42,11 @@ const DashBoard = () => {
         </TitleWrapper>
 
         <InfoSection>
-          <InfoItem />
-          <InfoItem />
-          <InfoItem />
-          <InfoItem />
-          <InfoItem />
+          <InfoItem title={"email"} text={user.email} />
+          <InfoItem title={"이름"} text={user.name} />
+          <InfoItem title={"생년월일"} text={user.birthDate} />
+          <InfoItem title={"전화번호"} text={user.phone} />
+          <InfoItem title={"비밀번호"} text={user.password} />
         </InfoSection>
 
         <AccountSection />
