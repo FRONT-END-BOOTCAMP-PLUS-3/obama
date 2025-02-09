@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server";
-import { PrivacySettingsUsecase } from "@/application/usecases/profile/PrivacySettingsUsecase";
-import { SbPrivacySettingRepository } from "@/infrastructure/repositories/profile/SbPrivacySettingRepository";
-
-const privacySettingRepository = new SbPrivacySettingRepository();
-const getPrivacySettingsUsecase = new PrivacySettingsUsecase(privacySettingRepository);
+import { ProfileHeaderUsecase } from "@/application/usecases/profile/ProfileHeaderUsecase";
+import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepository";
+import { SbSNSRepository } from "@/infrastructure/repositories/profile/SbSNSRepository";
 
 export async function GET(req: Request) {
-
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get("userId");
 
@@ -15,19 +12,14 @@ export async function GET(req: Request) {
   }
 
   try {
-    // UseCase를 활용하여 데이터 가져오기
-    const aboutMeData = await getAboutMeUsecase.execute(userId);
-    const privacySettings = await getPrivacySettingsUsecase.execute(userId);
+    const userRepository = new SbUserRepository();
+    const snsRepository = new SbSNSRepository();
+    const getProfileHeaderUseCase = new ProfileHeaderUsecase(userRepository, snsRepository);
 
-    if (!profileDetails) {
-      console.error("❌ Profile details not found");
-      return NextResponse.json({ error: "Profile details not found" }, { status: 404 });
-    }
-
-    return NextResponse.json({ profileDetails, aboutMeData, privacySettings }, { status: 200 });
+    const profileHeader = await getProfileHeaderUseCase.execute(userId);
+    return NextResponse.json({ profileHeader }, { status: 200 });
   } catch (error) {
     console.error("❌ API 요청 실패:", error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

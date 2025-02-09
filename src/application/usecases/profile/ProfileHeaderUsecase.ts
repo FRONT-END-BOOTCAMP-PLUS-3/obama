@@ -5,7 +5,7 @@ import { ProfileHeaderDTO } from "@/application/usecases/profile/dtos/ProfileHea
 export class ProfileHeaderUsecase {
   constructor(
     private userRepository: IUserRepository,
-    private snsRepository: ISNSRepository
+    private SbSNSRepository: ISNSRepository
   ) {}
 
   async execute(userId: string): Promise<ProfileHeaderDTO> {
@@ -14,7 +14,7 @@ export class ProfileHeaderUsecase {
     if (!user) throw new Error("User not found");
 
     // 2. SNS 정보 가져오기
-    const snsData = await this.snsRepository.findAllByUserId(userId);
+    const snsData = await this.SbSNSRepository.findAllByUserId(userId);
 
     // 3. DTO 형태로 변환 후 반환
     return {
