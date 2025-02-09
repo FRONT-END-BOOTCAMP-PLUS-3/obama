@@ -1,13 +1,13 @@
-import { IPrivacySettingRepository } from "@/domain/repositories/profile/IPrivacySettingRepository";
-import { PrivacySettingDTO } from "@/application/usecases/profile/dtos/PrivacySettingDTO";
+import { IIsPublicRepository } from "@/domain/repositories/profile/IIsPublicRepository";
+import { IsPublicDTO } from "@/application/usecases/profile/dtos/IsPublicDTO";
 
 export class GetPrivacySettingsUsecase {
   constructor(
-    private readonly privacySettingRepository: IPrivacySettingRepository
+    private readonly privacySettingRepository: IIsPublicRepository
   ) {}
 
   // 개인정보 설정 가져오기
-  async execute(userId: string): Promise<PrivacySettingDTO[]> {
-    return await this.privacySettingRepository.findAllByUserId(userId);
+  async execute(userId: string): Promise<IsPublicDTO[]> {
+    return await this.privacySettingRepository.findByUserId(userId);
   }
 }

@@ -1,4 +1,4 @@
-export interface PrivacySettingDTO {
+export interface IsPublicDTO {
     category: string;
     answer: string;
     isPublic: boolean;
