@@ -3,8 +3,8 @@ export const adminNavbarItems = [
   {
     label: "스몰토크 DB 관리",
     children: [
-      { label: "밸런스게임", path: "/admin/smalltalk/balanceGames" },
-      { label: "추천 주제", path: "/admin/smalltalk/topics" }
+      { label: "밸런스게임", path: "/admin/smalltalk/balancegame" },
+      { label: "추천 주제", path: "/admin/smalltalk/openquestion" }
     ]
   }
 ];

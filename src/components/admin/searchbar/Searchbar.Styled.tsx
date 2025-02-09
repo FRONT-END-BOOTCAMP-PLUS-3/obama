@@ -7,13 +7,12 @@ export const SearchBarWrapper = styled.div`
   width: 52rem;
   height: 6.875rem;
   margin-left: 18rem;
-  margin-top: 5rem;
+  margin-top: 3rem;
   border-radius: 0.625rem;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
 `;
-
 
 
 export const SearchButton = styled(Button)`
