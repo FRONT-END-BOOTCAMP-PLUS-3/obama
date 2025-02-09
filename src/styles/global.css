@@ -199,5 +199,5 @@ table {
 th,
 td {
   text-align: left;
-  border: 1px solid var(--primary-color);
+  /* border: 1px solid var(--primary-color); */
 }
