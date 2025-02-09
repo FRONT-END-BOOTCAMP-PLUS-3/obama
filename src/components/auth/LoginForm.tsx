@@ -4,18 +4,18 @@ import {
   InputLayer,
   LoginWrapper,
   SectionButtonLayer,
-  TextButton,
   TextButtonLayer,
   Title,
 } from "@/components/auth/LoginForm.Styled";
 import Button from "@/components/common/button/Button";
 import { useLoginForm } from "@/components/auth/useLoginForm";
+import TextButton from "@/components/common/button/TextButton";
 
 const LoginForm = () => {
   const {
     formState,
     isLoading,
-    errors,
+    // errors,
     handleLoginFormChange,
     handleLoginSubmit,
     handleClickSignUpPage,

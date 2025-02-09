@@ -114,7 +114,6 @@ export const useSignUpForm = () => {
 
   const handleFormChange = useCallback(
     (name: string, value: string) => {
-      console.log(`Field ${name} changed to ${value}`);
       setFormState((prev) => ({
         ...prev,
         [name]: value,
