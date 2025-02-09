@@ -2,7 +2,7 @@
 import TextField from "@/components/common/textField/TextField";
 
 import { useSignUpForm } from "./useSignUpForm";
-import { Button } from "@/components/common/button";
+import  Button  from "@/components/common/button/Button";
 import {
   SectionEmailLayer,
   SignUpWrapper,
@@ -51,7 +51,7 @@ const SignUpForm: React.FC = () => {
           onChange={handleFormChange}
           disabled={isVerified}
         />
-        <Button size="s" variant="line" onClick={handleDuplicateEmail}>
+        <Button size="s" variant="line" onClick={handleDuplicateEmail} disabled={isVerified}>
           중복확인
         </Button>
         <p>{errors.email ? errors.email : "올바른 형식입니다."}</p>

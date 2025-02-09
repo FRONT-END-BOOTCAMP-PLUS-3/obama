@@ -3,15 +3,18 @@
 import React, { useEffect, useState } from "react";
 import { Question, QuestionMark, LogoGreySmalltalk, ExclamationMark, LogoSmalltalk } from "@/components/smaltalk/Suggest.Styled";
 import apiClient from "@/utils/api/apiClient"; 
-import OpenQuestionProps from "@/types/openQuestionProps";
 
+interface OpenQuestionProps {
+  subjectId: number;
+  refreshKey: number;  
+}
 
-export default function OpenQuestion({ subjectId }: OpenQuestionProps) {
+export default function OpenQuestion({ subjectId, refreshKey }: OpenQuestionProps) {
   const [question, setQuestion] = useState<string>("질문을 준비중입니다. . . ");
 
   const fetchQuestion = async () => {
     try {
-      const response = await apiClient.get(`/api/smalltalkOpenQuestion?subjectId=${subjectId}`);
+      const response = await apiClient.get(`/api/smalltalks/${subjectId}?route=openQuestion`);
       const data = response.data;
 
       if (data.questions.length > 0) {
@@ -28,7 +31,7 @@ export default function OpenQuestion({ subjectId }: OpenQuestionProps) {
 
   useEffect(() => {
     fetchQuestion();
-  }, [subjectId]);
+  }, [subjectId, refreshKey]);  
 
   return (
     <div>

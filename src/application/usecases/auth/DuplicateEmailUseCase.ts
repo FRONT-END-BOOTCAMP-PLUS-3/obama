@@ -3,7 +3,7 @@ export class DuplicateEmailUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
 
   async execute(email: string): Promise<boolean> {
-    const user = await this.userRepository.findByEmail(email);
+    const user = await this.userRepository.findAuthDataByEmail(email);
     return user !== null;
   }
 }
