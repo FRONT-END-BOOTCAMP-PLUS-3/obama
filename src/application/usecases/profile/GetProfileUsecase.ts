@@ -1,14 +1,14 @@
-import { IProfileRepository } from "@/domain/repositories/IProfileRepository";
+import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 
 export class GetProfileUsecase {
-  private repository: IProfileRepository;
+  private repository: IUserRepository;
 
-  constructor(repository: IProfileRepository) {
+  constructor(repository: IUserRepository) {
     this.repository = repository;
   }
 
   async execute(userId: string) {
     if (!userId) throw new Error("userId가 필요합니다.");
-    return this.repository.getProfile(userId);
+    return this.repository.findByEmail(userId);
   }
 }
