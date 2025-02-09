@@ -1,9 +1,9 @@
 import React from "react";
 import {
   Table,
-  TableCell,
-  TableHeader,
   TableWrapper,
+  UserCell,
+  UserHeader,
 } from "@/components/admin/table/Table.Style";
 
 interface TableColumn<T> {
@@ -24,7 +24,7 @@ const AdminTable = <T,>({ data, columns }: ReusableTableProps<T>) => {
         <thead>
           <tr>
             {columns.map((column, index) => (
-              <TableHeader key={index}>{column.header}</TableHeader>
+              <UserHeader key={index}>{column.header}</UserHeader>
             ))}
           </tr>
         </thead>
@@ -32,11 +32,11 @@ const AdminTable = <T,>({ data, columns }: ReusableTableProps<T>) => {
           {data.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {columns.map((column, colIndex) => (
-                <TableCell key={colIndex}>
+                <UserCell key={colIndex}>
                   {column.render
                     ? column.render(row[column.key as keyof T], row)
                     : String(row[column.key as keyof T] ?? "N/A")}
-                </TableCell>
+                </UserCell>
               ))}
             </tr>
           ))}
