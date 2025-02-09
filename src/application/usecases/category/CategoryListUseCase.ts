@@ -1,10 +1,20 @@
 import { ICategoryRepository } from "@/domain/repositories/category/ICategoryRepository";
-import { Category } from "@/domain/entities/category/Category";
+import { CategoryListDto } from "./dto/CategoryListDto"; // DTO 추가
 
 export class CategoryListUseCase {
   constructor(private categoryRepository: ICategoryRepository) {}
 
-  async execute(): Promise<Category[]> {
-    return await this.categoryRepository.getCategories();
+  async execute(): Promise<CategoryListDto> {
+    const categories = await this.categoryRepository.getCategories();
+
+    return {
+      startIndex: 0,
+      limit: categories.length,
+      categories: categories.map((category) => ({
+        id: category.category_id,
+        name: category.category_name_en,
+        question: category.category_question, // ✅ 추가
+      })),
+    };
   }
 }

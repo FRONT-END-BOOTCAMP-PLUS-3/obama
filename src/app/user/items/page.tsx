@@ -19,6 +19,7 @@ import { TextField } from "@/components/common/TextField";
 import IntroduceInput from "@/components/items/IntroduceInput";
 import ProfileImageUploader from "@/components/items/ProfileUploader";
 import { Item } from "@/domain/entities/item/Item";
+import { CategoryListDto } from "@/application/usecases/category/dto/CategoryListDto";
 
 export default function CreatePage() {
   const router = useRouter();
@@ -56,20 +57,19 @@ export default function CreatePage() {
     const fetchCategory = async () => {
       try {
         const response = await fetch("/api/category");
-        const data = await response.json();
+        const data: CategoryListDto = await response.json(); // DTO 적용
 
         const category = data.categories?.find(
-          (category: { category_name_en: string }) =>
-            category.category_name_en === categoryName
+          (category) => category.name === categoryName // DTO에 맞게 name 사용
         );
 
         if (category) {
-          setCategoryId(category.category_id);
-          setQuestion(category.category_question);
+          setCategoryId(category.id); // category_id -> id
+          setQuestion(category.question || "No Question available"); // category_question -> question
         } else {
           setQuestion("No Question available");
         }
-        console.log("category", category);
+        console.log("Fetched category:", category);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -104,14 +104,13 @@ export default function CreatePage() {
   const handleNavigation = async (direction: "next" | "previous") => {
     if (!categoryId) return;
 
-    // 선택한 답변 결정
     let answer = "";
     if (categoryId === 4) {
       answer = selectedType || "";
     } else if (categoryId === 11) {
       answer = introText;
     } else if (categoryId === 12) {
-      answer = "Uploaded Image"; // 프로필 이미지 업로드 경우 (추후 수정 가능)
+      answer = "Uploaded Image";
     } else if (items.length > 0) {
       answer = Array.from(selectedItems).join(", ");
     } else {
@@ -123,13 +122,10 @@ export default function CreatePage() {
       return;
     }
 
-    // POST 요청으로 데이터 저장
     try {
       const response = await fetch("/api/profile", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           category_id: categoryId,
           user_id: "1d1867cd-526c-4de5-97e4-4a0c8f386f78",
@@ -140,21 +136,19 @@ export default function CreatePage() {
       const result = await response.json();
       console.log("📥 저장 결과:", result);
 
-      if (!response.ok) {
-        throw new Error(result.error || "데이터 저장 실패");
-      }
+      if (!response.ok) throw new Error(result.error || "데이터 저장 실패");
     } catch (error) {
       console.error("❌ 저장 중 오류 발생:", error);
       return;
     }
 
-    // ✅ 상태 초기화 (값 누적 방지)
+    // ✅ 상태 초기화
     setSelectedItems(new Set());
     setSelectedType(null);
     setIntroText("");
     setTextFieldValue("");
 
-    // 다음 or 이전 카테고리 이동
+    // ✅ 다음 or 이전 카테고리 이동
     const newCategoryId =
       direction === "next" ? categoryId + 1 : categoryId - 1;
     const query = new URLSearchParams({
@@ -165,12 +159,12 @@ export default function CreatePage() {
     try {
       const response = await fetch(`/api/category?${query}`);
       const data = await response.json();
-      const newCategory = data.categories?.find(
-        (category) => category.category_id === newCategoryId
-      );
 
+      const newCategory = data.categories?.find(
+        (cat) => cat.id === newCategoryId
+      );
       if (newCategory) {
-        router.push(`/user/items?cn=${newCategory.category_name_en}`);
+        router.push(`/user/items?cn=${newCategory.name}`);
       } else {
         console.error("Category not found");
       }

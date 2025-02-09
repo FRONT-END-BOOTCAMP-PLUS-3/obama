@@ -6,11 +6,11 @@ export async function GET() {
   try {
     const categoryRepository = new SbCategoryRepository();
     const categoryUseCase = new CategoryListUseCase(categoryRepository);
-    const categories = await categoryUseCase.execute();
+    const categoryDto = await categoryUseCase.execute(); // DTO 사용
 
-    return NextResponse.json({ categories }, { status: 200 });
+    return NextResponse.json(categoryDto, { status: 200 });
   } catch (error) {
-    console.error("Error in category route:", error); // Log the error for better debugging
+    console.error("Error in category route:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
