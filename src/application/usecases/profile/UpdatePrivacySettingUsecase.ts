@@ -3,11 +3,11 @@ import { PrivacySettingDTO } from "@/application/usecases/profile/dtos/PrivacySe
 
 export class UpdatePrivacySettingUsecase {
   constructor(
-    private readonly privacySettingRepository: IPrivacySettingRepository
+    private readonly IPrivacySettingRepository: IPrivacySettingRepository
   ) {}
 
   // 개인정보 설정 업데이트
   async execute(userId: string, setting: PrivacySettingDTO): Promise<void> {
-    await this.privacySettingRepository.update(userId, setting);
+    await this.IPrivacySettingRepository.update(userId, setting);
   }
 }
