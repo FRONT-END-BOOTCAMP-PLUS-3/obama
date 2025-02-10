@@ -63,14 +63,14 @@ const InfoItem: React.FC<InfoItemProps> = ({ field, text = "" }) => {
     setSelectedField(field);
   };
 
-  const handleClose = () => {
-    setSelectedField(null);
-  };
+  // const handleClose = () => {
+  //   setSelectedField(null);
+  // };
 
-  const handleSave = () => {
-    // api update 호출
-    setSelectedField(null);
-  };
+  // const handleSave = () => {
+  //   // api update 호출
+  //   setSelectedField(null);
+  // };
 
   return (
     <InfoItemWrapper>
