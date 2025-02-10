@@ -3,6 +3,7 @@ import { SbOpenQuestionRepository } from "@/infrastructure/repositories/smalltal
 import { CreateOpenQuestionUsecase } from "@/application/usecases/smalltalk/CreateOpenQuestionUsecase";
 import { OpenQuestionsUsecase } from "@/application/usecases/smalltalk/OpenQuestionUsecase";
 import { UpdateOpenQuestionUsecase } from "@/application/usecases/smalltalk/UpdateOpenQuestionUsecase";
+import { DeleteOpenQuestionUsecase } from "@/application/usecases/smalltalk/DeleteOpenQuestionUsecase";
 
 export async function GET(request: NextRequest) {
   try {
@@ -56,6 +57,26 @@ export async function PATCH(request: NextRequest) {
   } catch (error) {
     console.error("Error updating question:", error);
     return NextResponse.json({ message: "Error updating question" }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { questionId } = await request.json();
+
+    if (!questionId) {
+      return NextResponse.json({ message: "Missing required field: questionId" }, { status: 400 });
+    }
+
+    const repository = new SbOpenQuestionRepository();
+    const usecase = new DeleteOpenQuestionUsecase(repository);
+
+    await usecase.execute(questionId);
+
+    return NextResponse.json({ message: "Question deleted successfully" }, { status: 200 });
+  } catch (error) {
+    console.error("Error deleting question:", error);
+    return NextResponse.json({ message: "Error deleting question" }, { status: 500 });
   }
 }
 

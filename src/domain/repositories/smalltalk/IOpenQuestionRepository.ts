@@ -5,4 +5,5 @@ export interface IOpenQuestionRepository {
   findAll(): Promise<OpenQuestion[]>;  
   create(question: { subjectId: number; openQuestion: string }): Promise<void>;  
   update(questionId: number, openQuestion: string): Promise<void>; 
+  delete(questionId: number): Promise<void>;
 }
