@@ -5,66 +5,104 @@ import {
   InfoLayer,
   InfoText,
   InfoTitle,
+  SelectedSectionLayer,
+  SubjectLayer,
 } from "@/components/dashboard/InfoItem.Styled";
+import {
+  NameSection,
+  EmailSection,
+  BirthDateSection,
+  PhoneSection,
+  PasswordSection,
+} from "@/components/auth/signup";
+import { useSignUpForm } from "@/components/auth/useSignUpForm";
 import { useState } from "react";
-import { TextField } from "../common/textField";
 
-type inputType = "text" | "password" | "email" | "date"
-interface InfoItemProps {
-  title: string;
-  text?: string;
-  type?: inputType;
+interface UserData {
+  name: string;
+  email: string;
+  birthDate: string;
+  phone: string;
+  password: string;
 }
 
-const InfoItem: React.FC<InfoItemProps> = ({ title, text = "" }) => {
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [value, setValue] = useState<string>(text);
+interface InfoItemProps {
+  field: keyof UserData; // ✅ key 값을 받도록 변경
+  text?: string;
+}
 
-  const isEditable = title !== "email";
+const InfoItem: React.FC<InfoItemProps> = ({ field, text = "" }) => {
+  const isEditable = field !== "name";
 
-  const handleClickIcon = () => {
-   setIsEdit(true);
+  const signUpProps = useSignUpForm();
+
+  const sectionsMap: Record<
+    keyof UserData,
+    React.FC<ReturnType<typeof useSignUpForm>>
+  > = {
+    name: NameSection,
+    email: EmailSection,
+    birthDate: BirthDateSection,
+    phone: PhoneSection,
+    password: PasswordSection,
+  };
+  const [selectedField, setSelectedField] = useState<keyof UserData | null>(
+    null
+  );
+  const SelectedSection = selectedField ? sectionsMap[selectedField] : null;
+
+  const keyToTitleMap: Record<keyof UserData, string> = {
+    name: "이름",
+    email: "이메일",
+    birthDate: "생년월일",
+    phone: "휴대폰 번호",
+    password: "비밀번호",
   };
 
-  const handleChange = (newValue: string) => {
-    setValue(newValue);
+  const handleClickIcon = () => {
+    setSelectedField(field);
+  };
+
+  const handleClose = () => {
+    setSelectedField(null);
+  };
+
+  const handleSave = () => {
+    // api update 호출
+    setSelectedField(null);
   };
 
   return (
-    <InfoItemWrapper >
+    <InfoItemWrapper>
       <InfoLayer>
-        <InfoTitle>{title}</InfoTitle>
-        {isEdit ? (
-          <TextField
-            name={"text"}
-            type="text"
-            value={value}
-            onChange={handleChange}
-          />
-        ) : (
+        <SubjectLayer>
+          <InfoTitle>{keyToTitleMap[field]}</InfoTitle>
+
           <InfoText>{text}</InfoText>
-        )}
-      </InfoLayer>
-      {isEditable &&
-        (isEdit ? (
-          <IconLayer $isEdit= {isEdit}>
+        </SubjectLayer>
+      
+      {isEditable && !selectedField && !selectedField && (
+        <IconLayer onClick={handleClickIcon}>
+          <Image
+            src="/icons/editPen.svg"
+            alt="편집 아이콘"
+            width={28}
+            height={28}
+            priority
+          />
+        </IconLayer>
+      )}
+
+      {selectedField && SelectedSection && (
+        <>
+          <IconLayer>
             <Image
-              src="/icons/editCheck.svg"
-              alt="체크 아이콘"
-              width={44}
-              height={44}
-              priority
-            />
-            <Image
-              src="/icons/editClose.svg"
-              alt="취소"
+              src="/icons/editPen.svg"
+              alt="편집 아이콘"
               width={28}
               height={28}
               priority
             />
-          </IconLayer>
-        ) : (
-          <IconLayer $isEdit={isEdit} onClick={handleClickIcon}>
             <Image
               src="/icons/editPen.svg"
               alt="편집 아이콘"
@@ -73,7 +111,13 @@ const InfoItem: React.FC<InfoItemProps> = ({ title, text = "" }) => {
               priority
             />
           </IconLayer>
-        ))}
+
+          <SelectedSectionLayer>
+            <SelectedSection {...signUpProps} />
+          </SelectedSectionLayer>
+        </>
+      )}
+      </InfoLayer>
     </InfoItemWrapper>
   );
 };
