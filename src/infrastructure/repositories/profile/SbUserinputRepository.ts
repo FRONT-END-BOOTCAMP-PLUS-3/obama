@@ -1,4 +1,4 @@
-import { IUserInputRepository } from "@/domain/repositories/profile/ISbUserinputRepository";
+import { IUserInputRepository } from "@/domain/repositories/profile/IUserinputRepository";
 import supabase from "@/infrastructure/databases/supabase/server";
 import { UserInput } from "@/domain/entities/profile/UserInput";
 

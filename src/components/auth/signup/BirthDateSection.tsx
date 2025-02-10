@@ -6,18 +6,22 @@ interface BirthDateSectionProps
   extends Pick<
     SignUpProps,
     "formState" | "errors" | "handleFormChange" | "getFieldState"
-  >{}
+  > {
+  onClose?: () => void; // 선택적 prop
+}
 
 const BirthDateSection: React.FC<BirthDateSectionProps> = ({
   formState,
   errors,
   handleFormChange,
   getFieldState,
+  onClose,
 }) => {
   const { birthDate } = formState;
 
   return (
     <>
+      {onClose && <Image src="/icons/editClose.svg" alt="closeIcon" />}
       <TextField
         name="birthDate"
         placeholder="생년월일"
