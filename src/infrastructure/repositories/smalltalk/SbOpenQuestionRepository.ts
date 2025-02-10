@@ -50,4 +50,17 @@ export class SbOpenQuestionRepository implements IOpenQuestionRepository {
     return toCamelCase(data) || [];
   }
 
+  async update(questionId: number, updatedQuestion: string): Promise<void> {
+    const client = await supabase();
+    const { error } = await client
+      .from("smalltalkSuggestOpenquestion")
+      .update({ open_question: updatedQuestion })
+      .eq("openquestion_id", questionId);
+
+    if (error) {
+      console.error("Error updating open question:", error);
+      throw new Error("Failed to update open question");
+    }
+  }
+
 }

@@ -94,18 +94,32 @@ const AdminOpenQuestion: React.FC = () => {
     setEditedValue(openQuestion);
   }, []);
 
-  const handleSaveEdit = () => {
-    if (editingId !== null) {
-      setData((prev) => {
-        const newData = prev.map((item) =>
-          item.openquestionId === editingId ? { ...item, openQuestion: editedValue } : item
-        );
-        return newData;
+  const handleSaveEdit = async () => {
+    if (editingId === null) return;
+  
+    try {
+      const response = await fetch("/api/admin/smalltalk/openquestion", {
+        method: "PATCH", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ questionId: editingId, openQuestion: editedValue }), 
       });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update question");
+      }
+  
+      alert("Question updated successfully!");
+      await fetchAllOpenQuestions(); 
       setEditingId(null);
       setEditedValue("");
+    } catch (error) {
+      console.error("Error updating question:", error);
     }
   };
+  
 
   const currentData = useMemo(
     () => data.slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE),
@@ -136,7 +150,7 @@ const AdminOpenQuestion: React.FC = () => {
       key: "edit" as const,
       render: (_value: string | number, row: OpenQuestionDto) =>
         editingId === row.openquestionId ? (
-          <Button onClick={handleSaveEdit}>수정 완료</Button>
+          <Button onClick={() => handleSaveEdit()}>수정 완료</Button>
         ) : (
           <Icon
             src="/icons/editPen.svg"

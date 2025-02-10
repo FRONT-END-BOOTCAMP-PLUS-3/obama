@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { SbOpenQuestionRepository } from "@/infrastructure/repositories/smalltalk/SbOpenQuestionRepository";
 import { CreateOpenQuestionUsecase } from "@/application/usecases/smalltalk/CreateOpenQuestionUsecase";
 import { OpenQuestionsUsecase } from "@/application/usecases/smalltalk/OpenQuestionUsecase";
+import { UpdateOpenQuestionUsecase } from "@/application/usecases/smalltalk/UpdateOpenQuestionUsecase";
 
 export async function GET(request: NextRequest) {
   try {
@@ -37,4 +38,24 @@ export async function POST(request: NextRequest) {
   }
 }
 
+export async function PATCH(request: NextRequest) {
+  try {
+    const requestData = await request.json();
+    const { questionId, openQuestion } = requestData;
+
+    if (!questionId || !openQuestion) {
+      return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
+    }
+
+    const repository = new SbOpenQuestionRepository();
+    const usecase = new UpdateOpenQuestionUsecase(repository);
+
+    await usecase.execute(questionId, openQuestion); 
+
+    return NextResponse.json({ message: "Question updated successfully" }, { status: 200 });
+  } catch (error) {
+    console.error("Error updating question:", error);
+    return NextResponse.json({ message: "Error updating question" }, { status: 500 });
+  }
+}
 
