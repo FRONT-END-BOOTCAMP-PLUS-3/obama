@@ -48,7 +48,7 @@ const DashBoard = () => {
     <>
       <DashBoardContainer>
         <TitleWrapper>
-          <Title>DashBoard</Title>
+          <Title>My page</Title>
         </TitleWrapper>
 
         <InfoSection>
