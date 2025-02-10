@@ -93,13 +93,20 @@ export default function CreatePage() {
 
         console.log("Fetched items:", data.items);
 
-        // API에서 오는 데이터가 { item_name }이라면, name으로 매핑
-        const formattedItems: Item[] = data.items.map((item: any) => ({
+        const formattedItems: Item[] = (
+          data.items as Array<{
+            id: number;
+            item_name: string;
+            description?: string;
+            category_id: number;
+            created_at: string;
+          }>
+        ).map((item) => ({
           id: item.id,
-          name: item.item_name, // ✅ item_name을 name으로 변경
+          name: item.item_name,
           description: item.description,
-          categoryId: item.category_id, // ✅ category_id를 categoryId로 변경
-          createdAt: item.created_at, // ✅ created_at을 createdAt으로 변경
+          categoryId: item.category_id,
+          createdAt: item.created_at,
         }));
 
         setItems(formattedItems);
