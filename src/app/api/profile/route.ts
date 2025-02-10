@@ -1,51 +1,24 @@
-import { NextRequest, NextResponse } from "next/server";
-import { SbUserInputRepository } from "@/infrastructure/repositories/profile/SbUserInputRepository";
-import { UserInput } from "@/domain/entities/profile/UserInput";
+import { NextResponse } from "next/server";
+import { GetProfileUsecase } from "@/application/usecases/profile/GetProfileUsecase";
+import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepository";
+// import { useAuthStore } from "@/stores/authStore"; 
 
-export async function POST(req: NextRequest) {
+export async function GET(req: Request) {
+  // ✅ 로그인한 사용자의 userId 가져오기
+  const { userId } = useAuthStore.getState();
+
+  if (!userId) {
+    return NextResponse.json({ error: "로그인이 필요합니다." }, { status: 401 });
+  }
+
   try {
-    const body = await req.json();
-    console.log("📥 Received Body:", body); // 요청 데이터 확인
+    const repository = new SbUserRepository();
+    const usecase = new GetProfileUsecase(repository);
+    const profile = await usecase.execute(userId);
 
-    const { category_id, answer, user_id } = body;
-
-    // ✅ 필수 필드 검사
-    if (!category_id || !answer || !user_id) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
-    }
-
-    // ✅ 올바른 데이터 타입 확인
-    if (
-      typeof category_id !== "number" ||
-      typeof answer !== "string" ||
-      typeof user_id !== "string"
-    ) {
-      return NextResponse.json(
-        { error: "Invalid data types" },
-        { status: 400 }
-      );
-    }
-
-    // ✅ 요청별 repository 인스턴스 생성
-    const userInputRepository = new SbUserInputRepository();
-
-    // ✅ 데이터 저장
-    const newUserInput: Omit<UserInput, "userInput_id"> = {
-      category_id,
-      answer,
-      user_id,
-    };
-
-    const result = await userInputRepository.create(newUserInput);
-    return NextResponse.json(result, { status: 201 });
+    return NextResponse.json({ profile }, { status: 200 });
   } catch (error) {
-    console.error("❌ Error in POST /api/profile:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    console.error("❌ API 요청 실패:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
