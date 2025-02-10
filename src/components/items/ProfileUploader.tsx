@@ -29,7 +29,7 @@ const ProfileUploader = ({
 
     const fileExt = file.name.split(".").pop();
     const fileName = `${Date.now()}.${fileExt}`;
-    const filePath = `profiles/${fileName}`;
+    const filePath = `profiles/${localStorage.getItem("userId")}${fileName}`;
 
     const { data, error } = await supabase.storage
       .from("profile-images") // 📌 Supabase Storage의 버킷 이름

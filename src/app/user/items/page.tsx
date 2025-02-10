@@ -147,7 +147,7 @@ export default function CreatePage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             category_id: categoryId,
-            user_id: "1d1867cd-526c-4de5-97e4-4a0c8f386f78",
+            user_id: localStorage.getItem("userId"),
             answer,
           }),
         });
