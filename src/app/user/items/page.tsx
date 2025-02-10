@@ -127,7 +127,6 @@ export default function CreatePage() {
     } else if (categoryId === 11) {
       answer = introText;
     } else if (categoryId === 12) {
-      // ✅ 업로드된 이미지 URL 저장
       answer = profileImage || "";
     } else if (items.length > 0) {
       answer = Array.from(selectedItems).join(", ");
@@ -166,6 +165,12 @@ export default function CreatePage() {
     setIntroText("");
     setTextFieldValue("");
     setProfileImage(""); // ✅ 프로필 이미지 초기화
+
+    // ✅ categoryId가 12이면 "/user"로 이동
+    if (categoryId === 12) {
+      router.push("/user");
+      return;
+    }
 
     // ✅ 다음 or 이전 카테고리 이동
     const newCategoryId =
