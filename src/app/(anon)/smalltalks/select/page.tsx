@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import LayoutContainer from "@/components/common/LayoutContainer";
 import Dropdown from "@/components/smaltalk/dropdown/Dropdown";
 import { Title, SuggestExplain, Question, ButtonWrapper } from "@/components/smaltalk/Select.Styled";
-import  Button  from "@/components/common/button/Button";
-import apiClient from "@/utils/api/apiClient";
+import Button from "@/components/common/button/Button";
+import { fetchClient } from "@/utils/api/fetchClient";
 import { SmalltalkSubjectDto } from "@/application/usecases/smalltalk/dto/SmalltalkSubjectDto";
 
 export default function SmalltalkSelect() {
@@ -17,16 +17,21 @@ export default function SmalltalkSelect() {
 
   const fetchSubjects = async () => {
     try {
-      const res = await apiClient.get("/api/smalltalks/select");
-      
-      if (res.data.subject.length > 0) {
-        setSubjects(res.data.subject); 
+      const { status, data, error } = await fetchClient<undefined, { subject: SmalltalkSubjectDto[] }>(
+        "/api/smalltalks/select",
+        { method: "GET" }
+      );
+
+      if (status === 200 && data) {
+        setSubjects(data.subject);
+      } else {
+        throw new Error(error || "Failed to fetch subjects");
       }
     } catch (err) {
-      console.error(" Failed to fetch subjects:", err);
+      console.error("Failed to fetch subjects:", err);
     }
   };
-  
+
   useEffect(() => {
     fetchSubjects();
   }, []);
@@ -36,7 +41,7 @@ export default function SmalltalkSelect() {
       setSelectedSubject(subjects[0].subjectName);
     }
   }, [subjects]);
-  
+
   const handleNavigate = () => {
     const selectedSubjectId = subjects.find((s) => s.subjectName === selectedSubject)?.subjectId;
 
@@ -44,12 +49,10 @@ export default function SmalltalkSelect() {
       router.push(`/smalltalks/${selectedSubjectId}`);
     }
   };
- 
 
   const handleDropdownToggle = (isOpen: boolean) => {
     setIsDropdownOpen(isOpen);
   };
-
 
   return (
     <LayoutContainer>
@@ -62,14 +65,15 @@ export default function SmalltalkSelect() {
       <Question>어떤 큰 주제로 대화하고 싶으신가요?</Question>
 
       <Dropdown
-        options={subjects} 
-        onSelect={(selected) => setSelectedSubject(selected)} 
+        options={subjects}
+        onSelect={(selected) => setSelectedSubject(selected)}
         selected={selectedSubject}
-        onToggle={handleDropdownToggle} />
+        onToggle={handleDropdownToggle}
+      />
 
       <ButtonWrapper $isHidden={isDropdownOpen}>
         <Button size="m" variant="contained" onClick={handleNavigate}>
-          대화주제<br/> 추천받기
+          대화주제<br /> 추천받기
         </Button>
       </ButtonWrapper>
     </LayoutContainer>

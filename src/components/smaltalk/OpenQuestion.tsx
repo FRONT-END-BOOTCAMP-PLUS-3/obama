@@ -2,11 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 import { Question, QuestionMark, LogoGreySmalltalk, ExclamationMark, LogoSmalltalk } from "@/components/smaltalk/Suggest.Styled";
-import apiClient from "@/utils/api/apiClient"; 
+import { fetchClient } from "@/utils/api/fetchClient"; 
 
 interface OpenQuestionProps {
   subjectId: number;
   refreshKey: number;  
+}
+
+interface OpenQuestionResponse {
+  questions?: { openQuestion: string }[];
 }
 
 export default function OpenQuestion({ subjectId, refreshKey }: OpenQuestionProps) {
@@ -14,10 +18,12 @@ export default function OpenQuestion({ subjectId, refreshKey }: OpenQuestionProp
 
   const fetchQuestion = async () => {
     try {
-      const response = await apiClient.get(`/api/smalltalks/${subjectId}?route=openQuestion`);
-      const data = response.data;
+      const { status, data, error } = await fetchClient<undefined, OpenQuestionResponse>(
+        `/api/smalltalks/${subjectId}`,
+        { method: "GET", queryParams: { route: "openQuestion" } }
+      );
 
-      if (data.questions.length > 0) {
+      if (status === 200 && data?.questions?.length) { 
         const randomIndex = Math.floor(Math.random() * data.questions.length);
         setQuestion(data.questions[randomIndex].openQuestion);
       } else {
