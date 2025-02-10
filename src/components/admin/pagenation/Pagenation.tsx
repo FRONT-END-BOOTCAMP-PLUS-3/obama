@@ -43,11 +43,21 @@ const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <PaginationContainer>
-      <PageButton $isActive={false} onClick={handlePrevious} disabled={currentPage === 1}>
+      <PageButton
+        $isActive={false}
+        onClick={handlePrevious}
+        disabled={currentPage === 1}
+        style={{ visibility: currentPage === 1 ? "hidden" : "visible" }} 
+      >
         &lt;
       </PageButton>
       {renderPageNumbers()}
-      <PageButton $isActive={false} onClick={handleNext} disabled={currentPage === totalPages}>
+      <PageButton
+        $isActive={false}
+        onClick={handleNext}
+        disabled={currentPage === totalPages}
+        style={{ visibility: currentPage === totalPages ? "hidden" : "visible" }} 
+      >
         &gt;
       </PageButton>
     </PaginationContainer>

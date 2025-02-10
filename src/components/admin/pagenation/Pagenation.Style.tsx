@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
 export const PaginationContainer = styled.div`
+  position: fixed; 
+  bottom: 1rem; 
+  left: 50%; 
+  transform: translateX(-50%); 
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 2rem; 
-  margin-bottom: 3rem;
 `;
 
 export const PageButton = styled.button<{ $isActive: boolean }>`
