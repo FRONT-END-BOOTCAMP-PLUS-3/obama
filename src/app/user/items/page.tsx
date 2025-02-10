@@ -18,14 +18,17 @@ import MBTISelectButton from "@/components/items/Mbtibutton";
 import { TextField } from "@/components/common/TextField";
 import IntroduceInput from "@/components/items/IntroduceInput";
 import ProfileImageUploader from "@/components/items/ProfileUploader";
+import { Item } from "@/domain/entities/item/Item";
+import { CategoryListDto } from "@/application/usecases/category/dto/CategoryListDto";
 
 export default function CreatePage() {
+  const [profileImage, setProfileImage] = useState<string>("");
   const router = useRouter();
   const searchParams = useSearchParams(); // useSearchParams를 사용
   const categoryName = searchParams.get("cn"); // 'cn' 쿼리 파라미터에서 값을 가져옵니다.
   const [categoryId, setCategoryId] = useState<number | null>(null);
 
-  const [items, setItems] = useState<any[]>([]); // update with your actual type
+  const [items, setItems] = useState<Item[]>([]); // update with your actual type
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [question, setQuestion] = useState<string>("");
   const [introText, setIntroText] = useState<string>("");
@@ -55,20 +58,19 @@ export default function CreatePage() {
     const fetchCategory = async () => {
       try {
         const response = await fetch("/api/category");
-        const data = await response.json();
+        const data: CategoryListDto = await response.json(); // DTO 적용
 
         const category = data.categories?.find(
-          (category: { category_name_en: string }) =>
-            category.category_name_en === categoryName
+          (category) => category.name === categoryName // DTO에 맞게 name 사용
         );
 
         if (category) {
-          setCategoryId(category.category_id);
-          setQuestion(category.category_question);
+          setCategoryId(category.id); // category_id -> id
+          setQuestion(category.question || "No Question available"); // category_question -> question
         } else {
           setQuestion("No Question available");
         }
-        console.log("category", category);
+        console.log("Fetched category:", category);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -84,14 +86,30 @@ export default function CreatePage() {
 
     const fetchItems = async () => {
       try {
-        console.log(`Fetching items for categoryId: ${categoryId}`); // ✅ 디버깅용 로그 추가
+        console.log(`Fetching items for categoryId: ${categoryId}`);
 
-        const response = await fetch(`/api/item?categoryId=${categoryId}`); // ✅ categoryId 전달
+        const response = await fetch(`/api/item?categoryId=${categoryId}`);
         const data = await response.json();
 
-        console.log("Fetched items:", data.items); // ✅ 응답 데이터 확인
+        console.log("Fetched items:", data.items);
 
-        setItems(data.items);
+        const formattedItems: Item[] = (
+          data.items as Array<{
+            id: number;
+            item_name: string;
+            description?: string;
+            category_id: number;
+            created_at: string;
+          }>
+        ).map((item) => ({
+          id: item.id,
+          name: item.item_name,
+          description: item.description,
+          categoryId: item.category_id,
+          createdAt: item.created_at,
+        }));
+
+        setItems(formattedItems);
       } catch (error) {
         console.error("Error fetching items:", error);
       }
@@ -103,9 +121,63 @@ export default function CreatePage() {
   const handleNavigation = async (direction: "next" | "previous") => {
     if (!categoryId) return;
 
+    let answer = "";
+    if (categoryId === 4) {
+      answer = selectedType || "";
+    } else if (categoryId === 11) {
+      answer = introText;
+    } else if (categoryId === 12) {
+      answer = profileImage || "";
+    } else if (items.length > 0) {
+      answer = Array.from(selectedItems).join(", ");
+    } else {
+      answer = textFieldValue;
+    }
+
+    // ✅ "다음" 버튼 클릭 시에만 유효성 검사 실행
+    if (direction === "next" && !answer) {
+      alert("답변을 입력하거나 선택해주세요!");
+      return;
+    }
+
+    if (direction === "next") {
+      try {
+        const response = await fetch("/api/profile", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            category_id: categoryId,
+            user_id: "1d1867cd-526c-4de5-97e4-4a0c8f386f78",
+            answer,
+          }),
+        });
+
+        const result = await response.json();
+        console.log("📥 저장 결과:", result);
+
+        if (!response.ok) throw new Error(result.error || "데이터 저장 실패");
+      } catch (error) {
+        console.error("❌ 저장 중 오류 발생:", error);
+        return;
+      }
+    }
+
+    // ✅ 상태 초기화
+    setSelectedItems(new Set());
+    setSelectedType(null);
+    setIntroText("");
+    setTextFieldValue("");
+    setProfileImage(""); // ✅ 프로필 이미지 초기화
+
+    // ✅ categoryId가 12이면 "/user"로 이동
+    if (categoryId === 12) {
+      router.push("/user");
+      return;
+    }
+
+    // ✅ 다음 or 이전 카테고리 이동
     const newCategoryId =
       direction === "next" ? categoryId + 1 : categoryId - 1;
-
     const query = new URLSearchParams({
       startIndex: "0",
       limit: "12",
@@ -114,12 +186,12 @@ export default function CreatePage() {
     try {
       const response = await fetch(`/api/category?${query}`);
       const data = await response.json();
-      const newCategory = data.categories?.find(
-        (category) => category.category_id === newCategoryId
-      );
 
+      const newCategory = data.categories?.find(
+        (cat) => cat.id === newCategoryId
+      );
       if (newCategory) {
-        router.push(`/user/items?cn=${newCategory.category_name_en}`);
+        router.push(`/user/items?cn=${newCategory.name}`);
       } else {
         console.error("Category not found");
       }
@@ -178,16 +250,19 @@ export default function CreatePage() {
                 key={index}
                 size="s"
                 variant={
-                  selectedItems.has(item.item_name || "") ? "contained" : "line"
+                  selectedItems.has(item.name || "") ? "contained" : "line"
                 }
-                onClick={() => handleToggle(item.item_name || "")}
+                onClick={() => handleToggle(item.name || "")}
               >
-                {item.item_name || "No name available"}
+                {item.name || "No name available"}
               </Button>
             ))}
           </ButtonList>
         ) : categoryId === 12 ? (
-          <ProfileImageUploader></ProfileImageUploader>
+          <ProfileImageUploader
+            image={profileImage}
+            setImage={setProfileImage}
+          />
         ) : (
           <TextFieldSection>
             <TextField

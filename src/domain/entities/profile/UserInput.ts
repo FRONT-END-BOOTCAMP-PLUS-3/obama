@@ -4,4 +4,3 @@ export interface UserInput {
     answer: string;
     userId: string;
   }
-  

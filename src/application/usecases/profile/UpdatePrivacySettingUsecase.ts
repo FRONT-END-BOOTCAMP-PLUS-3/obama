@@ -3,11 +3,11 @@ import { IsPublicDTO } from "@/application/usecases/profile/dtos/IsPublicDTO";
 
 export class UpdatePrivacySettingUsecase {
   constructor(
-    private readonly IIsPublicRepository: IIsPublicRepository 
+    private readonly isPublicRepository: IIsPublicRepository 
   ) {}
 
   // 개인정보 설정 업데이트
   async execute(userId: string, settings: IsPublicDTO[]): Promise<void> {
-    await this.IIsPublicRepository.update(userId, settings);
+    await this.isPublicRepository.update(userId, settings);
   }
 }
