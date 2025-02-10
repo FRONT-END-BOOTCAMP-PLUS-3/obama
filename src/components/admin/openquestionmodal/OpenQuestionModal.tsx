@@ -7,7 +7,7 @@ import {
   InputLabel,
   InputFieldContainer,
   ButtonContainer,
-} from "@/components/admin/smalltalkmodal/SmalltalkModal.Style";
+} from "@/components/admin/balancegamemodal/BalancegameModal.Style";
 import { TextField } from "@/components/common/textField";
 import { Button } from "@/components/common/button";
 
@@ -16,29 +16,29 @@ interface ModalProps {
   onClose: () => void;
 }
 
-const SmalltalkModal: React.FC<ModalProps> = ({ $isOpen, onClose }) => {
+const OpenQuestionModal: React.FC<ModalProps> = ({ $isOpen, onClose }) => {
   return (
     <Overlay $isOpen={$isOpen}>
       <ModalContainer>
         <CloseButton onClick={onClose}>&times;</CloseButton>
-        <Header>대화추첨: 밸런스게임 생성</Header>
+        <Header>대화 주제 추천 생성</Header>
         <form>
+          <InputFieldContainer>
+            <InputLabel htmlFor="subjectId">스몰토크 주제 ID</InputLabel>
+            <TextField
+              name="subjectId"
+              type="text"
+              placeholder=""
+              size="S"
+            />
+          </InputFieldContainer>
+
           <InputFieldContainer>
             <InputLabel htmlFor="question">질문</InputLabel>
             <TextField
               name="question"
               type="text"
-              placeholder="밸런스게임 질문을 입력해주세요"
-              size="XXL"
-            />
-          </InputFieldContainer>
-
-          <InputFieldContainer>
-            <InputLabel htmlFor="answer">답변</InputLabel>
-            <TextField
-              name="answer"
-              type="text"
-              placeholder="밸런스게임 답변을 입력해주세요"
+              placeholder="스몰토크 질문을 입력해주세요"
               size="XXL"
             />
           </InputFieldContainer>
@@ -51,4 +51,4 @@ const SmalltalkModal: React.FC<ModalProps> = ({ $isOpen, onClose }) => {
   );
 };
 
-export default SmalltalkModal;
+export default OpenQuestionModal;
