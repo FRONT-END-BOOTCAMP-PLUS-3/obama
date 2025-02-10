@@ -63,4 +63,17 @@ export class SbOpenQuestionRepository implements IOpenQuestionRepository {
     }
   }
 
+  async delete(questionId: number): Promise<void> {
+    const client = await supabase();
+    const { error } = await client
+    .from("smalltalkSuggestOpenquestion")
+    .delete()
+    .eq("openquestion_id", questionId);
+  
+    if (error) {
+      console.error("Error deleting open question:", error);
+      throw new Error("Failed to delete open question");
+      }
+  }
+
 }

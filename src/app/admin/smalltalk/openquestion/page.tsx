@@ -23,8 +23,13 @@ const AdminOpenQuestion: React.FC = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editedValue, setEditedValue] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
-
+  
   const totalPages = Math.ceil(data.length / ROWS_PER_PAGE);
+  
+  const currentData = useMemo(
+    () => data.slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE),
+    [data, currentPage]
+  );
 
   const fetchAllOpenQuestions = async () => {
     setLoading(true);
@@ -68,35 +73,54 @@ const AdminOpenQuestion: React.FC = () => {
   };
   
 
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
-
+  
   const handleDeleteClick = useCallback((id: number) => {
     setSelectedId(id);
     setIsDeleteModalOpen(true);
   }, []);
-
-  const handleDeleteConfirm = useCallback(() => {
-    if (selectedId !== null) {
-      setData((prev) => prev.filter((item) => item.openquestionId !== selectedId));
-      setIsDeleteModalOpen(false);
-      setSelectedId(null);
-    }
-  }, [selectedId]);
-
+  
   const handleDeleteCancel = () => {
     setIsDeleteModalOpen(false);
     setSelectedId(null);
   };
-
+  
+  const handleDeleteConfirm = async () => {
+    if (selectedId === null) return;
+    
+    try {
+      const response = await fetch("/api/admin/smalltalk/openquestion", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ questionId: selectedId }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to delete question");
+      }
+      
+      alert("Question deleted successfully!");
+      await fetchAllOpenQuestions(); 
+      setIsDeleteModalOpen(false);
+      setSelectedId(null);
+    } catch (error) {
+      console.error("Error deleting question:", error);
+    }
+  };
+  
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+  
   const handleEdit = useCallback((id: number, openQuestion: string) => {
     setEditingId(id);
     setEditedValue(openQuestion);
   }, []);
-
+  
   const handleSaveEdit = async () => {
     if (editingId === null) return;
-  
+    
     try {
       const response = await fetch("/api/admin/smalltalk/openquestion", {
         method: "PATCH", 
@@ -120,11 +144,6 @@ const AdminOpenQuestion: React.FC = () => {
     }
   };
   
-
-  const currentData = useMemo(
-    () => data.slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE),
-    [data, currentPage]
-  );
 
   const columnsForEditTable = [
     { header: "Subject ID", key: "subjectId" as const },
