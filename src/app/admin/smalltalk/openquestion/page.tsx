@@ -1,29 +1,30 @@
 "use client";
-import React, { useCallback, useState, useEffect, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Pagination from "@/components/admin/pagenation/Pagenation";
 import SearchBar from "@/components/admin/searchbar/Searchbar";
 import AdminLayoutContainer from "@/components/admin/AdminLayoutContainer";
 import OpenQuestionModal from "@/components/admin/openquestionmodal/OpenQuestionModal";
 import ConfirmDeleteModal from "@/components/admin/deletemodal/ConfirmDeleteModal";
-import TextField from "@/components/common/textField/TextField";
-import { Button } from "@/components/common/button";
-import { Icon } from "@/components/admin/AdminOpenQuestion.Style";
 import AdminTable from "@/components/admin/table/Table";
 import { AddButton } from "@/components/admin/AdminOpenQuestion.Style";
-import { OpenQuestionDto } from "@/application/usecases/smalltalk/dto/OpenQuestion";
+import { UseOpenQuestion } from "@/components/admin/hook/UseOpenQuestion";
+import { UseModal } from "@/components/admin/hook/UseModals";
+import { EditOpenQuestionTable } from "@/components/admin/EditOpenQuestionTable";
 
 const ROWS_PER_PAGE = 10;
 
 const AdminOpenQuestion: React.FC = () => {
-  const [data, setData] = useState<OpenQuestionDto[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { data, loading, fetchAllOpenQuestions, createQuestion, updateQuestion, deleteQuestion } =
+    UseOpenQuestion(); 
+
+  const createModal = UseModal();
+  const deleteModal = UseModal();
+
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editedValue, setEditedValue] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const totalPages = Math.ceil(data.length / ROWS_PER_PAGE);
   
   const currentData = useMemo(
@@ -31,165 +32,43 @@ const AdminOpenQuestion: React.FC = () => {
     [data, currentPage]
   );
 
-  const fetchAllOpenQuestions = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch("/api/admin/smalltalk/openquestion");
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const result = await response.json();
-      setData(result.questions);
-    } catch (error) {
-      console.error("Error fetching open questions:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     fetchAllOpenQuestions();
-  }, []);
+  }, [fetchAllOpenQuestions]);
 
-  const handleAddQuestion = async (subjectId: number, openQuestion: string) => {
-    try {
-      const response = await fetch("/api/admin/smalltalk/openquestion", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ subjectId, openQuestion }), 
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to add question");
-      }
-      alert("Question added successfully!");
-      await fetchAllOpenQuestions();
-    } catch (error) {
-      console.error(" Error adding question:", error);
-    }
-  };
-  
-
-  
-  const handleDeleteClick = useCallback((id: number) => {
-    setSelectedId(id);
-    setIsDeleteModalOpen(true);
-  }, []);
-  
-  const handleDeleteCancel = () => {
-    setIsDeleteModalOpen(false);
-    setSelectedId(null);
-  };
-  
-  const handleDeleteConfirm = async () => {
-    if (selectedId === null) return;
-    
-    try {
-      const response = await fetch("/api/admin/smalltalk/openquestion", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ questionId: selectedId }),
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to delete question");
-      }
-      
-      alert("Question deleted successfully!");
-      await fetchAllOpenQuestions(); 
-      setIsDeleteModalOpen(false);
-      setSelectedId(null);
-    } catch (error) {
-      console.error("Error deleting question:", error);
-    }
-  };
-  
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
-  
-  const handleEdit = useCallback((id: number, openQuestion: string) => {
+  const handleEdit = (id: number, openQuestion: string) => {
     setEditingId(id);
     setEditedValue(openQuestion);
-  }, []);
-  
+  };
+
   const handleSaveEdit = async () => {
-    if (editingId === null) return;
-    
-    try {
-      const response = await fetch("/api/admin/smalltalk/openquestion", {
-        method: "PATCH", 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ questionId: editingId, openQuestion: editedValue }), 
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to update question");
-      }
-  
-      alert("Question updated successfully!");
-      await fetchAllOpenQuestions(); 
+    if (editingId !== null) {
+      await updateQuestion(editingId, editedValue);
       setEditingId(null);
       setEditedValue("");
-    } catch (error) {
-      console.error("Error updating question:", error);
     }
   };
-  
 
-  const columnsForEditTable = [
-    { header: "Subject ID", key: "subjectId" as const },
-    {
-      header: "주제명",
-      key: "openQuestion" as const,
-      render: (_value: string | number, row: OpenQuestionDto) =>
-        editingId === row.openquestionId ? (
-          <TextField
-            name={`edit-${row.openquestionId}`}
-            value={editedValue}
-            onChange={(_, value) => setEditedValue(value)}
-            placeholder="주제명을 입력하세요"
-            autoFocus
-            size="XXL"
-          />
-        ) : (
-          row.openQuestion
-        ),
+  const handleDeleteConfirm = async () => {
+    if (selectedId !== null) {
+      await deleteQuestion(selectedId);
+      deleteModal.closeModal();
+      setSelectedId(null);
+    }
+  };
+
+
+  const columnsForEditTable = EditOpenQuestionTable({
+    editingId,
+    editedValue,
+    setEditedValue,
+    handleSaveEdit,
+    handleEdit,
+    handleDeleteClick: (id: number) => {
+      setSelectedId(id);
+      deleteModal.openModal();
     },
-    {
-      header: "수정",
-      key: "edit" as const,
-      render: (_value: string | number, row: OpenQuestionDto) =>
-        editingId === row.openquestionId ? (
-          <Button onClick={() => handleSaveEdit()}>수정 완료</Button>
-        ) : (
-          <Icon
-            src="/icons/editPen.svg"
-            alt="Edit"
-            onClick={() => handleEdit(row.openquestionId, row.openQuestion)}
-          />
-        ),
-    },
-    {
-      header: "삭제",
-      key: "delete" as const,
-      render: (_value: string | number, row: OpenQuestionDto) => (
-        <Icon
-          src="/icons/editTrashcan.svg"
-          alt="Delete"
-          onClick={() => handleDeleteClick(row.openquestionId)}
-        />
-      ),
-    },
-  ];
+  });
   
   if (loading) {
     return <div>Loading...</div>;
@@ -199,21 +78,17 @@ const AdminOpenQuestion: React.FC = () => {
     <AdminLayoutContainer>
       <SearchBar placeholder="subjectId, 주제명을 입력해주세요." />
       <AdminTable data={currentData} columns={columnsForEditTable} />
-      <Pagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
-      <AddButton onClick={handleOpenModal}>+</AddButton>
+      <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage} />
+      <AddButton onClick={createModal.openModal}>+</AddButton>
       <OpenQuestionModal
-        $isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSubmit={handleAddQuestion} 
+        $isOpen={createModal.isOpen}
+        onClose={createModal.closeModal}
+        onSubmit={createQuestion}
       />
       <ConfirmDeleteModal
-        $isOpen={isDeleteModalOpen}
+        $isOpen={deleteModal.isOpen}
         onConfirm={handleDeleteConfirm}
-        onCancel={handleDeleteCancel}
+        onCancel={deleteModal.closeModal}
       />
     </AdminLayoutContainer>
   );
