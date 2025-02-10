@@ -5,12 +5,15 @@ import {
   QrcodeCreateContainer,
   QrTitle,
   QrTitleSection,
+  QrcodeSection,
 } from "@/components/qrcode/QrcodePage.Styeld";
 import * as S from "@/components/items/ProfileUploader.Styled";
 import { createClient } from "@supabase/supabase-js";
 import { clientConfig } from "@/config/clientEnv";
+import { useQRCode } from "next-qrcode";
 
 const QrCreatePage: React.FC = () => {
+  const { Canvas } = useQRCode();
   const [imageUrl, setImageUrl] = useState<string>("");
   const supabase = createClient(
     clientConfig.NEXT_PUBLIC_SUPABASE_URL,
@@ -39,8 +42,23 @@ const QrCreatePage: React.FC = () => {
         />
       </S.ImageWrapper>
       <QrTitleSection>
-        <QrTitle>QR코드를 생성해주세요.</QrTitle>
+        <QrTitle>QR코드를 스캔해주세요.</QrTitle>
       </QrTitleSection>
+      <QrcodeSection>
+        <Canvas
+          text={"https://github.com/bunlong/next-qrcode"}
+          options={{
+            errorCorrectionLevel: "M",
+            margin: 3,
+            scale: 4,
+            width: 200,
+            color: {
+              dark: "#000000",
+              light: "#ffffff",
+            },
+          }}
+        />
+      </QrcodeSection>
     </QrcodeCreateContainer>
   );
 };

@@ -12,11 +12,16 @@ export const QrcodeCreateContainer = styled.div`
 `;
 
 export const QrTitle = styled.h4`
-  margin-bottom: 6.56rem;
   text-align: center;
+  color: var(--primary-color);
 `;
 
 export const QrTitleSection = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const QrcodeSection = styled.div`
   display: flex;
   justify-content: center;
 `;
