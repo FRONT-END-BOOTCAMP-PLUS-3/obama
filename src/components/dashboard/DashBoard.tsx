@@ -12,7 +12,16 @@ import InfoItem from "@/components/dashboard/InfoItem";
 import AccountSection from "./AccountSection";
 import { useEffect, useState } from "react";
 import { defaultUser } from "@/mock/mockData";
+
 // import useAuthStore from "@/store/authStore";
+
+interface UserData {
+  name: string;
+  email: string;
+  birthDate: string;
+  phone: string;
+  password: string;
+}
 
 const DashBoard = () => {
   // Data를 요청해서 UserData 바인딩 작업
@@ -20,7 +29,7 @@ const DashBoard = () => {
   //     const { userId } = useAuthStore.getState();
   // }, []);
 
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<UserData>({
     name: "",
     email: "",
     birthDate: "",
@@ -28,11 +37,12 @@ const DashBoard = () => {
     password: "",
   });
 
+  // mockData에서 사용자 데이터 불러오기 예시
   useEffect(() => {
-    setUser(defaultUser);
+    const { name, email, password, birthDate, phone } = defaultUser;
+    const userData = { name, email, password, birthDate, phone };
+    setUser(userData);
   }, []);
-
-  console.log(user);
 
   return (
     <>
@@ -42,11 +52,14 @@ const DashBoard = () => {
         </TitleWrapper>
 
         <InfoSection>
-          <InfoItem title={"email"} text={user.email} />
-          <InfoItem title={"이름"} text={user.name} />
-          <InfoItem title={"생년월일"} text={user.birthDate} />
-          <InfoItem title={"전화번호"} text={user.phone} />
-          <InfoItem title={"비밀번호"} text={user.password} />
+          {(Object.keys(user) as (keyof typeof user)[]).map((field) => (
+            <InfoItem
+              key={field}
+              field={field}
+              text={user[field]}
+            />
+          ))}
+
         </InfoSection>
 
         <AccountSection />

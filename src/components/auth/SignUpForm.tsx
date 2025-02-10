@@ -2,12 +2,7 @@
 
 import { useSignUpForm } from "./useSignUpForm";
 import { SignUpWrapper, Title } from "@/components/auth/SignUp.Styled";
-import EmailSection from "./signup/EmailSection";
-import PasswordSection from "./signup/PasswordSection";
-import BirthDateSection from "./signup/BirthDateSection";
-import NameSection from "./signup/NameSection";
-import PhoneSection from "./signup/PhoneSection";
-import SubmitSection from "./signup/SubmitSection";
+import { BirthDateSection, EmailSection, NameSection, PasswordSection, PhoneSection, SubmitSection } from "@/components/auth/signup";
 
 const SignUpForm: React.FC = () => {
   const signUpProps = useSignUpForm();
@@ -21,7 +16,6 @@ const SignUpForm: React.FC = () => {
       <BirthDateSection {...signUpProps} />
       <NameSection {...signUpProps} />
       <PhoneSection {...signUpProps} />
-
       <SubmitSection {...signUpProps} />
     </SignUpWrapper>
   );
