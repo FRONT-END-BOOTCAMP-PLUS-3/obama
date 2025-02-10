@@ -23,12 +23,19 @@ export const SignUpWrapper = styled.form`
 export const SectionEmailLayer = styled.div`
   display: flex;
   width: 100%;
+  max-width: 20rem;
   flex-direction: row;
   flex-wrap:wrap;
   align-items: center;
   justify-content: space-between;
 
 `;
+
+export const VerifyCodeLayer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+`
 
 export const VerifyCodeButtonLayer = styled.div`
   display: flex;
