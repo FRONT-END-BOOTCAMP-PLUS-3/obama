@@ -134,29 +134,32 @@ export default function CreatePage() {
       answer = textFieldValue;
     }
 
-    if (!answer) {
+    // ✅ "다음" 버튼 클릭 시에만 유효성 검사 실행
+    if (direction === "next" && !answer) {
       alert("답변을 입력하거나 선택해주세요!");
       return;
     }
 
-    try {
-      const response = await fetch("/api/profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          category_id: categoryId,
-          user_id: "1d1867cd-526c-4de5-97e4-4a0c8f386f78",
-          answer,
-        }),
-      });
+    if (direction === "next") {
+      try {
+        const response = await fetch("/api/profile", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            category_id: categoryId,
+            user_id: "1d1867cd-526c-4de5-97e4-4a0c8f386f78",
+            answer,
+          }),
+        });
 
-      const result = await response.json();
-      console.log("📥 저장 결과:", result);
+        const result = await response.json();
+        console.log("📥 저장 결과:", result);
 
-      if (!response.ok) throw new Error(result.error || "데이터 저장 실패");
-    } catch (error) {
-      console.error("❌ 저장 중 오류 발생:", error);
-      return;
+        if (!response.ok) throw new Error(result.error || "데이터 저장 실패");
+      } catch (error) {
+        console.error("❌ 저장 중 오류 발생:", error);
+        return;
+      }
     }
 
     // ✅ 상태 초기화
