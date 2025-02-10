@@ -1,8 +1,6 @@
-import { IUserInputRepository } from "@/domain/repositories/profile/IUserinputRepository";
 import supabase from "@/infrastructure/databases/supabase/server";
 import { IUserInputRepository } from "@/domain/repositories/profile/IUserinputRepository";
 import { UserInput } from "@/domain/entities/profile/UserInput";
-import { toSnakeCase } from "@/utils/convert/convertToCase";
 
 export class SbUserInputRepository implements IUserInputRepository {
   async findAllByUserId(user_id: string): Promise<UserInput[]> {
