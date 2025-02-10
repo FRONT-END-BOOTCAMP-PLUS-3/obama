@@ -1,28 +1,17 @@
 import TextField from "@/components/common/textField/TextField";
 import { SectionPasswordLayer } from "@/components/auth/SignUp.Styled";
 import { SignUpProps } from "@/types/auth";
-import Image from "next/image";
 
-interface PasswordSectionProps
-  extends Pick<
+const PasswordSection: React.FC<
+  Pick<
     SignUpProps,
     "formState" | "errors" | "handleFormChange" | "getFieldState"
-  > {
-  onClose?: () => void; // 선택적 prop
-}
-
-const PasswordSection: React.FC<PasswordSectionProps> = ({
-  formState,
-  errors,
-  handleFormChange,
-  getFieldState,
-  onClose,
-}) => {
+  >
+> = ({ formState, errors, handleFormChange, getFieldState }) => {
   const { password, passwordConfirm } = formState;
 
   return (
     <>
-      {onClose && <Image src="/icons/editClose.svg" alt="closeIcon" width={24} height={24} />  }
       <SectionPasswordLayer>
         <TextField
           name="password"

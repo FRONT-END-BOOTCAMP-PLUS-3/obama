@@ -15,9 +15,6 @@ export const InfoLayer = styled.div`
   height: fit-content;
   align-items: center;
   justify-content: space-between;
- 
- 
- 
 `;
 
 export const InfoTitle = styled.h6`
@@ -48,8 +45,10 @@ export const SelectedSectionLayer = styled.div`
   margin-top: 20px;
   align-items: center;
   justify-content: center;
+  width: 100%;
 
 `;
+
 export const SubjectLayer = styled.div`
   display: flex;
   flex-direction:column;
