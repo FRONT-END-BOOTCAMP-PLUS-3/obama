@@ -46,6 +46,28 @@ const AdminOpenQuestion: React.FC = () => {
     fetchAllOpenQuestions();
   }, []);
 
+  const handleAddQuestion = async (subjectId: number, openQuestion: string) => {
+    try {
+      const response = await fetch("/api/admin/smalltalk/openquestion", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ subjectId, openQuestion }), 
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to add question");
+      }
+      alert("Question added successfully!");
+      await fetchAllOpenQuestions();
+    } catch (error) {
+      console.error(" Error adding question:", error);
+    }
+  };
+  
+
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
@@ -91,8 +113,7 @@ const AdminOpenQuestion: React.FC = () => {
   );
 
   const columnsForEditTable = [
-    { header: "ID", key: "openquestionId" as const }, 
-    { header: "Subject ID", key: "subjectId" as const }, 
+    { header: "Subject ID", key: "subjectId" as const },
     {
       header: "주제명",
       key: "openQuestion" as const,
@@ -136,14 +157,14 @@ const AdminOpenQuestion: React.FC = () => {
       ),
     },
   ];
-
+  
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
     <AdminLayoutContainer>
-      <SearchBar placeholder="subjectId, 질문명을 입력해주세요." />
+      <SearchBar placeholder="subjectId, 주제명을 입력해주세요." />
       <AdminTable data={currentData} columns={columnsForEditTable} />
       <Pagination
         totalPages={totalPages}
@@ -151,7 +172,11 @@ const AdminOpenQuestion: React.FC = () => {
         onPageChange={setCurrentPage}
       />
       <AddButton onClick={handleOpenModal}>+</AddButton>
-      <OpenQuestionModal $isOpen={isModalOpen} onClose={handleCloseModal} />
+      <OpenQuestionModal
+        $isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleAddQuestion} 
+      />
       <ConfirmDeleteModal
         $isOpen={isDeleteModalOpen}
         onConfirm={handleDeleteConfirm}
