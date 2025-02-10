@@ -22,6 +22,7 @@ import { Item } from "@/domain/entities/item/Item";
 import { CategoryListDto } from "@/application/usecases/category/dto/CategoryListDto";
 
 export default function CreatePage() {
+  const [profileImage, setProfileImage] = useState<string>("");
   const router = useRouter();
   const searchParams = useSearchParams(); // useSearchParams를 사용
   const categoryName = searchParams.get("cn"); // 'cn' 쿼리 파라미터에서 값을 가져옵니다.
@@ -119,7 +120,8 @@ export default function CreatePage() {
     } else if (categoryId === 11) {
       answer = introText;
     } else if (categoryId === 12) {
-      answer = "Uploaded Image";
+      // ✅ 업로드된 이미지 URL 저장
+      answer = profileImage || "";
     } else if (items.length > 0) {
       answer = Array.from(selectedItems).join(", ");
     } else {
@@ -156,6 +158,7 @@ export default function CreatePage() {
     setSelectedType(null);
     setIntroText("");
     setTextFieldValue("");
+    setProfileImage(""); // ✅ 프로필 이미지 초기화
 
     // ✅ 다음 or 이전 카테고리 이동
     const newCategoryId =
@@ -241,7 +244,10 @@ export default function CreatePage() {
             ))}
           </ButtonList>
         ) : categoryId === 12 ? (
-          <ProfileImageUploader></ProfileImageUploader>
+          <ProfileImageUploader
+            image={profileImage}
+            setImage={setProfileImage}
+          />
         ) : (
           <TextFieldSection>
             <TextField

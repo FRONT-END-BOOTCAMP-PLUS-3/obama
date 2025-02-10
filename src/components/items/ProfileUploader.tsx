@@ -1,9 +1,14 @@
 "use client";
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import * as S from "@/components/items/ProfileUploader.Styled";
 
-const ProfileUploader = () => {
-  const [image, setImage] = useState("/icons/profilePicture.svg");
+const ProfileUploader = ({
+  image,
+  setImage,
+}: {
+  image: string;
+  setImage: (url: string) => void;
+}) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageClick = () => {
@@ -21,7 +26,10 @@ const ProfileUploader = () => {
   return (
     <S.Container onClick={handleImageClick}>
       <S.ImageWrapper>
-        <S.ProfileImage src={image} alt="Profile" />
+        <S.ProfileImage
+          src={image || "/icons/profilePicture.svg"}
+          alt="Profile"
+        />
       </S.ImageWrapper>
       <S.ProfilePlusIcon src="/icons/profilePlus.svg" alt="Add Profile" />
       <input
