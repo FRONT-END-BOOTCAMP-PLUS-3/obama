@@ -1,33 +1,24 @@
 import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
-import { ISNSRepository } from "@/domain/repositories/profile/ISNSRepository";
 import { ProfileHeaderDTO } from "@/application/usecases/profile/dtos/ProfileHeaderDTO";
 
 export class ProfileHeaderUsecase {
-  constructor(
-    private userRepository: IUserRepository,
-    private SbSNSRepository: ISNSRepository
-  ) {}
+  constructor(private userRepository: IUserRepository) {}
 
   async execute(userId: string): Promise<ProfileHeaderDTO> {
-    // 1. 유저 정보 가져오기
-    const user = await this.userRepository.findByEmail(userId);
-    if (!user) throw new Error("User not found");
+    // 1. UUID 기반으로 유저 정보 가져오기
+    const userData = await this.userRepository.findUserById(userId);
+    if (!userData) throw new Error("User not found");
 
-    // 2. SNS 정보 가져오기
-    const snsData = await this.SbSNSRepository.findAllByUserId(userId);
+    const { user } = userData; // password 제외된 유저 정보만 추출
 
     // 3. DTO 형태로 변환 후 반환
     return {
       user: {
-        user_id: user.user_id,
-        name: user.name,
-        birth_date: user.birth_date,
+        userId: user.userId,  // user.userId로 접근
+        name: user.name,      // user.name으로 접근
+        birthDate: user.birthDate,
         phone: user.phone,
       },
-      snsInformation: snsData.map((sns) => ({
-        SNS_Type: sns.SNS_Type,
-        SNS_id: sns.SNS_id,
-      })),
     };
   }
 }
