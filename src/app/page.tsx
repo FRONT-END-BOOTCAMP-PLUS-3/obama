@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   TextContainer,
   SubTitleText,
@@ -9,9 +10,31 @@ import {
   Title,
   ButtonWrapper,
 } from "./Home.Styled";
-import Link from "next/link";
-import  Button  from "@/components/common/button/Button";
+import Button from "@/components/common/button/Button";
+import { autoLogin } from "@/utils/auth/autoLogin";
+import useAuthStore from "@/store/authStore";
+import { useRouter } from "next/navigation";
 const Home = () => {
+  const { isAuthenticated, isAdmin } = useAuthStore();
+  const [routerAddress, setRouterAddress] = useState<string>("/login");
+
+  const router = useRouter();
+  
+  useEffect(() => {
+    autoLogin();
+
+    if (!isAuthenticated) {
+      setRouterAddress("/login");
+      return ;
+    } else {
+      setRouterAddress(isAdmin ? "/admin": "/profile");
+    }
+  }, [isAuthenticated, isAdmin]);
+
+  const handleClickStart = () => {
+    router.push(routerAddress);
+  };
+
   return (
     <>
       <TextContainer>
@@ -25,13 +48,11 @@ const Home = () => {
         <img src="/Images/logo.svg" alt="로고" />
       </IconContainer>
       <Title>소톡소톡</Title>
-      <Link href="/login">
-        <ButtonWrapper>
-          <Button size="m" variant="contained">
-            시작하기
-          </Button>
-        </ButtonWrapper>
-      </Link>
+      <ButtonWrapper>
+        <Button size="m" variant="contained" onClick={handleClickStart}>
+          시작하기
+        </Button>
+      </ButtonWrapper>
     </>
   );
 };
