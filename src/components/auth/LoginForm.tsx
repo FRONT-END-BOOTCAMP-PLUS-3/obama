@@ -1,5 +1,5 @@
 "use client";
-import  TextField  from "@/components/common/textField/TextField";
+import TextField from "@/components/common/TextField/TextField";
 import {
   InputLayer,
   LoginWrapper,
@@ -9,7 +9,7 @@ import {
 } from "@/components/auth/LoginForm.Styled";
 import Button from "@/components/common/button/Button";
 import { useLoginForm } from "@/components/auth/useLoginForm";
-import TextButton from "@/components/common/button/TextButton";
+import TextButton from "@/components/common/Button/TextButton";
 
 const LoginForm = () => {
   const {
@@ -19,7 +19,7 @@ const LoginForm = () => {
     handleLoginFormChange,
     handleLoginSubmit,
     handleClickSignUpPage,
-    } = useLoginForm();
+  } = useLoginForm();
 
   const { email, password } = formState;
 
@@ -51,10 +51,22 @@ const LoginForm = () => {
           />
         </InputLayer>
         <SectionButtonLayer>
-          <Button size="m" variant="line" type="button" onClick={handleClickSignUpPage} disabled={isLoading}>
+          <Button
+            size="m"
+            variant="line"
+            type="button"
+            onClick={handleClickSignUpPage}
+            disabled={isLoading}
+          >
             회원 가입
           </Button>
-          <Button size="m" variant="contained" type="submit" onClick={handleLoginSubmit} disabled={isLoading}>
+          <Button
+            size="m"
+            variant="contained"
+            type="submit"
+            onClick={handleLoginSubmit}
+            disabled={isLoading}
+          >
             로그인
           </Button>
           <TextButtonLayer>
