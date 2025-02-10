@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepository";
+import { toCamelCase } from "@/utils/convert/convertToCase";
 
 export async function GET(request: Request) {
   try {
-    // URL에서 쿼리 파라미터 추출
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
 
@@ -11,7 +11,6 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "Invalid userId" }, { status: 400 });
     }
 
-    // SbUserRepository를 사용해 데이터 조회
     const userRepository = new SbUserRepository();
     const result = await userRepository.findUserById(userId);
 
@@ -19,10 +18,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    // 패스워드를 제외한 유저 데이터를 반환
-    const { password, ...user } = result;
-
-    return NextResponse.json({ user }, { status: 200 });
+    // ✅ 중첩된 `user` 감싸기 제거
+    return NextResponse.json({user: toCamelCase(result.user)}, { status: 200 });
   } catch (error) {
     console.error("API Error:", error);
     return NextResponse.json(

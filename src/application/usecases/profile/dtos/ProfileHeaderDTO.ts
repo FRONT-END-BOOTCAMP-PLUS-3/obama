@@ -1,12 +1,12 @@
 export interface ProfileHeaderDTO {
-  user: {
     userId: string;
     name: string;
     birthDate: string;
     phone: string;
+    email: string;
+    profileImagePath: string;
   };
   // snsInformation: {
   //   SNSType: string;
   //   SNSId: string;
   // }[];
-}
