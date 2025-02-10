@@ -16,6 +16,21 @@ export class SbOpenQuestionRepository implements IOpenQuestionRepository {
       throw new Error("Failed to fetch open questions");
     }
 
-    return toCamelCase(data);
+    return toCamelCase(data) || [];
+  }
+
+  async findAll(): Promise<OpenQuestion[]> {
+    const client = await supabase();
+    const { data, error } = await client
+      .from("smalltalkSuggestOpenquestion")
+      .select("*")
+      .order("openquestion_id", { ascending: true });
+
+    if (error) {
+      console.error("Error fetching all open questions:", error);
+      throw new Error("Failed to fetch all open questions");
+    }
+
+    return toCamelCase(data) || [];
   }
 }

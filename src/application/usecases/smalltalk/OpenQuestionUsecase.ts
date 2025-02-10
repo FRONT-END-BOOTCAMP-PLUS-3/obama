@@ -5,6 +5,11 @@ export class OpenQuestionsUsecase {
   constructor(private readonly repository: IOpenQuestionRepository) {}
 
   async execute(subjectId: number): Promise<OpenQuestionDto[]> {
-    return await this.repository.findBySubjectId(subjectId); 
+    return await this.repository.findBySubjectId(subjectId);
+  }
+
+  async executeAll(): Promise<OpenQuestionDto[]> {
+    return await this.repository.findAll();
   }
 }
+
