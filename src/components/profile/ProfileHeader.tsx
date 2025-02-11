@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { ProfileHeaderDTO } from "@/application/usecases/profile/dtos/ProfileHeaderDTO";
 import {
   HeaderWrapper,
@@ -11,53 +10,32 @@ import {
   Label,
   Value,
 } from "./ProfileHeader.Styled";
-import useAuthStore from "@/store/authStore";
 import ProfileImgFinder from "@/components/profile/ProfileImgFinder";
 
-const ProfileHeader = () => {
-  const { userId } = useAuthStore();
-  const [profileHeader, setProfileHeader] = useState<ProfileHeaderDTO | null>(null);
+interface ProfileHeaderProps {
+  user: ProfileHeaderDTO;
+}
 
-  useEffect(() => {
-    if (!userId) return;
-
-    const fetchProfileHeader = async () => {
-      try {
-        const res = await fetch(`/api/user/profile?userId=${userId}`);
-        if (!res.ok) throw new Error("API 요청 실패");
-
-        const data = await res.json();
-        setProfileHeader(data.user);
-      } catch (error) {
-        console.error("API 요청 오류:", error);
-      }
-    };
-
-    fetchProfileHeader();
-  }, [userId]);
-
-  if (!profileHeader) return <p>Loading...</p>;
-
+const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
   return (
     <HeaderWrapper>
       <ImageWrapper>
-        <ProfileImgFinder imagePath={profileHeader.profileImagePath || ""} /> 
+        <ProfileImgFinder imagePath={user.profileImagePath || ""} />
       </ImageWrapper>
       <InfoWrapper>
-        <Name>{profileHeader.name}</Name>
-        <ProfileInfo label="생년월일" value={profileHeader.birthDate} />
-        <ProfileInfo label="전화번호" value={profileHeader.phone} />
-        <ProfileInfo label="이메일" value={profileHeader.email} />
+        <Name>{user.name}</Name>
+        <ProfileInfo label="생년월일" value={user.birthDate} />
+        <ProfileInfo label="전화번호" value={user.phone} />
+        <ProfileInfo label="이메일" value={user.email} />
       </InfoWrapper>
     </HeaderWrapper>
   );
 };
 
-// ✅ 프로필 정보 렌더링을 위한 재사용 가능한 컴포넌트
 const ProfileInfo = ({ label, value }: { label: string; value?: string }) => (
   <Info>
     <Label>{label}</Label>
-    <Value>{value || ""}</Value>
+    <Value>{value || "정보 없음"}</Value>
   </Info>
 );
 

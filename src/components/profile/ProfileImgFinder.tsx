@@ -1,19 +1,40 @@
 "use client";
 import { useEffect, useState } from "react";
 import { clientConfig } from "@/config/clientEnv";
+import { createClient } from "@supabase/supabase-js";
 
-const ProfileImgFinder = ({ imagePath }: { imagePath: string }) => {
+
+interface ProfileImgFinderProps {
+  imagePath: string;
+}
+
+const supabase = createClient(
+  clientConfig.NEXT_PUBLIC_SUPABASE_URL,
+  clientConfig.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
+const ProfileImgFinder = () => {
   const [imageUrl, setImageUrl] = useState<string>("");
 
   useEffect(() => {
-    if (!imagePath) return;
+    const fetchImageUrl = async () => {
+      const userId = localStorage.getItem("userId");
+      if (!userId) return;
 
-    // ✅ Supabase Storage 공개 URL 직접 생성
-    const publicURL = `${clientConfig.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/profile-images/${imagePath}`;
+      const imagePath = `profiles/${userId}.png`; // 동적으로 이미지 경로 생성
 
-    setImageUrl(publicURL);
-    console.log("🔗 Updated imageUrl:", publicURL); 
-  }, [imagePath]);
+      // Supabase Storage 공개 URL 가져오기
+      const { data } = supabase.storage
+        .from("profile-images")
+        .getPublicUrl(imagePath);
+
+      if (data?.publicUrl) {
+        setImageUrl(data.publicUrl);
+      }
+    };
+
+    fetchImageUrl();
+  }, []);
 
   return (
     <img

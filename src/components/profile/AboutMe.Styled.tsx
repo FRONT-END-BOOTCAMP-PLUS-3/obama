@@ -1,38 +1,35 @@
 import styled from "styled-components";
 
 export const AboutMeWrapper = styled.div`
-  min-width: 100%;
-  box-sizing: border-box;
-  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1rem;
 `;
 
 export const SectionTitle = styled.h2`
-  font-size: var(--font-size-lg);
-  text-align: center;
-  padding-top: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+  align-self: center;
 `;
 
 export const Item = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  align-items: center;
-  margin: 0.5rem;
-  gap: 1rem;
+  display: flex;
+  margin-bottom: 0.5rem;
 `;
 
-export const Label = styled.span`
-  font-size: var(--font-size-base);
+
+export const CategoryName = styled.span`
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  word-break: break-all;
+  overflow-wrap: break-word;
+`;
+
+export const Answer = styled.span`
+  font-size: 1rem;
   font-weight: bold;
-  text-align: center;
-  word-break: keep-all;
-  color: var(--black-color);
-`;
-
-export const Value = styled.span`
-  font-size: var(--font-size-base);
-  text-align: center;
-  white-space: normal;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
-  color: var(--gray-700);
+  color: #222;
+  word-break: break-all;
+  overflow-wrap: break-word;
 `;

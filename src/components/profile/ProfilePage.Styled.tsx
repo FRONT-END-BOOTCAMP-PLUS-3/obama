@@ -2,10 +2,17 @@ import styled from "styled-components";
 
 export const PageContainer = styled.div`
   min-width: 390px;
-  min-height: 844px;  
+  min-height: 844px;
   display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
+export const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 export const LoginContainer = styled.div`
   display: flex;
@@ -21,4 +28,3 @@ export const LoginMessage = styled.p`
   font-weight: bold;
   margin-bottom: 16px;
 `;
-
