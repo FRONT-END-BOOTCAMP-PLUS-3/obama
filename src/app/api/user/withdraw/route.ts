@@ -5,7 +5,7 @@ import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function Delete(req: NextRequest) {
+export async function DELETE(req: NextRequest) {
   console.log("🔥 사용자 계정 삭제 API 요청 수신");
   console.log(req);
 

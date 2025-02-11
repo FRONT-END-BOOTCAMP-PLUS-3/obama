@@ -79,13 +79,8 @@ export const useLoginForm = () => {
         // 로그인 시 UUID와 UserRole data 출력
         const { userId, role } = response.data;
         
-        // 로그인 시 LocalStorage 저장
-        localStorage.setItem("userId", userId);
-        localStorage.setItem("role", role);
-
         // 전역 상태 로그인 관리
-        setAuth(userId, role)
-        
+        setAuth(userId, role);
         // 로그인 성공시 profile routing
         router.push("/");  
       
