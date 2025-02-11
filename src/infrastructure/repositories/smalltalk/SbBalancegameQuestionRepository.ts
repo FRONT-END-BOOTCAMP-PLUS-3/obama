@@ -41,4 +41,20 @@ export class SbBalancegameQuestionRepository implements IBalancegameQuestionRepo
 
     return toCamelCase(data) || [];
   }
+
+  async updateQuestion(
+    questionId: number,
+    questionText: string
+  ): Promise<void> {
+    const client = await supabase();
+    const { error } = await client
+      .from("balancegameQuestion")
+      .update({ balancegamequestion_text: questionText })
+      .eq("balancegamequestion_id", questionId);
+
+    if (error) {
+      console.error("Error updating question: ", error);
+      throw new Error("Failed to update question: " + error.message);
+    }
+  }
 }

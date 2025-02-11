@@ -15,6 +15,7 @@ const ROWS_PER_PAGE = 10;
 
 interface RowData {
   id: number;
+  questionId: number;
   question: string;
   answerTitle: string;
   answerText: string;
@@ -33,6 +34,7 @@ const AdminBalancegame: React.FC = () => {
     answerText: string;
   }>({ question: "", answerTitle: "", answerText: "" });
 
+
   const handleFetchData = useCallback(async () => {
     const { status, data: result, error } = await fetchClient<
       undefined,
@@ -40,6 +42,7 @@ const AdminBalancegame: React.FC = () => {
         balancegamequestionId: number;
         balancegamequestionText: string;
         answers: {
+          balancegameanswerId: number;
           balancegameanswerTitle: string;
           balancegameanswerText: string;
         }[];
@@ -48,32 +51,38 @@ const AdminBalancegame: React.FC = () => {
       queryParams: { subjectId: 1 },
       method: "GET",
     });
-
+  
     if (status === 200 && result) {
-      const transformedData = result.flatMap((item) =>
-        item.answers.map((answer) => ({
-          id: item.balancegamequestionId,
-          question: item.balancegamequestionText,
-          answerTitle: answer.balancegameanswerTitle,
-          answerText: answer.balancegameanswerText,
-        }))
-      );
+      const transformedData = result
+        .flatMap((questionItem) =>
+          questionItem.answers.map((answerItem) => ({
+            id: answerItem.balancegameanswerId, 
+            questionId: questionItem.balancegamequestionId,
+            question: questionItem.balancegamequestionText,
+            answerTitle: answerItem.balancegameanswerTitle,
+            answerText: answerItem.balancegameanswerText,
+          }))
+        )
+        .sort((a, b) => a.id - b.id); 
+  
       setData(transformedData);
     } else {
       console.error("Error fetching balancegame data:", error);
     }
   }, []);
+  
 
   useEffect(() => {
     handleFetchData();
   }, [handleFetchData]);
 
-  const totalPages = Math.ceil(data.length / ROWS_PER_PAGE);
 
   const currentData = useMemo(
     () => data.slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE),
     [data, currentPage]
   );
+  
+  const totalPages = Math.ceil(data.length / ROWS_PER_PAGE);
 
   const handleDeleteClick = useCallback((id: number) => {
     setSelectedId(id);
@@ -103,17 +112,48 @@ const AdminBalancegame: React.FC = () => {
     });
   }, []);
 
-  const handleSaveEdit = () => {
+
+  const handleSaveEdit = async () => {
     if (editingId !== null) {
-      setData((prev) =>
-        prev.map((item) =>
-          item.id === editingId
-            ? { ...item, ...editedData }
-            : item
-        )
-      );
-      setEditingId(null);
-      setEditedData({ question: "", answerTitle: "", answerText: "" });
+      const currentRow = data.find((item) => item.id === editingId);
+      if (!currentRow) return;
+  
+      const { status, data: resData, error } = await fetchClient<
+        any,
+        { message?: string; error?: string }
+      >("/api/admin/smalltalk/balancegame", {
+        method: "PATCH",
+        body: {
+          questionId: currentRow.questionId,
+          questionText: editedData.question,
+          answerId: currentRow.id,
+          answerTitle: editedData.answerTitle,
+          answerText: editedData.answerText,
+        },
+      });
+  
+      if (status === 200) {
+        setData((prev) =>
+          prev
+            .map((row) =>
+              row.id === currentRow.id
+                ? {
+                    ...row,
+                    question: editedData.question,
+                    answerTitle: editedData.answerTitle,
+                    answerText: editedData.answerText,
+                  }
+                : row
+            )
+            .sort((a, b) => a.id - b.id) 
+        );
+        setEditingId(null);
+        setEditedData({ question: "", answerTitle: "", answerText: "" });
+        alert("Balancegame Update Success!")
+      } else {
+        console.error("Update failed:", error || resData?.error);
+        alert("Balancegame Update Failed!");
+      }
     }
   };
 
