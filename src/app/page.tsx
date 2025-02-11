@@ -11,7 +11,7 @@ import {
   ButtonWrapper,
 } from "./Home.Styled";
 import Button from "@/components/common/button/Button";
-import { autoLogin } from "@/utils/auth/autoLogin";
+import { useAutoLogin } from "@/utils/auth/useAutoLogin";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
 const Home = () => {
@@ -19,9 +19,10 @@ const Home = () => {
   const [routerAddress, setRouterAddress] = useState<string>("/login");
 
   const router = useRouter();
+
+  useAutoLogin();
   
   useEffect(() => {
-    autoLogin();
 
     if (!isAuthenticated) {
       setRouterAddress("/login");
