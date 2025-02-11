@@ -27,7 +27,7 @@ export class LoginUseCase {
 
       const { userId, password, role} =userWithPassword;
       // 3. 비밀번호 비교
-      const isValidPassword: boolean = await this.passwordVerificationUseCase.compare(request.password, password);
+      const isValidPassword: boolean = await this.passwordVerificationUseCase.execute(request.password, password);
       
       if (!isValidPassword) {
         console.log("invalid password")
