@@ -8,6 +8,7 @@ import { RowData, UseBalancegame } from "@/components/admin/hook/UseBalancegame"
 import { createColumns } from "@/components/admin/BalancegameTable";
 import BalancegameModal from "@/components/admin/balancegamemodal/BalancegameModal";
 import { AddButton } from "@/components/admin/AdminBalanceGame.Style";
+import SearchBar from "@/components/admin/searchbar/Searchbar";
 
 const ROWS_PER_PAGE = 10;
 
@@ -53,6 +54,7 @@ const AdminBalancegame: React.FC = () => {
 
   return (
     <AdminLayoutContainer>
+      <SearchBar placeholder="ID 또는 질문명을 입력해주세요." />
       <AdminTable data={data} columns={columns} />
       <Pagination totalPages={Math.ceil(data.length / ROWS_PER_PAGE)} currentPage={currentPage} onPageChange={setCurrentPage} />
       <ConfirmDeleteModal $isOpen={isDeleteModalOpen} onConfirm={handleDelete} onCancel={() => setIsDeleteModalOpen(false)} />
