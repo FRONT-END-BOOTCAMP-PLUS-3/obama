@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation"; // useSearchParams로 변경
-import { Button } from "@/components/common/Button";
+import Button from "@/components/common/button/Button";
 import {
   ProfileCreateContainer,
   ButtonList,
@@ -15,14 +15,21 @@ import {
   BottomSection,
 } from "@/components/items/ItemsPage.Styled";
 import MBTISelectButton from "@/components/items/Mbtibutton";
-import { TextField } from "@/components/common/TextField";
+import TextField from "@/components/common/textField/TextField";
 import IntroduceInput from "@/components/items/IntroduceInput";
 import ProfileImageUploader from "@/components/items/ProfileUploader";
 import { Item } from "@/domain/entities/item/Item";
 import { CategoryListDto } from "@/application/usecases/category/dto/CategoryListDto";
+import { createClient } from "@supabase/supabase-js";
+import { clientConfig } from "@/config/clientEnv";
+
+const supabase = createClient(
+  clientConfig.NEXT_PUBLIC_SUPABASE_URL,
+  clientConfig.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export default function CreatePage() {
-  const [profileImage, setProfileImage] = useState<string>("");
+  const [profileImage, setProfileImage] = useState<File | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams(); // useSearchParams를 사용
   const categoryName = searchParams.get("cn"); // 'cn' 쿼리 파라미터에서 값을 가져옵니다.
@@ -127,7 +134,31 @@ export default function CreatePage() {
     } else if (categoryId === 11) {
       answer = introText;
     } else if (categoryId === 12) {
-      answer = profileImage || "";
+      if (!profileImage) {
+        alert("이미지를 선택해주세요!");
+        return;
+      }
+
+      try {
+        const userId = localStorage.getItem("userId");
+        if (!userId) throw new Error("userId가 없습니다.");
+
+        const filePath = `profiles/${userId}.png`; // ✅ 확장자 고정
+
+        // ✅ Supabase에 이미지 업로드
+        await supabase.storage.from("profile-images").remove([filePath]); // 기존 파일 삭제
+
+        const { data, error } = await supabase.storage
+          .from("profile-images")
+          .upload(filePath, profileImage, { upsert: true });
+
+        if (error) throw new Error("이미지 업로드 실패");
+
+        answer = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/profile-images/${filePath}`;
+      } catch (error) {
+        console.error("❌ 이미지 업로드 실패:", error);
+        return;
+      }
     } else if (items.length > 0) {
       answer = Array.from(selectedItems).join(", ");
     } else {
@@ -147,7 +178,7 @@ export default function CreatePage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             category_id: categoryId,
-            user_id: "1d1867cd-526c-4de5-97e4-4a0c8f386f78",
+            user_id: localStorage.getItem("userId"),
             answer,
           }),
         });
@@ -167,15 +198,13 @@ export default function CreatePage() {
     setSelectedType(null);
     setIntroText("");
     setTextFieldValue("");
-    setProfileImage(""); // ✅ 프로필 이미지 초기화
+    setProfileImage(null); // ✅ 이미지 상태 초기화
 
-    // ✅ categoryId가 12이면 "/user"로 이동
     if (categoryId === 12) {
       router.push("/user");
       return;
     }
 
-    // ✅ 다음 or 이전 카테고리 이동
     const newCategoryId =
       direction === "next" ? categoryId + 1 : categoryId - 1;
     const query = new URLSearchParams({

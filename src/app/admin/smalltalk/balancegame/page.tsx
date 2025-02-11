@@ -1,46 +1,29 @@
 "use client";
-import React, { useCallback, useState, useMemo } from "react";
+import React, { useCallback, useState, useEffect, useMemo } from "react";
 import Pagination from "@/components/admin/pagenation/Pagenation";
 import SearchBar from "@/components/admin/searchbar/Searchbar";
 import AdminLayoutContainer from "@/components/admin/AdminLayoutContainer";
 import ConfirmDeleteModal from "@/components/admin/deletemodal/ConfirmDeleteModal";
 import TextField from "@/components/common/textField/TextField";
 import { Button } from "@/components/common/button";
-import { Icon } from "@/components/admin/AdminOpenQuestion.Style";
 import AdminTable from "@/components/admin/table/Table";
-import { AddButton } from "@/components/admin/AdminOpenQuestion.Style";
-import BalanceGame from "@/components/smaltalk/BalanceGame";
+import { Icon, AddButton } from "@/components/admin/AdminBalanceGame.Style";
 import BalancegameModal from "@/components/admin/balancegamemodal/BalancegameModal";
+import { fetchClient } from "@/utils/api/fetchClient";
 
 const ROWS_PER_PAGE = 10;
 
 interface RowData {
-  id: number;
+  id: number; // 인덱스 기반 ID
   question: string;
   answerTitle: string;
   answerText: string;
 }
 
 const AdminBalancegame: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false); 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data, setData] = useState<RowData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [data, setData] = useState<RowData[]>(
-    Array.from({ length: 25 }, (_, index) => ({
-      id: index + 1,
-      question: `질문 ${index + 1}`,
-      answerTitle: `답변 제목 ${index + 1}`,
-      answerText: `답변 텍스트 ${index + 1}`,
-    }))
-  );
-
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -49,6 +32,34 @@ const AdminBalancegame: React.FC = () => {
     answerTitle: string;
     answerText: string;
   }>({ question: "", answerTitle: "", answerText: "" });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { status, data: result, error } = await fetchClient<
+        undefined,
+        { balancegamequestionText: string; answers: { balancegameanswerTitle: string; balancegameanswerText: string }[] }[]
+      >("/api/admin/smalltalk/balancegame", {
+        queryParams: { subjectId: 1 },
+        method: "GET",
+      });
+
+      if (status === 200 && result) {
+        const transformedData = result.flatMap((item, index) =>
+          item.answers.map((answer) => ({
+            id: index + 1,
+            question: item.balancegamequestionText,
+            answerTitle: answer.balancegameanswerTitle,
+            answerText: answer.balancegameanswerText,
+          }))
+        );
+        setData(transformedData);
+      } else {
+        console.error("Error fetching balancegame data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const totalPages = Math.ceil(data.length / ROWS_PER_PAGE);
 
@@ -63,9 +74,11 @@ const AdminBalancegame: React.FC = () => {
   }, []);
 
   const handleDeleteConfirm = useCallback(() => {
-    setData((prev) => prev.filter((item) => item.id !== selectedId));
-    setIsDeleteModalOpen(false);
-    setSelectedId(null);
+    if (selectedId !== null) {
+      setData((prev) => prev.filter((item) => item.id !== selectedId));
+      setIsDeleteModalOpen(false);
+      setSelectedId(null);
+    }
   }, [selectedId]);
 
   const handleDeleteCancel = () => {
@@ -97,10 +110,11 @@ const AdminBalancegame: React.FC = () => {
   };
 
   const columns = [
-    { header: "ID", key: "id" as const },
+    { header: "ID", key: "id" as const, className: "id-column" },
     {
       header: "질문",
       key: "question" as const,
+      className: "question-column",
       render: (_value: string | number, row: RowData) =>
         editingId === row.id ? (
           <TextField
@@ -118,6 +132,7 @@ const AdminBalancegame: React.FC = () => {
     {
       header: "답변 제목",
       key: "answerTitle" as const,
+      className: "answer-title-column",
       render: (_value: string | number, row: RowData) =>
         editingId === row.id ? (
           <TextField
@@ -134,6 +149,7 @@ const AdminBalancegame: React.FC = () => {
     {
       header: "답변 텍스트",
       key: "answerText" as const,
+      className: "answer-text-column",
       render: (_value: string | number, row: RowData) =>
         editingId === row.id ? (
           <TextField
@@ -150,9 +166,10 @@ const AdminBalancegame: React.FC = () => {
     {
       header: "수정",
       key: "edit" as const,
+      className: "edit-column",
       render: (_value: string | number, row: RowData) =>
         editingId === row.id ? (
-          <Button onClick={handleSaveEdit}>수정완료</Button>
+          <Button onClick={handleSaveEdit}>저장</Button>
         ) : (
           <Icon
             src="/icons/editPen.svg"
@@ -164,6 +181,7 @@ const AdminBalancegame: React.FC = () => {
     {
       header: "삭제",
       key: "delete" as const,
+      className: "delete-column",
       render: (_value: string | number, row: RowData) => (
         <Icon
           src="/icons/editTrashcan.svg"
@@ -188,8 +206,8 @@ const AdminBalancegame: React.FC = () => {
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />
-      <BalancegameModal $isOpen={isModalOpen} onClose={handleCloseModal} />
-      <AddButton onClick={handleOpenModal}>+</AddButton>
+      <BalancegameModal $isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <AddButton onClick={() => setIsModalOpen(true)}>+</AddButton>
     </AdminLayoutContainer>
   );
 };

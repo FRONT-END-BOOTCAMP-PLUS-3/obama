@@ -25,9 +25,9 @@ const SignUpResult = () => {
         </Message>
 
         <Link href="/login">
-            <Button size="l" variant="contained">
-              로그인 페이지로 이동
-            </Button>
+          <Button size="l" variant="contained">
+            로그인 페이지로 이동
+          </Button>
         </Link>
       </PageWrapper>
     </>

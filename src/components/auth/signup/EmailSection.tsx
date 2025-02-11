@@ -4,8 +4,8 @@ import {
   VerifyCodeButtonLayer,
   VerifyCodeLayer,
 } from "@/components/auth/SignUp.Styled";
-import { TextField } from "@/components/common/textField";
-import { Button } from "@/components/common/button";
+import TextField from "@/components/common/textField/TextField";
+import Button from "@/components/common/button/Button";
 import { SignUpProps } from "@/types/auth";
 
 const EmailSection: React.FC<

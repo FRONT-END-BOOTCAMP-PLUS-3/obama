@@ -1,5 +1,5 @@
 import { SNSInformation } from "@/domain/entities/profile/SNSInformation";
 
 export interface ISNSRepository {
-    findAllByUserId(userId: number): Promise<SNSInformation[]>;
+    findAllByUserId(userId: string): Promise<SNSInformation[]>;
 }
