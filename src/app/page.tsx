@@ -27,7 +27,7 @@ const Home = () => {
       setRouterAddress("/login");
       return ;
     } else {
-      setRouterAddress(isAdmin ? "/admin": "/profile");
+      setRouterAddress(isAdmin ? "/admin": "user/profile");
     }
   }, [isAuthenticated, isAdmin]);
 
