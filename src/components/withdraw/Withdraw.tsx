@@ -3,24 +3,40 @@
 import { useState } from "react";
 import TextField  from "@/components/common/textField/TextField";
 import { Caption, PasswordLayer, Title, WithdrawButtonLayer, WithdrawWrapper } from "./Withdraw.Styled";
-// import useAuthStore from "@/store/authStore";
-// import { fetchClient } from "@/utils/api/fetchClient";
 import { Button } from "../common/button";
+import useAuthStore from "@/store/authStore";
+import { fetchClient } from "@/utils/api/fetchClient";
+import { useRouter } from "next/navigation";
+import { logout } from "@/utils/auth/logout";
 
 const Withdraw = () => {
-//   const { userId } = useAuthStore();
 
+  const router = useRouter();
   const [password, setPassword] = useState<string>("");
+  
 
   const handleChange = (_name: string, value: string) => {
     setPassword(value);
   };
 
   const handleClickWithdraw = async () => {
-    // 비밀번호 확인
-    // uuid 전송
-    // const response = fetchClient()
-    //
+    console.log("handleClickWithdraw");
+
+    const { userId , role} = useAuthStore.getState();
+
+    try{
+      console.log(userId, password, role);
+      const response = await fetchClient("/api/user/withdraw",{ method: "DELETE", 
+        body: {userId, password}
+      });
+      if(response.status === 200 ){
+        alert("회원삭제 되었습니다.");
+        logout();
+        router.push("/")
+      }
+    } catch (error) {
+      console.error("회원 삭제 실패", error);
+    }
   };
 
   return (
