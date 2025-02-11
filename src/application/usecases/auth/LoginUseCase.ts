@@ -1,13 +1,14 @@
 import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 import { LoginRequestDto } from "@/application/usecases/auth/dtos/LoginRequestDto";
-import { IPasswordHasherUseCase } from '@/application/usecases/auth/interfaces/IPasswordHasherUseCase';
+
 import { LoginError } from "@/application/usecases/auth/errors/LoginError";
 import { LoginResponseDto } from "@/application/usecases/auth/dtos/LoginResponseDto";
+import { IPasswordVerificationUseCase } from "@/application/usecases/auth/interfaces/IPasswordVerificationUseCase";
 
 export class LoginUseCase {
     constructor(
       private readonly userRepository: IUserRepository,
-      private readonly passwordHasherUseCase: IPasswordHasherUseCase,
+      private readonly passwordVerificationUseCase:IPasswordVerificationUseCase
     ) {}
   
     async execute(request: LoginRequestDto): Promise<LoginResponseDto> {
@@ -26,7 +27,7 @@ export class LoginUseCase {
 
       const { userId, password, role} =userWithPassword;
       // 3. 비밀번호 비교
-      const isValidPassword: boolean = await this.passwordHasherUseCase.compare(request.password, password);
+      const isValidPassword: boolean = await this.passwordVerificationUseCase.compare(request.password, password);
       
       if (!isValidPassword) {
         console.log("invalid password")
