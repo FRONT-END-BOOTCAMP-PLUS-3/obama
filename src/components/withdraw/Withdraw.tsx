@@ -13,7 +13,6 @@ const Withdraw = () => {
 
   const router = useRouter();
   const [password, setPassword] = useState<string>("");
-  
 
   const handleChange = (_name: string, value: string) => {
     setPassword(value);
@@ -36,6 +35,7 @@ const Withdraw = () => {
       }
     } catch (error) {
       console.error("회원 삭제 실패", error);
+      alert("서버 에러로 인한 회웥라퇴가 불가능합니다.")
     }
   };
 
