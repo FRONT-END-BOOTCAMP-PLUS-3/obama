@@ -25,8 +25,6 @@ export class SignUpUseCase {
       name: request.name,
       birthDate: request.birthDate,
       phone: request.phone,
-      createdAt: new Date(),
-      updatedAt: new Date(),
     });
 
   }

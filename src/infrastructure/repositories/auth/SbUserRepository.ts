@@ -1,10 +1,11 @@
 import supabase from "@/infrastructure/databases/supabase/server";
 import { User } from "@/domain/entities/user/User";
 import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
-import { toCamelCase, toSnakeCase } from "@/utils/convert/convertToCase";
+import { toCamelCase, toSnakeCase, toSnakeCaseString } from "@/utils/convert/convertToCase";
 import { UserRole } from "@/types/auth";
 
 export class SbUserRepository implements IUserRepository {
+ 
   private readonly tableName = "user";
 
   // Create
@@ -76,7 +77,7 @@ export class SbUserRepository implements IUserRepository {
     // password , user 정보 분리하기
     const { password, ...user } = data;
 
-    return { password, user };
+    return toCamelCase({ password, user });
   }
 
   // email을 통한 userId, password 가져오기
@@ -125,4 +126,24 @@ export class SbUserRepository implements IUserRepository {
 
     return true;
   }
+
+  //Update
+  async updateUserField(userId: string, field: string, newValue: string): Promise<boolean> {
+    
+    const snakeField = toSnakeCaseString(field);
+    const client = await supabase();
+    const {error} = await client
+      .from(this.tableName)
+      .update({ [snakeField]: newValue })
+      .eq("user_id", userId);
+
+      if (error) {
+        console.error("❌ 업데이트 실패:", error);
+        return false;
+    }
+    console.log("✅ 업데이트 성공");
+    return true;
+  }
 }
+
+

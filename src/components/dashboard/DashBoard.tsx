@@ -11,11 +11,13 @@ import {
 import InfoItem from "@/components/dashboard/InfoItem";
 import AccountSection from "./AccountSection";
 import { useEffect, useState } from "react";
-import { defaultUser } from "@/mock/mockData";
+import useAuthStore from "@/store/authStore";
+import { fetchClient } from "@/utils/api/fetchClient";
+import { UserResponseDto } from "@/application/usecases/auth/dtos/UserResponseDto";
 
 // import useAuthStore from "@/store/authStore";
 
-interface UserData {
+export interface UserData {
   name: string;
   email: string;
   birthDate: string;
@@ -24,7 +26,6 @@ interface UserData {
 }
 
 const DashBoard = () => {
-
   const [user, setUser] = useState<UserData>({
     name: "",
     email: "",
@@ -33,29 +34,33 @@ const DashBoard = () => {
     password: "",
   });
 
-
-  // Data를 요청해서 UserData 바인딩 작업
-  // useEffect(()=> {
-  //     const { userId } = useAuthStore.getState();
-  // }, []);
-
-  // mockData에서 사용자 데이터 불러오기 예시
   useEffect(() => {
-    
-    // api 호출 사용될 mockData
-    const { name, email, birthDate, phone } = defaultUser;  // response.data
+    const { userId } = useAuthStore.getState();
 
-    const userData = { name, email,  birthDate, phone };    // 필요한 데이터 추출
-    
-    // 비밀번호 영역 추가
-    const updateUser = {
-      ...userData,
-      password: "",
-    }
-    
-    setUser(updateUser);
+    const fetchUser = async () => {
+      const response = await fetchClient("/api/user/dashboard", {
+        method: "POST",
+        body: userId,
+      });
+
+      if (response.status !== 200) {
+        console.log(response.error);
+        alert(response.error);
+      }
+
+      const userData = response.data as UserResponseDto;
+      
+      setUser(() => ({
+        name: userData.name,
+        email: userData.email,
+        birthDate: userData.birthDate,
+        phone: userData.phone,
+        password: "************",
+      }));
+    };
+    fetchUser();
   }, []);
-
+  // mockData에서 사용자 데이터 불러오기 예시
 
   return (
     <>
@@ -65,14 +70,10 @@ const DashBoard = () => {
         </TitleWrapper>
         {/* user의 키값과 value를 전달 반복 */}
         <InfoSection>
-          {(Object.keys(user) as (keyof typeof user)[]).map((field) => (
-            <InfoItem
-              key={field}
-              field={field}
-              text={user[field]}
-            />
-          ))}
-
+          {user &&
+            (Object.keys(user) as (keyof typeof user)[]).map((field) => (
+              <InfoItem key={field} field={field} text={user[field]} />
+            ))}
         </InfoSection>
 
         <AccountSection />
