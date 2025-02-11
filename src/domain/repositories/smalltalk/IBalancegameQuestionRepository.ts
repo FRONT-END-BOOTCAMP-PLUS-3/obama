@@ -7,7 +7,7 @@ export interface IBalancegameQuestionRepository {
     balancegamequestionText: string
   ): Promise<BalancegameQuestion[]>;
 
-  // 질문 업데이트 메서드 추가
   updateQuestion(questionId: number, questionText: string): Promise<void>;
+  deleteQuestion(questionId: number): Promise<void>;
 }
 

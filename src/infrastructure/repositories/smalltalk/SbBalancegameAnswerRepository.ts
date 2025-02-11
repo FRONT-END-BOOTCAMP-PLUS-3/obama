@@ -64,4 +64,17 @@ export class SbBalancegameAnswerRepository implements IBalancegameAnswerReposito
       throw new Error("Failed to update answer: " + error.message);
     }
   }
+
+  async deleteAnswersByQuestionId(questionId: number): Promise<void> {
+    const client = await supabase();
+    const { error } = await client
+      .from("balancegameAnswer")
+      .delete()
+      .eq("balancegamequestion_id", questionId);
+
+    if (error) {
+      console.error("Error deleting answers by question ID: ", error);
+      throw new Error("Failed to delete answers: " + error.message);
+    }
+  }
 }
