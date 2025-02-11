@@ -3,7 +3,9 @@ import { SbBalancegameQuestionRepository } from "@/infrastructure/repositories/s
 import { SbBalancegameAnswerRepository } from "@/infrastructure/repositories/smalltalk/SbBalancegameAnswerRepository";
 import { BalancegameQuestionUsecase } from "@/application/usecases/smalltalk/BalancegameQuestionUsecase";
 import { BalancegameAnswerUsecase } from "@/application/usecases/smalltalk/BalancegameAnswerUsecase";
-import { CreateBalanceGameUsecase } from "@/application/usecases/smalltalk/CreateBalanceGame"; // <-- 새로 추가
+import { CreateBalanceGameUsecase } from "@/application/usecases/smalltalk/CreateBalancegameUsecase";
+import { UpdateBalancegameQuestionUsecase } from "@/application/usecases/smalltalk/UpdateBalancegameQuestionUsecase";
+import { UpdateBalancegameAnswerUsecase} from "@/application/usecases/smalltalk/UpdateBalancegameAnswersUsecase";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -76,3 +78,42 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function PATCH(request: Request) {
+  try {
+    const body = await request.json();
+    const {
+      questionId,
+      questionText,
+      answerId,
+      answerTitle,
+      answerText,
+    } = body;
+
+    const questionRepo = new SbBalancegameQuestionRepository();
+    const answerRepo = new SbBalancegameAnswerRepository();
+
+
+    const questionUpdateUsecase = new UpdateBalancegameQuestionUsecase(questionRepo);
+    const answerUpdateUsecase = new UpdateBalancegameAnswerUsecase(answerRepo);
+
+    if (questionId && typeof questionText === "string") {
+      await questionUpdateUsecase.execute(questionId, questionText);
+    }
+
+    if (
+      answerId &&
+      typeof answerTitle === "string" &&
+      typeof answerText === "string"
+    ) {
+      await answerUpdateUsecase.execute(answerId, answerTitle, answerText);
+    }
+
+    return NextResponse.json({ message: "Patch success" }, { status: 200 });
+  } catch (error: any) {
+    console.error("[PATCH balancegame] error:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+

@@ -4,13 +4,13 @@ import { BalancegameAnswer } from "@/domain/entities/smalltalk/BalancegameAnwer"
 import { IBalancegameAnswerRepository } from "@/domain/repositories/smalltalk/IBalancegameAnswerRepository";
 
 export class SbBalancegameAnswerRepository implements IBalancegameAnswerRepository {
-  // 이미 존재하는 findAnswersByQuestionId
   async findAnswersByQuestionId(questionId: number): Promise<BalancegameAnswer[]> {
     const client = await supabase();
     const { data, error } = await client
       .from("balancegameAnswer")
       .select("*")
-      .eq("balancegamequestion_id", questionId);
+      .eq("balancegamequestion_id", questionId)
+      .order("balancegameanswer_id", { ascending: true });
 
     if (error) {
       console.error("Error fetching balancegame answers: ", error);
@@ -20,7 +20,6 @@ export class SbBalancegameAnswerRepository implements IBalancegameAnswerReposito
     return toCamelCase(data) || [];
   }
 
-  // 새롭게 추가하는 createBalancegameAnswer
   async createBalancegameAnswer(
     balancegamequestionId: number,
     balancegameanswerTitle: string,
@@ -44,5 +43,25 @@ export class SbBalancegameAnswerRepository implements IBalancegameAnswerReposito
     }
 
     return toCamelCase(data) || [];
+  }
+
+  async updateAnswer(
+    answerId: number,
+    answerTitle: string,
+    answerText: string
+  ): Promise<void> {
+    const client = await supabase();
+    const { error } = await client
+      .from("balancegameAnswer")
+      .update({
+        balancegameanswer_title: answerTitle,
+        balancegameanswer_text: answerText,
+      })
+      .eq("balancegameanswer_id", answerId);
+
+    if (error) {
+      console.error("Error updating answer: ", error);
+      throw new Error("Failed to update answer: " + error.message);
+    }
   }
 }
