@@ -19,11 +19,16 @@ const QrCreatePage: React.FC = () => {
     clientConfig.NEXT_PUBLIC_SUPABASE_URL,
     clientConfig.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
+
   useEffect(() => {
     const getImageUrl = async () => {
+      const userId = localStorage.getItem("userId");
+      if (!userId) return; // userId가 없으면 실행하지 않음
+
+      const imagePath = `profiles/${userId}.png`; // 동적으로 경로 생성
       const { data } = supabase.storage
         .from("profile-images")
-        .getPublicUrl("profiles/1739164740550.jpeg");
+        .getPublicUrl(imagePath);
 
       if (data) {
         setImageUrl(data.publicUrl);
