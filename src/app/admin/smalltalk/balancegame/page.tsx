@@ -14,8 +14,8 @@ import { fetchClient } from "@/utils/api/fetchClient";
 const ROWS_PER_PAGE = 10;
 
 interface RowData {
-  id: number;
-  questionId: number;
+  id: number; 
+  questionId: number; 
   question: string;
   answerTitle: string;
   answerText: string;
@@ -51,57 +51,81 @@ const AdminBalancegame: React.FC = () => {
       queryParams: { subjectId: 1 },
       method: "GET",
     });
-  
+
     if (status === 200 && result) {
       const transformedData = result
         .flatMap((questionItem) =>
           questionItem.answers.map((answerItem) => ({
-            id: answerItem.balancegameanswerId, 
+            id: answerItem.balancegameanswerId,
             questionId: questionItem.balancegamequestionId,
             question: questionItem.balancegamequestionText,
             answerTitle: answerItem.balancegameanswerTitle,
             answerText: answerItem.balancegameanswerText,
           }))
         )
-        .sort((a, b) => a.id - b.id); 
-  
+        .sort((a, b) => a.id - b.id);
+
       setData(transformedData);
     } else {
       console.error("Error fetching balancegame data:", error);
     }
   }, []);
-  
 
   useEffect(() => {
     handleFetchData();
   }, [handleFetchData]);
 
-
   const currentData = useMemo(
-    () => data.slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE),
+    () =>
+      data.slice(
+        (currentPage - 1) * ROWS_PER_PAGE,
+        currentPage * ROWS_PER_PAGE
+      ),
     [data, currentPage]
   );
-  
+
   const totalPages = Math.ceil(data.length / ROWS_PER_PAGE);
+
 
   const handleDeleteClick = useCallback((id: number) => {
     setSelectedId(id);
     setIsDeleteModalOpen(true);
   }, []);
 
-  const handleDeleteConfirm = useCallback(() => {
+
+  const handleDeleteConfirm = useCallback(async () => {
     if (selectedId !== null) {
-      setData((prev) => prev.filter((item) => item.id !== selectedId));
-      setIsDeleteModalOpen(false);
-      setSelectedId(null);
+      const currentRow = data.find((item) => item.id === selectedId);
+      if (!currentRow) return;
+
+      const { status, data: resData, error } = await fetchClient<
+        any,
+        { message?: string; error?: string }
+      >("/api/admin/smalltalk/balancegame", {
+        method: "DELETE",
+        body: { questionId: currentRow.questionId },
+      });
+
+      if (status === 200) {
+        setData((prev) =>
+          prev.filter((item) => item.questionId !== currentRow.questionId)
+        );
+        setIsDeleteModalOpen(false);
+        setSelectedId(null);
+        alert("Balancegame Delete success!");
+      } else {
+        console.error("Delete failed:", error || resData?.error);
+        alert("Balancegame Delete failed!");
+      }
     }
-  }, [selectedId]);
+  }, [selectedId, data]);
 
   const handleDeleteCancel = () => {
     setIsDeleteModalOpen(false);
     setSelectedId(null);
   };
 
+ 
 
   const handleEdit = useCallback((id: number, row: RowData) => {
     setEditingId(id);
@@ -117,7 +141,7 @@ const AdminBalancegame: React.FC = () => {
     if (editingId !== null) {
       const currentRow = data.find((item) => item.id === editingId);
       if (!currentRow) return;
-  
+
       const { status, data: resData, error } = await fetchClient<
         any,
         { message?: string; error?: string }
@@ -131,7 +155,7 @@ const AdminBalancegame: React.FC = () => {
           answerText: editedData.answerText,
         },
       });
-  
+
       if (status === 200) {
         setData((prev) =>
           prev
@@ -145,14 +169,14 @@ const AdminBalancegame: React.FC = () => {
                   }
                 : row
             )
-            .sort((a, b) => a.id - b.id) 
+            .sort((a, b) => a.id - b.id)
         );
         setEditingId(null);
         setEditedData({ question: "", answerTitle: "", answerText: "" });
-        alert("Balancegame Update Success!")
+        alert("수정에 성공했습니다!");
       } else {
         console.error("Update failed:", error || resData?.error);
-        alert("Balancegame Update Failed!");
+        alert("수정에 실패했습니다!");
       }
     }
   };

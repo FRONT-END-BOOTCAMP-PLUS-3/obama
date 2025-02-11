@@ -57,4 +57,17 @@ export class SbBalancegameQuestionRepository implements IBalancegameQuestionRepo
       throw new Error("Failed to update question: " + error.message);
     }
   }
+
+  async deleteQuestion(questionId: number): Promise<void> {
+    const client = await supabase();
+    const { error } = await client
+      .from("balancegameQuestion")
+      .delete()
+      .eq("balancegamequestion_id", questionId);
+
+    if (error) {
+      console.error("Error deleting balancegame question: ", error);
+      throw new Error("Failed to delete balancegame question: " + error.message);
+    }
+  }
 }

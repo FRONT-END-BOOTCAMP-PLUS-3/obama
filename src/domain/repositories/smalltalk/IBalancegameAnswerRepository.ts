@@ -14,4 +14,7 @@ export interface IBalancegameAnswerRepository {
     answerTitle: string,
     answerText: string
   ): Promise<void>;
+
+
+  deleteAnswersByQuestionId(questionId: number): Promise<void>; 
 }

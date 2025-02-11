@@ -6,6 +6,7 @@ import { BalancegameAnswerUsecase } from "@/application/usecases/smalltalk/Balan
 import { CreateBalanceGameUsecase } from "@/application/usecases/smalltalk/CreateBalancegameUsecase";
 import { UpdateBalancegameQuestionUsecase } from "@/application/usecases/smalltalk/UpdateBalancegameQuestionUsecase";
 import { UpdateBalancegameAnswerUsecase} from "@/application/usecases/smalltalk/UpdateBalancegameAnswersUsecase";
+import { DeleteBalancegameUsecase } from "@/application/usecases/smalltalk/DeleteBalancegameUsecase";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -116,4 +117,24 @@ export async function PATCH(request: Request) {
   }
 }
 
+export async function DELETE(request: Request) {
+  try {
+    const { questionId } = await request.json();
+
+    if (!questionId ) {
+      return NextResponse.json({ error: "questionId or answerId is required" }, { status: 400 });
+    }
+
+    const questionRepo = new SbBalancegameQuestionRepository();
+    const answerRepo = new SbBalancegameAnswerRepository();
+    const deleteUsecase = new DeleteBalancegameUsecase(questionRepo, answerRepo);
+
+    await deleteUsecase.execute(questionId);
+
+    return NextResponse.json({ message: "Delete success" }, { status: 200 });
+  } catch (error: any) {
+    console.error("[DELETE balancegame] error:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
 
