@@ -10,7 +10,9 @@ import {
 } from "./AboutMe.Styled";
 
 interface AboutMeProps {
-  userId: string; // ✅ userId를 props로 받도록 수정
+  userId: string;
+  aboutMeData: AboutMeData[];
+
 }
 
 interface AboutMeData {
