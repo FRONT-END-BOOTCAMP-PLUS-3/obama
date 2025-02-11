@@ -1,4 +1,4 @@
-import TextField from "@/components/common/textField/TextField";
+import { TextField } from "@/components/common/textField";
 import { SignUpProps } from "@/types/auth";
 
 const NameSection: React.FC<
@@ -6,20 +6,22 @@ const NameSection: React.FC<
     SignUpProps,
     "formState" | "errors" | "handleFormChange" | "getFieldState"
   >
-> = ({ formState, errors, handleFormChange, getFieldState }) => {
+= ({ formState, errors, handleFormChange, getFieldState }) => {
   const { name } = formState;
 
   return (
-    <TextField
-      name="name"
-      placeholder="이름"
-      type="text"
-      size="L"
-      required
-      state={getFieldState(name, errors.name)}
-      value={name}
-      onChange={handleFormChange}
-    />
+    <>
+      <TextField
+        name="name"
+        placeholder="이름"
+        type="text"
+        size="L"
+        required
+        state={getFieldState(name, errors.name)}
+        value={name}
+        onChange={handleFormChange}
+      />
+    </>
   );
 };
 

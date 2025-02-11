@@ -1,13 +1,15 @@
 import {
   SectionEmailLayer,
   VerifyCodeButtonLayer,
+  VerifyCodeLayer,
 } from "@/components/auth/SignUp.Styled";
 import TextField from "@/components/common/textField/TextField";
 import Button from "@/components/common/button/Button";
 import { SignUpProps } from "@/types/auth";
+import Image from "next/image";
 
-const EmailSection: React.FC<
-  Pick<
+interface EmailSectionProps
+  extends Pick<
     SignUpProps,
     | "formState"
     | "errors"
@@ -21,8 +23,11 @@ const EmailSection: React.FC<
     | "sendEmail"
     | "handleSubmitVerificationCode"
     | "getFieldState"
-  >
-> = ({
+  > {
+  onClose?: () => void; // 있어도 되고, 없어도 되고
+}
+
+const EmailSection: React.FC<EmailSectionProps> = ({
   formState,
   errors,
   verificationCode,
@@ -35,19 +40,22 @@ const EmailSection: React.FC<
   sendEmail,
   handleSubmitVerificationCode,
   getFieldState,
+  onClose, // 여기서 받음
 }) => {
+  const {email} = formState;
   return (
     <>
+    {onClose && <Image src="/icons/editClose.svg" alt="closeIcon" width={24} height={24} />  }
       <SectionEmailLayer>
         <TextField
           name="email"
           placeholder="Email"
           type="email"
           size="M"
-          state={getFieldState(formState.email, errors.email)}
+          state={getFieldState(email, errors.email)}
           required={true}
           autoFocus={true}
-          value={formState.email}
+          value={email}
           onChange={handleFormChange}
           disabled={isVerified}
         />
@@ -62,7 +70,7 @@ const EmailSection: React.FC<
         </Button>
         <p>{errors.email ? errors.email : "올바른 형식입니다."}</p>
       </SectionEmailLayer>
-
+      <VerifyCodeLayer >
       <TextField
         name="verificationCode"
         placeholder="인증코드"
@@ -94,6 +102,7 @@ const EmailSection: React.FC<
           인증 하기
         </Button>
       </VerifyCodeButtonLayer>
+      </VerifyCodeLayer>
     </>
   );
 };

@@ -1,9 +1,25 @@
 import { OpenQuestion } from "@/domain/entities/smalltalk/OpenQuestion";
 import { IOpenQuestionRepository } from "@/domain/repositories/smalltalk/IOpenQuestionRepository";
 import supabase from "@/infrastructure/databases/supabase/server";
-import { toCamelCase } from "@/utils/convert/convertToCase";
+import { toCamelCase, toSnakeCase } from "@/utils/convert/convertToCase";
 
 export class SbOpenQuestionRepository implements IOpenQuestionRepository {
+
+  async create(question: { subjectId: number; openQuestion: string }): Promise<void> {
+    const client = await supabase();
+    const snakeData = toSnakeCase({
+      subjectId: question.subjectId,
+      openQuestion: question.openQuestion,
+    });
+
+    const { error } = await client.from("smalltalkSuggestOpenquestion").insert(snakeData);
+
+    if (error) {
+      console.error("Error adding open question:", error);
+      throw new Error("Failed to add open question");
+    }
+  }
+
   async findBySubjectId(subjectId: number): Promise<OpenQuestion[]> {
     const client = await supabase();
     const { data, error } = await client
@@ -24,7 +40,7 @@ export class SbOpenQuestionRepository implements IOpenQuestionRepository {
     const { data, error } = await client
       .from("smalltalkSuggestOpenquestion")
       .select("*")
-      .order("openquestion_id", { ascending: true });
+      .order("subject_id", { ascending: true});
 
     if (error) {
       console.error("Error fetching all open questions:", error);
@@ -33,4 +49,31 @@ export class SbOpenQuestionRepository implements IOpenQuestionRepository {
 
     return toCamelCase(data) || [];
   }
+
+  async update(questionId: number, updatedQuestion: string): Promise<void> {
+    const client = await supabase();
+    const { error } = await client
+      .from("smalltalkSuggestOpenquestion")
+      .update({ open_question: updatedQuestion })
+      .eq("openquestion_id", questionId);
+
+    if (error) {
+      console.error("Error updating open question:", error);
+      throw new Error("Failed to update open question");
+    }
+  }
+
+  async delete(questionId: number): Promise<void> {
+    const client = await supabase();
+    const { error } = await client
+    .from("smalltalkSuggestOpenquestion")
+    .delete()
+    .eq("openquestion_id", questionId);
+  
+    if (error) {
+      console.error("Error deleting open question:", error);
+      throw new Error("Failed to delete open question");
+      }
+  }
+
 }

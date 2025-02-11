@@ -9,6 +9,7 @@ export const DashBoardContainer = styled.div`
   height: 100%;
   gap: 1rem;
   padding: 1rem;
+  overflow-y: scroll;
 `;
 
 export const TitleWrapper = styled.div`
@@ -28,13 +29,12 @@ export const InfoSection = styled.section`
   flex-wrap: wrap;
 
   width: 100%;
-  max-height: 37.5rem;
   height: fit-content;
   gap: 1rem;
 
   padding-bottom: 1rem;
   border-bottom: 1.5px solid var(--primary-color);
-  overflow-y: scroll;
+  
 `;
 
 

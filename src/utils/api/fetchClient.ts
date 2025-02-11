@@ -1,4 +1,4 @@
-export type FetchMethod = "GET" | "POST" | "PUT" | "DELETE";
+export type FetchMethod = "GET" | "POST" | "PUT" | "DELETE" |"PATCH";
 
 interface FetchOptions<T> {
   method?: FetchMethod;

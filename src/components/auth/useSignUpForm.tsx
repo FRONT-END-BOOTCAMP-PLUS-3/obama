@@ -10,8 +10,6 @@ import {
 import { useRouter } from "next/navigation";
 import {  useCallback, useEffect, useState } from "react";
 
-
-
 interface FormState {
   email: string;
   password: string;
@@ -36,12 +34,6 @@ interface FormErrors {
   verificationCode?: string;
 }
 
-// 1. send Email 시 유효성 검사 필요
-// 2. send Email 같은 경우 중복검사 disabled되면
-// 3. 이메일 인증 같은 경우 인증 완료 시 disabled
-// 4. passwordConfirm password와 일치하는지만
-// 5. 모든 유효성 검사는 실시간으로 확인 할것   //유효성 검사는 utils에 저장
-// 6. form의 들어갈 데이터 -> { email, password, name, phone }
 type SignUpRequest = Omit<FormState, "passwordConfirm">;
 
 export const useSignUpForm = () => {
