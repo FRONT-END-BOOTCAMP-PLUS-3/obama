@@ -24,10 +24,6 @@ interface UserData {
 }
 
 const DashBoard = () => {
-  // Data를 요청해서 UserData 바인딩 작업
-  // useEffect(()=> {
-  //     const { userId } = useAuthStore.getState();
-  // }, []);
 
   const [user, setUser] = useState<UserData>({
     name: "",
@@ -37,12 +33,29 @@ const DashBoard = () => {
     password: "",
   });
 
+
+  // Data를 요청해서 UserData 바인딩 작업
+  // useEffect(()=> {
+  //     const { userId } = useAuthStore.getState();
+  // }, []);
+
   // mockData에서 사용자 데이터 불러오기 예시
   useEffect(() => {
-    const { name, email, password, birthDate, phone } = defaultUser;
-    const userData = { name, email, password, birthDate, phone };
-    setUser(userData);
+    
+    // api 호출 사용될 mockData
+    const { name, email, birthDate, phone } = defaultUser;  // response.data
+
+    const userData = { name, email,  birthDate, phone };    // 필요한 데이터 추출
+    
+    // 비밀번호 영역 추가
+    const updateUser = {
+      ...userData,
+      password: "",
+    }
+    
+    setUser(updateUser);
   }, []);
+
 
   return (
     <>
@@ -50,7 +63,7 @@ const DashBoard = () => {
         <TitleWrapper>
           <Title>My page</Title>
         </TitleWrapper>
-
+        {/* user의 키값과 value를 전달 반복 */}
         <InfoSection>
           {(Object.keys(user) as (keyof typeof user)[]).map((field) => (
             <InfoItem

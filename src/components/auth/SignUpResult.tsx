@@ -6,13 +6,14 @@ import {
 } from "@/components/auth/SignUpResult.Styled";
 import Link from "next/link";
 import { Button } from "@/components/common/button";
+import Image from "next/image";
 
 const SignUpResult = () => {
   return (
     <>
       <PageWrapper>
         <LogoContainer>
-          <img src="/Images/logo.svg" alt="로고" />
+          <Image src="/Images/logo.svg" alt="로고" width={100} height={100}/>
         </LogoContainer>
 
         <Message>
