@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepository";
-import { toCamelCase } from "@/utils/convert/convertToCase";
+import { SbUserInputRepository } from "@/infrastructure/repositories/profile/SbUserInputRepository";
 
 export async function GET(request: Request) {
   try {
@@ -11,17 +10,16 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "Invalid userId" }, { status: 400 });
     }
 
-    const userRepository = new SbUserRepository();
+    const userInputRepository = new SbUserInputRepository();
 
-    // ✅ 유저 기본 정보 조회
-    const userResult = await userRepository.findUserById(userId);
-    if (!userResult) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    // ✅ 유저의 userInput 데이터 조회
+    const userInputs = await userInputRepository.findAnswerByUserId(userId);
+    if (!userInputs) {
+      return NextResponse.json({ message: "No user input found" }, { status: 404 });
     }
 
-    return NextResponse.json({
-      user: toCamelCase(userResult.user),
-    }, { status: 200 });
+    // ✅ 데이터 변환 없이 원본 데이터 반환
+    return NextResponse.json(userInputs, { status: 200 });
 
   } catch (error) {
     console.error("API Error:", error);
