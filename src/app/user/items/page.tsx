@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation"; // useSearchParams로 변경
-import { Button } from "@/components/common/Button";
+import Button from "@/components/common/button/Button";
 import {
   ProfileCreateContainer,
   ButtonList,
@@ -15,7 +15,7 @@ import {
   BottomSection,
 } from "@/components/items/ItemsPage.Styled";
 import MBTISelectButton from "@/components/items/Mbtibutton";
-import { TextField } from "@/components/common/TextField";
+import TextField from "@/components/common/textField/TextField";
 import IntroduceInput from "@/components/items/IntroduceInput";
 import ProfileImageUploader from "@/components/items/ProfileUploader";
 import { Item } from "@/domain/entities/item/Item";
