@@ -6,6 +6,7 @@ const NameSection: React.FC<
     SignUpProps,
     "formState" | "errors" | "handleFormChange" | "getFieldState"
   >
+> 
 = ({ formState, errors, handleFormChange, getFieldState }) => {
   const { name } = formState;
 

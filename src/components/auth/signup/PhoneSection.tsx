@@ -1,22 +1,12 @@
 import TextField from "@/components/common/textField/TextField";
 import { SectionPhoneLayer } from "@/components/auth/SignUp.Styled";
 import { SignUpProps } from "@/types/auth";
-import Image from "next/image";
 
-interface NameSectionProps
-  extends Pick<SignUpProps, "phoneSegments" | "handlePhoneChange"> {
-  onClose?: () => void; // 선택적 prop
-}
-
-const PhoneSection: React.FC<NameSectionProps> = ({
-  phoneSegments,
-  handlePhoneChange,
-  onClose,
-}) => {
+const PhoneSection: React.FC<
+  Pick<SignUpProps, "phoneSegments" | "handlePhoneChange">
+> = ({ phoneSegments, handlePhoneChange }) => {
   return (
     <>
-      {onClose && <Image src="/icons/editClose.svg" alt="closeIcon" width={24} height={24} />  }
-
       <SectionPhoneLayer>
         <TextField
           name="phone-first"

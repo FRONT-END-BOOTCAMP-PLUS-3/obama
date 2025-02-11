@@ -16,7 +16,7 @@ export class SignUpUseCase {
     const userId = this.uuidGenerator.generate();
 
     // 비밀번호 해싱
-    const hashedPassword = await this.passwordHasherUseCase.hash(request.password);
+    const hashedPassword = await this.passwordHasherUseCase.execute(request.password);
 
    await this.userRepository.createUser({
       userId: userId,

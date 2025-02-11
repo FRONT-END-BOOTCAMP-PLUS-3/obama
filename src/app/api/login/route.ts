@@ -1,12 +1,12 @@
+import { PasswordVerificationUseCase } from '@/application/usecases/auth/PasswordVerificationUseCase';
 import { LoginRequestDto } from "@/application/usecases/auth/dtos/LoginRequestDto";
 import { LoginResponseDto } from "@/application/usecases/auth/dtos/LoginResponseDto";
 import { LoginError, LoginErrorType } from "@/application/usecases/auth/errors/LoginError";
-import { IPasswordHasherUseCase } from "@/application/usecases/auth/interfaces/IPasswordHasherUseCase";
 import { LoginUseCase } from "@/application/usecases/auth/LoginUseCase";
-import { PasswordHasherUseCase } from "@/application/usecases/auth/PasswordHasherUseCase";
 import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepository";
 import { NextRequest, NextResponse } from "next/server";
+import { IPasswordVerificationUseCase } from '@/application/usecases/auth/interfaces/IPasswordVerificationUseCase';
 
 export async function POST(req: NextRequest) {
     console.log("👌login API POST request");
@@ -19,10 +19,10 @@ export async function POST(req: NextRequest) {
     const userRepository: IUserRepository = new SbUserRepository();
 
     // 비밀번호 hash UseCase
-    const passwordHasherUseCase: IPasswordHasherUseCase = new PasswordHasherUseCase();
+    const passwordVerificationUseCase: IPasswordVerificationUseCase = new PasswordVerificationUseCase();
     
     // LoginUseCase DI 적용
-    const loginUseCase = new LoginUseCase(userRepository, passwordHasherUseCase);
+    const loginUseCase = new LoginUseCase(userRepository, passwordVerificationUseCase);
     
     // 로그인 기능 실행
     const loginResponseDto :LoginResponseDto = await loginUseCase.execute(request);
