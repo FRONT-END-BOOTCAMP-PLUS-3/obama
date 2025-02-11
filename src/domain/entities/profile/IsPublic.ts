@@ -1,7 +1,7 @@
 export interface IsPublic {
     isPublicId: string;
     userId: string;
-    categoryId?: string;
+    categoryId?: number;
     isPublic?: boolean;
   }
   
