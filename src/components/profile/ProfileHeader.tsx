@@ -1,97 +1,64 @@
 "use client";
-import React from "react";
-import { Profile } from "@/domain/entities/Profile";
+
+import { useEffect, useState } from "react";
+import { ProfileHeaderDTO } from "@/application/usecases/profile/dtos/ProfileHeaderDTO";
 import {
   HeaderWrapper,
   ImageWrapper,
   Name,
   InfoWrapper,
   Info,
-  InfoButton,
   Label,
   Value,
-  SNSWrapper,
-  SNSLink,
-  SNSButton,
-  SNSId,
 } from "./ProfileHeader.Styled";
+import useAuthStore from "@/store/authStore";
+import ProfileImgFinder from "@/components/profile/ProfileImgFinder";
 
-interface ProfileHeaderProps {
-  profile: Profile;
-}
+const ProfileHeader = () => {
+  const { userId } = useAuthStore();
+  const [profileHeader, setProfileHeader] = useState<ProfileHeaderDTO | null>(null);
 
-// ✅ SNS 타입별 URL 템플릿
-const SNS_URL_TEMPLATE: Record<string, string> = {
-  instagram: "https://instagram.com/",
-  x: "https://x.com/",
-  github: "https://github.com/",
-};
+  useEffect(() => {
+    if (!userId) return;
 
-// ✅ SNS 아이콘 경로 매핑
-const SNS_ICON_PATH: Record<string, string> = {
-  instagram: "/Icons/sns/instagram.svg",
-  x: "/Icons/sns/X.svg",
-  github: "/Icons/sns/github.svg",
-};
+    const fetchProfileHeader = async () => {
+      try {
+        const res = await fetch(`/api/user/profile?userId=${userId}`);
+        if (!res.ok) throw new Error("API 요청 실패");
 
-// ✅ 기본 프로필 이미지 경로
-const DEFAULT_PROFILE_IMAGE = "/Icons/profile.svg";
+        const data = await res.json();
+        setProfileHeader(data.user);
+      } catch (error) {
+        console.error("API 요청 오류:", error);
+      }
+    };
 
-const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile }) => {
-  
+    fetchProfileHeader();
+  }, [userId]);
+
+  if (!profileHeader) return <p>Loading...</p>;
+
   return (
     <HeaderWrapper>
       <ImageWrapper>
-        <img
-          src={profile.avatar_url ? profile.avatar_url : DEFAULT_PROFILE_IMAGE}
-          alt="Profile image"
-          width={100}
-          height={100}
-        />
+        <ProfileImgFinder imagePath={profileHeader.profileImagePath || ""} /> 
       </ImageWrapper>
-
-      <Name>{profile.name}</Name>
-
       <InfoWrapper>
-        <Info>
-          <InfoButton>
-            <Label>생년월일</Label>
-            <Value>{profile.birth_date}</Value>
-          </InfoButton>
-        </Info>
-
-        <Info>
-          <InfoButton>
-            <Label>전화번호</Label>
-            <Value>{profile.phone}</Value>
-          </InfoButton>
-        </Info>
+        <Name>{profileHeader.name}</Name>
+        <ProfileInfo label="생년월일" value={profileHeader.birthDate} />
+        <ProfileInfo label="전화번호" value={profileHeader.phone} />
+        <ProfileInfo label="이메일" value={profileHeader.email} />
       </InfoWrapper>
-
-      {profile.snsLinks && profile.snsLinks.length > 0 ? (
-        <SNSWrapper>
-          {profile.snsLinks
-            .filter((sns) => sns.is_public === true)
-            .map((sns, index) => {
-              const snsKey = sns.platform.toLowerCase();
-              const snsUrl = SNS_URL_TEMPLATE[snsKey] + sns.id;
-              const snsIcon = SNS_ICON_PATH[snsKey] || "/Icons/sns/default.svg";
-
-              return (
-                <SNSLink key={index} href={snsUrl} target="_blank" rel="noopener noreferrer">
-                  <SNSButton>
-                    <img src={snsIcon} alt={sns.platform} width={20} height={20} />
-                    <SNSId>@{sns.id}</SNSId>
-                  </SNSButton>
-                </SNSLink>
-              );
-            })}
-        </SNSWrapper>
-      ) : (
-        <p>공개된 SNS 정보가 없습니다.</p>
-      )}
     </HeaderWrapper>
   );
 };
+
+// ✅ 프로필 정보 렌더링을 위한 재사용 가능한 컴포넌트
+const ProfileInfo = ({ label, value }: { label: string; value?: string }) => (
+  <Info>
+    <Label>{label}</Label>
+    <Value>{value || ""}</Value>
+  </Info>
+);
 
 export default ProfileHeader;

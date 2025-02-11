@@ -1,32 +1,50 @@
-import { NextResponse } from "next/server";
-import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepository";
+import { NextRequest, NextResponse } from "next/server";
+import { SbUserInputRepository } from "@/infrastructure/repositories/profile/SbUserInputRepository";
+import { UserInput } from "@/domain/entities/profile/UserInput";
 
-export async function GET(request: Request) {
+export async function POST(req: NextRequest) {
   try {
-    // URL에서 쿼리 파라미터 추출
-    const { searchParams } = new URL(request.url);
-    const userId = searchParams.get("userId");
+    const body = await req.json();
+    console.log("📥 Received Body:", body); // 요청 데이터 확인
 
-    if (!userId) {
-      return NextResponse.json({ message: "Invalid userId" }, { status: 400 });
+    const { category_id, answer, user_id } = body;
+
+    // ✅ 필수 필드 검사
+    if (!category_id || !answer || !user_id) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
-    // SbUserRepository를 사용해 데이터 조회
-    const userRepository = new SbUserRepository();
-    const result = await userRepository.findUserById(userId);
-
-    if (!result) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    // ✅ 올바른 데이터 타입 확인
+    if (
+      typeof category_id !== "number" ||
+      typeof answer !== "string" ||
+      typeof user_id !== "string"
+    ) {
+      return NextResponse.json(
+        { error: "Invalid data types" },
+        { status: 400 }
+      );
     }
 
-    // 패스워드를 제외한 유저 데이터를 반환
-    const { password, ...user } = result;
+    // ✅ 요청별 repository 인스턴스 생성
+    const userInputRepository = new SbUserInputRepository();
 
-    return NextResponse.json({ user }, { status: 200 });
+    // ✅ 데이터 저장
+    const newUserInput: Omit<UserInput, "userInput_id"> = {
+      category_id,
+      answer,
+      user_id,
+    };
+
+    const result = await userInputRepository.create(newUserInput);
+    return NextResponse.json(result, { status: 201 });
   } catch (error) {
-    console.error("API Error:", error);
+    console.error("❌ Error in POST /api/profile:", error);
     return NextResponse.json(
-      { message: error instanceof Error ? error.message : "Internal Server Error" },
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }
