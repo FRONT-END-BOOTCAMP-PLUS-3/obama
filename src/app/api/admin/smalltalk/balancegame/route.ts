@@ -3,6 +3,7 @@ import { SbBalancegameQuestionRepository } from "@/infrastructure/repositories/s
 import { SbBalancegameAnswerRepository } from "@/infrastructure/repositories/smalltalk/SbBalancegameAnswerRepository";
 import { BalancegameQuestionUsecase } from "@/application/usecases/smalltalk/BalancegameQuestionUsecase";
 import { BalancegameAnswerUsecase } from "@/application/usecases/smalltalk/BalancegameAnswerUsecase";
+import { CreateBalanceGameUsecase } from "@/application/usecases/smalltalk/CreateBalanceGame"; // <-- 새로 추가
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -31,4 +32,47 @@ export async function GET(request: Request) {
   );
 
   return NextResponse.json(results);
+}
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const { subjectId, questionText, answerA, answerB } = body;
+    if (
+      !subjectId ||
+      !questionText ||
+      !answerA?.title ||
+      !answerA?.text ||
+      !answerB?.title ||
+      !answerB?.text
+    ) {
+      return NextResponse.json(
+        { error: "Invalid request data" },
+        { status: 400 }
+      );
+    }
+
+    const questionRepo = new SbBalancegameQuestionRepository();
+    const answerRepo = new SbBalancegameAnswerRepository();
+
+    const creationUsecase = new CreateBalanceGameUsecase(questionRepo, answerRepo);
+
+    const result = await creationUsecase.execute({
+      subjectId: Number(subjectId),
+      questionText,
+      answerA,
+      answerB,
+    });
+
+    return NextResponse.json(
+      {
+        message: "Balancegame created successfully",
+        data: result,
+      },
+      { status: 201 }
+    );
+  } catch (error: any) {
+    console.error("POST /balancegame error: ", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
