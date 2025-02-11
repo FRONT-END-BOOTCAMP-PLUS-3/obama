@@ -14,7 +14,7 @@ import { fetchClient } from "@/utils/api/fetchClient";
 const ROWS_PER_PAGE = 10;
 
 interface RowData {
-  id: number; // 인덱스 기반 ID
+  id: number;
   question: string;
   answerTitle: string;
   answerText: string;
@@ -33,33 +33,40 @@ const AdminBalancegame: React.FC = () => {
     answerText: string;
   }>({ question: "", answerTitle: "", answerText: "" });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const { status, data: result, error } = await fetchClient<
-        undefined,
-        { balancegamequestionText: string; answers: { balancegameanswerTitle: string; balancegameanswerText: string }[] }[]
-      >("/api/admin/smalltalk/balancegame", {
-        queryParams: { subjectId: 1 },
-        method: "GET",
-      });
+  const handleFetchData = useCallback(async () => {
+    const { status, data: result, error } = await fetchClient<
+      undefined,
+      {
+        balancegamequestionId: number;
+        balancegamequestionText: string;
+        answers: {
+          balancegameanswerTitle: string;
+          balancegameanswerText: string;
+        }[];
+      }[]
+    >("/api/admin/smalltalk/balancegame", {
+      queryParams: { subjectId: 1 },
+      method: "GET",
+    });
 
-      if (status === 200 && result) {
-        const transformedData = result.flatMap((item, index) =>
-          item.answers.map((answer) => ({
-            id: index + 1,
-            question: item.balancegamequestionText,
-            answerTitle: answer.balancegameanswerTitle,
-            answerText: answer.balancegameanswerText,
-          }))
-        );
-        setData(transformedData);
-      } else {
-        console.error("Error fetching balancegame data:", error);
-      }
-    };
-
-    fetchData();
+    if (status === 200 && result) {
+      const transformedData = result.flatMap((item) =>
+        item.answers.map((answer) => ({
+          id: item.balancegamequestionId,
+          question: item.balancegamequestionText,
+          answerTitle: answer.balancegameanswerTitle,
+          answerText: answer.balancegameanswerText,
+        }))
+      );
+      setData(transformedData);
+    } else {
+      console.error("Error fetching balancegame data:", error);
+    }
   }, []);
+
+  useEffect(() => {
+    handleFetchData();
+  }, [handleFetchData]);
 
   const totalPages = Math.ceil(data.length / ROWS_PER_PAGE);
 
@@ -85,6 +92,7 @@ const AdminBalancegame: React.FC = () => {
     setIsDeleteModalOpen(false);
     setSelectedId(null);
   };
+
 
   const handleEdit = useCallback((id: number, row: RowData) => {
     setEditingId(id);
@@ -206,7 +214,13 @@ const AdminBalancegame: React.FC = () => {
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />
-      <BalancegameModal $isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <BalancegameModal
+        $isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onCreateSuccess={() => {
+          handleFetchData();
+        }}
+      />
       <AddButton onClick={() => setIsModalOpen(true)}>+</AddButton>
     </AdminLayoutContainer>
   );
