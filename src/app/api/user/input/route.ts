@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     const userInputRepository = new SbUserInputRepository();
 
     // ✅ 유저의 userInput 데이터 조회
-    const userInputs = await userInputRepository.findAnswerByUserId(userId);
+    const userInputs = await userInputRepository.findAllByUserId(userId);
     if (!userInputs) {
       return NextResponse.json({ message: "No user input found" }, { status: 404 });
     }

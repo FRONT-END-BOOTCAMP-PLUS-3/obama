@@ -3,7 +3,10 @@ import { IUserInputRepository } from "@/domain/repositories/profile/IUserinputRe
 import { UserInput } from "@/domain/entities/profile/UserInput";
 
 export class SbUserInputRepository implements IUserInputRepository {
-  async findAllByUserId(user_id: string): Promise<UserInput[]> {
+  findAnswerByUserId(userId: string): Promise<UserInput[]> {
+    throw new Error("Method not implemented.");
+  }
+  async findAllByUserId(userId: string): Promise<UserInput[]> {
     const client = await supabase();
       const { data, error } = await client
         .from("userInput")
@@ -13,7 +16,4 @@ export class SbUserInputRepository implements IUserInputRepository {
       if (error) throw new Error("User input data not found");
       return data;
     }
-
-    return data;
   }
-}
