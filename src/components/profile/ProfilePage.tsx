@@ -1,58 +1,49 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import ProfileHeader from "./components/ProfileHeader";
-import AboutMe from "./components/AboutMe";
-import PrivacyToggle from "./components/PrivacyToggle";
-import { Profile } from "@/domain/entities/Profile";
-import { PageContainer, Section } from "./page.styled";
-import ProfileActions from "./components/ProfileActions";
-import { GetProfileUseCase } from "@/application/usecases/profile/GetProfileUseCase";
-import { SbProfileRepository } from "@/infrastructure/repositories/profile/SbProfileRepository";
+import { useRouter } from "next/navigation"; // ✅ 추가
+import ProfileHeader from "./ProfileHeader";
+import useAuthStore from "@/store/authStore"; 
+import { LoginContainer, LoginMessage, PageContainer } from "./ProfilePage.Styled";
+import { UserRole } from "@/types/auth";
+import { Button } from "@/components/common/button";
 
 const ProfilePage: React.FC = () => {
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [aboutMeData, setAboutMeData] = useState<Record<string, string[]>>({});
-  const userId = "1d1867cd-526c-4de5-97e4-4a0c8f386f78"; // 테스트용 ID
+  const { userId, setAuth } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter(); // ✅ Next.js 라우터 추가
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const repository = new SbProfileRepository();
-        const getProfileUseCase = new GetProfileUseCase(repository);
-        const data = await getProfileUseCase.execute(userId);
+    const storedUserId = localStorage.getItem("userId");
+    const storedRole = localStorage.getItem("role") as UserRole;
 
-        setProfile(data);
+    if (storedUserId && storedRole) {
+      setAuth(storedUserId, storedRole); 
+    } else {
+      console.error("로그인 정보가 없습니다.");
+    }
 
-        // "정보 없음"을 필터링하여 aboutMeData 설정
-        const initialAboutMeData = Object.entries(data.categories).reduce(
-          (acc, [key, value]) => {
-            acc[key] = value.value.length > 0 && value.value[0] !== "정보 없음" ? value.value : [];
-            return acc;
-          },
-          {} as Record<string, string[]>
-        );
+    setIsLoading(false);
+  }, [setAuth]);
 
-        setAboutMeData(initialAboutMeData);
-      } catch (error) {
-        console.error("❌ 프로필 데이터를 불러오는데 실패했습니다:", error);
-      }
-    };
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
-    fetchProfile();
-  }, []);
-
-  if (!profile) return <div>사용자 정보를 찾을 수 없습니다.</div>;
+  if (!userId) {
+    return (
+      <LoginContainer>
+        <LoginMessage>로그인이 필요합니다.</LoginMessage>
+        <Button size="l" onClick={() => router.push("/login")}>
+          로그인 페이지로 이동
+        </Button>
+      </LoginContainer>
+    );
+  }
 
   return (
     <PageContainer>
-      <Section>
-        <ProfileHeader profile={profile} />
-        <AboutMe aboutMeData={aboutMeData} />
-      </Section>
-      <Section>
-        <PrivacyToggle profile={profile} aboutMeData={aboutMeData} onToggleUpdate={setAboutMeData} />
-        <ProfileActions />
-      </Section>
+        <ProfileHeader />
     </PageContainer>
   );
 };
