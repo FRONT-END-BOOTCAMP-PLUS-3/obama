@@ -5,7 +5,7 @@ import {
   PageWrapper,
 } from "@/components/auth/SignUpResult.Styled";
 import Link from "next/link";
-import { Button } from "@/components/common/Button";
+import Button from "@/components/common/button/Button";
 
 const SignUpResult = () => {
   return (

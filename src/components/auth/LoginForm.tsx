@@ -1,5 +1,5 @@
 "use client";
-import TextField from "@/components/common/TextField/TextField";
+import TextField from "@/components/common/textField/TextField";
 import {
   InputLayer,
   LoginWrapper,
@@ -9,7 +9,7 @@ import {
 } from "@/components/auth/LoginForm.Styled";
 import Button from "@/components/common/button/Button";
 import { useLoginForm } from "@/components/auth/useLoginForm";
-import TextButton from "@/components/common/Button/TextButton";
+import TextButton from "@/components/common/button/TextButton";
 
 const LoginForm = () => {
   const {

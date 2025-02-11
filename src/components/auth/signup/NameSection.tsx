@@ -1,4 +1,4 @@
-import { TextField } from "@/components/common/TextField";
+import TextField from "@/components/common/textField/TextField";
 import { SignUpProps } from "@/types/auth";
 
 const NameSection: React.FC<

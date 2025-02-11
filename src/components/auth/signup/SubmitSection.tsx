@@ -1,4 +1,4 @@
-import { Button } from "@/components/common/Button";
+import Button from "@/components/common/button/Button";
 import { SectionButtonLayer } from "@/components/auth/SignUp.Styled";
 import { SignUpProps } from "@/types/auth";
 
