@@ -8,6 +8,7 @@ import useAuthStore from "@/store/authStore";
 import { LoginContainer, LoginMessage, PageContainer, ContentWrapper } from "./ProfilePage.Styled";
 import { UserRole } from "@/types/auth";
 import { Button } from "@/components/common/button";
+import ProfileActions from "./ProfileActions";
 
 const ProfilePage: React.FC = () => {
   const { userId, setAuth } = useAuthStore();
@@ -67,6 +68,7 @@ const ProfilePage: React.FC = () => {
         <ContentWrapper>
           <ProfileHeader user={profileData.user} />
           <AboutMe userId={userId} aboutMeData={profileData.aboutMe} />
+          <ProfileActions />
         </ContentWrapper>
       ) : (
         <p>프로필 정보를 불러오는 중입니다...</p>
