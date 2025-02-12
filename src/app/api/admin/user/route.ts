@@ -2,6 +2,32 @@ import { DeleteUserByAdminUseCase } from "@/application/usecases/admin/user/Dele
 import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
 import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepository";
 import { NextRequest, NextResponse } from "next/server";
+import { FindAllUsersUseCase } from "@/application/usecases/admin/user/FindallUsersUseCase";
+
+export async function GET(_req: NextRequest) {
+  console.log("🔥 관리자 유저 목록 조회 API 요청 수신");
+
+  try {
+    // 1️⃣ UserRepository 인스턴스 생성
+    const userRepository = new SbUserRepository();
+
+    // 2️⃣ UseCase 실행
+    const findAllUsersUseCase = new FindAllUsersUseCase(userRepository);
+    const users = await findAllUsersUseCase.execute();
+
+    return NextResponse.json({ users }, { status: 200 });
+  } catch (error) {
+    console.error("❌ 관리자 유저 조회 오류:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+
+
+
 
 export async function DELETE(req: NextRequest) {
   console.log("🔥 관리자 회원 삭제 API 요청 수신");
