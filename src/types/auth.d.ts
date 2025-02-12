@@ -51,4 +51,5 @@ export interface SignUpFormState {
     sendEmail: () => Promise<void>;
     getFieldState: (value: string, errorMessage?: string) => "default" | "error" | "current";
     handleSubmit: (e: React.FormEvent) => Promise<void>;
+    resetField: (field:keyof SignUpFormState ) => void;
   }

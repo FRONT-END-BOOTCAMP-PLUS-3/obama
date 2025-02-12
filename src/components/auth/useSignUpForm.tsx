@@ -256,6 +256,30 @@ const getFieldState = (
     [formState, isFormValid, isVerified]
   );
 
+  const resetField = (field: keyof FormState) => {
+    setFormState((prev) => ({
+      ...prev,
+      [field]: "",
+    }));
+  
+    setErrors((prev) => ({
+      ...prev,
+      [field]: undefined, // 에러 초기화
+    }));
+  
+    if (field === "email") {
+      setIsDuplicated(false);
+      setIsVerified(false);
+      setVerificationCode("");
+    }
+    if (field === "password"){
+      setFormState((prev)=> ({
+        ...prev,
+        ["passwordConfirm"]:"",
+      }));
+    }
+  };
+
   return {
     formState,
     errors,
@@ -274,5 +298,6 @@ const getFieldState = (
     sendEmail,
     getFieldState,
     handleSubmit,
+    resetField
   };
 };

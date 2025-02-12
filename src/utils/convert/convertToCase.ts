@@ -41,3 +41,7 @@ export function toSnakeCase<T extends object | null | undefined>(obj: T): T | nu
 
   return Object.keys(newObj).length > 0 ? (newObj as T) : null; // 🚀 빈 객체가 나오면 `null` 반환!
 }
+
+export function toSnakeCaseString(str: string): string {
+  return str.replace(/([A-Z])/g, "_$1").toLowerCase();
+}

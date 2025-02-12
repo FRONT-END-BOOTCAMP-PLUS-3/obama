@@ -1,18 +1,17 @@
 import supabase from "@/infrastructure/databases/supabase/server";
 import { User } from "@/domain/entities/user/User";
 import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
-import { toCamelCase, toSnakeCase } from '@/utils/convert/convertToCase';
+import { toCamelCase, toSnakeCase, toSnakeCaseString } from "@/utils/convert/convertToCase";
 import { UserRole } from "@/types/auth";
 
 export class SbUserRepository implements IUserRepository {
+ 
   private readonly tableName = "user";
-  
+
   // Create
   async createUser(user: User): Promise<void> {
-    
-    const convertUser = toSnakeCase(user); 
-    console.log(convertUser);
-    
+    const convertUser = toSnakeCase(user);
+
     const client = await supabase();
 
     const { error } = await client.from(this.tableName).insert(convertUser);
@@ -22,27 +21,38 @@ export class SbUserRepository implements IUserRepository {
     }
   }
   // Read
-  // 사용하지 않을 것 conflict때문에 냅두는 중
-  async findByEmail(email: string): Promise<User | null> {
+  async findAll(): Promise<Omit<User, "password">[] | null> {
     const client = await supabase();
 
-    const { data, error } = await client
-      .from(this.tableName)
-      .select("*") // 이메일뿐만 아니라 사용자 정보를 가져올 수도 있음
-      .eq("email", email)
-      .single();
+    const { data, error } = await client.from(this.tableName).select("*");
 
     if (error) {
       if (error.code === "PGRST116") {
         // 데이터가 없을 때 발생하는 에러 (PostgREST의 'No rows found' 에러)
         return null;
       }
-      console.error("Error finding email:", error.message);
-      throw new Error("Database error while finding email");
+      console.error("Error finding password:", error.message);
+      throw new Error("not complated with user");
     }
 
-    return data ? toCamelCase(data) : null;
+    // password field 제거
+    const usersWithoutPassword: Omit<User, "password">[] = data;
+
+    return toCamelCase(usersWithoutPassword);
   }
+
+  async findPasswordById(userId: string): Promise<string | null> {
+    const client = await supabase();
+    const { data, error } = await client
+      .from(this.tableName)
+      .select("password")
+      .eq("user_id", userId)
+      .single();
+
+    if (error || !data) return null;
+    return toCamelCase(data.password);
+  }
+
   // UUID 값으로 개인 정보 가져오기
   async findUserById(
     userId: string
@@ -63,13 +73,18 @@ export class SbUserRepository implements IUserRepository {
       console.error("Error finding password:", error.message);
       throw new Error("not complated with user");
     }
+
+    // password , user 정보 분리하기
     const { password, ...user } = data;
 
-    return { password, user };
+    return toCamelCase({ password, user });
   }
+
   // email을 통한 userId, password 가져오기
-  async findAuthDataByEmail(email: string): Promise<{ userId: string; password: string; role: UserRole } | null> {
-    console.log("repository mounted")
+  async findAuthDataByEmail(
+    email: string
+  ): Promise<{ userId: string; password: string; role: UserRole } | null> {
+    console.log("repository mounted");
     const client = await supabase();
 
     const { data, error } = await client
@@ -86,6 +101,49 @@ export class SbUserRepository implements IUserRepository {
       console.error("Error finding password:", error.message);
       throw new Error("EMAIL_NOT_FOUND");
     }
-    return { userId: data.user_id , password: data.password, role: data.role } ;
+    return toCamelCase({
+      userId: data.user_id,
+      password: data.password,
+      role: data.role,
+    });
+  }
+
+  // Delete
+  async deleteById(userId: string): Promise<boolean> {
+    console.log("repository deleteById:", userId);
+
+    const client = await supabase();
+
+    const { error } = await client
+      .from(this.tableName)
+      .delete()
+      .eq("user_id", userId);
+
+    if (error) {
+      console.error("❌ 회원 삭제 실패:", error);
+      return false;
+    }
+
+    return true;
+  }
+
+  //Update
+  async updateUserField(userId: string, field: string, newValue: string): Promise<boolean> {
+    
+    const snakeField = toSnakeCaseString(field);
+    const client = await supabase();
+    const {error} = await client
+      .from(this.tableName)
+      .update({ [snakeField]: newValue })
+      .eq("user_id", userId);
+
+      if (error) {
+        console.error("❌ 업데이트 실패:", error);
+        return false;
+    }
+    console.log("✅ 업데이트 성공");
+    return true;
   }
 }
+
+

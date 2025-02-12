@@ -1,4 +1,3 @@
 export interface IPasswordHasherUseCase {
-    hash(password: string): Promise<string>;
-    compare(plainText: string, hashed: string): Promise<boolean> ;
+    execute(password: string): Promise<string>;
   }

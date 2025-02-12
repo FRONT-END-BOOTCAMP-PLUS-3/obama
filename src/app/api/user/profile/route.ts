@@ -1,15 +1,13 @@
-import { NextResponse } from "next/server";
-import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepository";
-import { toCamelCase } from "@/utils/convert/convertToCase";
+import { NextRequest, NextResponse } from "next/server";
+import { SbUserInputRepository } from "@/infrastructure/repositories/profile/SbUserInputRepository";
+import { UserInput } from "@/domain/entities/profile/UserInput";
 
-export async function GET(request: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const userId = searchParams.get("userId");
+    const body = await req.json();
+    console.log("📥 Received Body:", body); // 요청 데이터 확인
 
-    if (!userId) {
-      return NextResponse.json({ message: "Invalid userId" }, { status: 400 });
-    }
+    const { category_id, answer, user_id } = body;
 
     const userRepository = new SbUserRepository();
 
@@ -24,9 +22,9 @@ export async function GET(request: Request) {
     }, { status: 200 });
 
   } catch (error) {
-    console.error("API Error:", error);
+    console.error("❌ Error in POST /api/profile:", error);
     return NextResponse.json(
-      { message: error instanceof Error ? error.message : "Internal Server Error" },
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }
