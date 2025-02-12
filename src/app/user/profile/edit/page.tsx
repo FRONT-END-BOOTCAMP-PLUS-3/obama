@@ -29,18 +29,6 @@ const EditPage = () => {
     router.push(`/user/items?cn=${categoryName}`);
   };
 
-  const convertHashtagInput = (userInputs: AboutMeData[]): AboutMeData[] => {
-    return userInputs
-      .filter((input) => input.category_id <= 11)
-      .map((input) => ({
-        category_id: input.category_id,
-        answer: input.answer
-          .split(",")
-          .map((v) => `#${v}`)
-          .join(" "),
-      }));
-  };
-
   const [categories, setCategories] = useState<Category[]>([]);
   const [userInputData, setUserInputData] = useState<AboutMeData[]>([]);
 
@@ -67,7 +55,7 @@ const EditPage = () => {
           throw new Error("userinput 데이터를 가져오는 데 실패했습니다.");
 
         const data = await res.json();
-        setUserInputData(convertHashtagInput(data));
+        setUserInputData(data);
       } catch (error) {
         console.error("userinput API 오류:", error);
       }

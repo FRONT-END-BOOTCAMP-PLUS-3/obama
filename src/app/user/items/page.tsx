@@ -39,7 +39,9 @@ export default function CreatePage() {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [question, setQuestion] = useState<string>("");
   const [introText, setIntroText] = useState<string>("");
-
+  const [userInputData, setUserInputData] = useState<
+    { category_id: number; answer: string }[]
+  >([]);
   const [textFieldValue, setTextFieldValue] = useState<string>("");
 
   const mbtiOptions = [
@@ -60,6 +62,27 @@ export default function CreatePage() {
     "ESTP",
     "ESFP",
   ];
+
+  useEffect(() => {
+    const fetchUserinputdata = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        if (!userId) throw new Error("User ID가 없습니다.");
+
+        const res = await fetch(`/api/user/input?userId=${userId}`);
+        if (!res.ok)
+          throw new Error("userinput 데이터를 가져오는 데 실패했습니다.");
+
+        const data = await res.json();
+        setUserInputData(data);
+        console.log(data);
+      } catch (error) {
+        console.error("userinput API 오류:", error);
+      }
+    };
+
+    fetchUserinputdata();
+  }, []);
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -246,6 +269,20 @@ export default function CreatePage() {
   const toggleSelection = (type: string) => {
     setSelectedType((prev) => (prev === type ? null : type));
   };
+
+  useEffect(() => {
+    if (!categoryId || userInputData.length === 0) return;
+
+    const userInput = userInputData.find(
+      (input) => input.category_id === categoryId
+    );
+    if (userInput && userInput.answer) {
+      const selectedValues = new Set(
+        userInput.answer.split(", ").map((item) => item.trim())
+      );
+      setSelectedItems(selectedValues);
+    }
+  }, [categoryId, userInputData]);
 
   return (
     <ProfileCreateContainer>
