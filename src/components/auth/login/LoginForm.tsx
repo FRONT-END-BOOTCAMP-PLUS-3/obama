@@ -15,10 +15,11 @@ const LoginForm = () => {
   const {
     formState,
     isLoading,
-    // errors,
-    handleLoginFormChange,
-    handleLoginSubmit,
-    handleClickSignUpPage,
+    handleFormChange,
+    handleSubmit,
+    handleClickBack,
+    handleClickFindId,
+    handleClickFindPassword
   } = useLoginForm();
 
   const { email, password } = formState;
@@ -26,7 +27,7 @@ const LoginForm = () => {
   return (
     <>
       <LoginWrapper>
-        <Title>로그인</Title>
+        <Title>로그인 찾기</Title>
         <InputLayer>
           <TextField
             name="email"
@@ -36,7 +37,7 @@ const LoginForm = () => {
             required={true}
             autoFocus={true}
             value={email}
-            onChange={handleLoginFormChange}
+            onChange={handleFormChange}
           />
 
           <TextField
@@ -47,7 +48,7 @@ const LoginForm = () => {
             maxLength={20}
             required={true}
             value={password}
-            onChange={handleLoginFormChange}
+            onChange={handleFormChange}
           />
         </InputLayer>
         <SectionButtonLayer>
@@ -55,7 +56,7 @@ const LoginForm = () => {
             size="m"
             variant="line"
             type="button"
-            onClick={handleClickSignUpPage}
+            onClick={handleClickBack}
             disabled={isLoading}
           >
             회원 가입
@@ -64,14 +65,14 @@ const LoginForm = () => {
             size="m"
             variant="contained"
             type="submit"
-            onClick={handleLoginSubmit}
+            onClick={handleSubmit}
             disabled={isLoading}
           >
             로그인
           </Button>
           <TextButtonLayer>
-            <TextButton>이메일 찾기</TextButton>
-            <TextButton>비밀번호 찾기</TextButton>
+            <TextButton type="button" onClick={handleClickFindId}>이메일 찾기</TextButton>
+            <TextButton type="button" onClick={handleClickFindPassword}>비밀번호 찾기</TextButton>
           </TextButtonLayer>
         </SectionButtonLayer>
       </LoginWrapper>
