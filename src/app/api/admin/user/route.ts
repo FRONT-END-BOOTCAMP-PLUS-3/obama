@@ -32,7 +32,7 @@ export async function DELETE(req: NextRequest) {
     }
     return NextResponse.json({ message: "Delete Success" }, { status: 200 });
   } catch (error) {
-    console.error("❌ 관리자 회원 삭제 오류:", error);
+    console.error(" 관리자 회원 삭제 오류:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

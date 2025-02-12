@@ -6,12 +6,14 @@ import AdminLayoutContainer from "@/components/admin/AdminLayoutContainer";
 import ConfirmDeleteModal from "@/components/admin/deletemodal/ConfirmDeleteModal";
 import AdminTable from "@/components/admin/table/Table";
 import { Icon } from "@/components/admin/AdminOpenQuestion.Style";
+import useAdminAuth from "@/components/admin/hook/useAdminAuth";
 
 // DB연결 및 BE 과정에서 usecase로 분리 및 수정이 이루어질 페이지 입니다.
 
 const ROWS_PER_PAGE = 10;
 
 const AdminUser: React.FC = () => {
+  useAdminAuth();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
   const [selectedId, setSelectedId] = useState<number | null>(null); 
   const [currentPage, setCurrentPage] = useState(1);

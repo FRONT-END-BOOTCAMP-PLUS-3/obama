@@ -9,10 +9,12 @@ import { createColumns } from "@/components/admin/BalancegameTable";
 import BalancegameModal from "@/components/admin/balancegamemodal/BalancegameModal";
 import { AddButton } from "@/components/admin/AdminBalanceGame.Style";
 import SearchBar from "@/components/admin/searchbar/Searchbar";
+import useAdminAuth from "@/components/admin/hook/useAdminAuth";
 
 const ROWS_PER_PAGE = 10;
 
 const AdminBalancegame: React.FC = () => {
+  useAdminAuth();
   const {
     data,
     currentPage,
