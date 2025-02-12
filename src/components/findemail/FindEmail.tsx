@@ -8,24 +8,30 @@ import {
 import { TextField } from "@/components/common/textField";
 import { Button } from "@/components/common/button";
 import { useFindEmailForm } from "@/components/findemail/useFindEmailForm";
+import FindEmailResult from "./FindEmailResult";
+
 
 const FindEmail = () => {
   const {
     formState,
     isLoading,
-    // email,
+    message,
+    isChange,
     handleFormChange,
     handleSubmit,
     handleClickBack,
   } = useFindEmailForm();
 
   const {name, phone} = formState;
+  // const email:string ="seogu080@naver.com";
 
   return (
     <>
       <FindEmailWrapper>
         <Title>이메일 찾기</Title>
-        <InputLayer>
+        {isChange ? <FindEmailResult email={message} />:(
+          <>
+         <InputLayer>
           <TextField
             name="name"
             placeholder="name"
@@ -47,7 +53,8 @@ const FindEmail = () => {
             value={phone}
             onChange={handleFormChange}
           />
-        </InputLayer>
+        </InputLayer> 
+   
         <SectionButtonLayer>
           <Button
             size="m"
@@ -68,6 +75,8 @@ const FindEmail = () => {
             이메일 찾기
           </Button>
         </SectionButtonLayer>
+        </>
+           )}  
       </FindEmailWrapper>
     </>
   );

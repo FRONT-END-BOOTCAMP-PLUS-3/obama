@@ -21,7 +21,9 @@ export const useFindEmailForm = () => {
     phone: "",
   });
 
-  const [email, setEmail] = useState<string> ("");
+  const [isChange, setIsChange] = useState<boolean>(false);
+
+  const [message, setMessage] = useState<string> ("");
   const [errors, setErrors] = useState<FindEmailFormError>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -62,7 +64,7 @@ export const useFindEmailForm = () => {
 
       try {
         // ✅ fetchClient를 사용하여 로그인 요청
-        const response = await fetchClient<FindEmailFormState,  string >(
+        const response = await fetchClient<FindEmailFormState,  {email:string} >(
           "/api/findemail",
           {
             method: "POST",
@@ -78,8 +80,8 @@ export const useFindEmailForm = () => {
           // 로그인 시 UUID와 UserRole data 출력
           const emailData = response.data;
 
-          setEmail(emailData);
-
+          setMessage(emailData.email);
+       
           // 전역 상태 로그인 관리
           // 로그인 성공시 profile routing
           // router.push("/");
@@ -92,6 +94,7 @@ export const useFindEmailForm = () => {
         alert("잘못된 유저정보입니다.");
       } finally {
         setIsLoading(false);
+        setIsChange(true);
       }
     },
     [formState, router, validateForm]
@@ -105,7 +108,8 @@ export const useFindEmailForm = () => {
     formState,
     errors,
     isLoading,
-    email,
+    message,
+    isChange,
     handleFormChange,
     handleSubmit,
     handleClickBack,
