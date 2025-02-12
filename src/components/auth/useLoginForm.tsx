@@ -81,7 +81,7 @@ export const useLoginForm = () => {
         // 전역 상태 로그인 관리
         setAuth(userId, role);
         // 로그인 성공시 profile routing
-        router.push("/");  
+        router.push("/user/profile");  
       
       } else {
         console.error("❌ 로그인 실패:", response.error);
