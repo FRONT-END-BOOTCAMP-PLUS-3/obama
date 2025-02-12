@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Title = styled.h2`
-  margin-top: 6.25rem;
-  margin-bottom: 4rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
   color: var(--black-color);
 `
 

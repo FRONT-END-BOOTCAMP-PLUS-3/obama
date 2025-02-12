@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { IconContainer, Title, ButtonContainer } from "@/components/smaltalk/Suggest.Styled";
+import {  Title, ButtonContainer } from "@/components/smaltalk/Suggest.Styled";
 import Button  from "@/components/common/button/Button";
 import React, { useState } from "react";
 import LayoutContainer from "@/components/common/LayoutContainer";
@@ -21,9 +21,6 @@ export default function SmalltalkPage() {
 
   return (
     <LayoutContainer>
-      <IconContainer onClick={() => router.back()}>
-        <img src="/Icons/arrowLeft.svg" alt="뒤로가기 버튼" />
-      </IconContainer>
       <Title>대화주제 추천받기</Title>
       {selectedSubjectId === 1 ? (
         <BalanceGame subjectId={selectedSubjectId} refreshKey={refreshKey} />
