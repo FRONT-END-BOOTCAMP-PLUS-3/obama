@@ -8,11 +8,9 @@ export async function GET(_req: NextRequest) {
   console.log("🔥 관리자 유저 목록 조회 API 요청 수신");
 
   try {
-    // 1️⃣ UserRepository 인스턴스 생성
     const userRepository = new SbUserRepository();
-
-    // 2️⃣ UseCase 실행
     const findAllUsersUseCase = new FindAllUsersUseCase(userRepository);
+
     const users = await findAllUsersUseCase.execute();
 
     return NextResponse.json({ users }, { status: 200 });
@@ -24,9 +22,6 @@ export async function GET(_req: NextRequest) {
     );
   }
 }
-
-
-
 
 
 export async function DELETE(req: NextRequest) {

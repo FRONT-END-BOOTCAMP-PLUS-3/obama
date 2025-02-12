@@ -8,6 +8,7 @@ import AdminTable from "@/components/admin/table/Table";
 import { Icon } from "@/components/admin/AdminOpenQuestion.Style";
 import useAdminAuth from "@/components/admin/hook/useAdminAuth";
 import { fetchClient } from "@/utils/api/fetchClient";
+import useAuthStore from "@/store/authStore";
 
 const ROWS_PER_PAGE = 10;
 
@@ -35,10 +36,12 @@ const fetchUsers = async () => {
 const AdminUser: React.FC = () => {
   useAdminAuth(); 
 
+  const {role} = useAuthStore();
+
   const [data, setData] = useState<User[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(null); 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchUsers().then(setData);
@@ -64,14 +67,26 @@ const AdminUser: React.FC = () => {
   const handleDeleteConfirm = useCallback(async () => {
     if (!selectedUserId) return;
 
-    console.log(` 삭제 요청: ${selectedUserId}`);
+    if (!role) {
+      console.error("❌ 삭제 요청 실패: role 값이 없음");
+      alert("삭제 권한이 없습니다.");
+      return;
+    }
 
-    setData((prev) => prev.filter((user) => user.userId !== selectedUserId));
+    const response = await fetchClient<{ userId: string, role : string }, { message: string }>("/api/admin/user", {
+      method: "DELETE",
+      body: { userId: selectedUserId ,role },
+    });
 
-    setIsDeleteModalOpen(false);
-    setSelectedUserId(null);
-  }, [selectedUserId]);
-
+    if (response.status === 200) {
+      setData((prev) => prev.filter((user) => user.userId !== selectedUserId));
+      setIsDeleteModalOpen(false);
+      setSelectedUserId(null);
+      alert("User delete success!")
+    } else {
+      console.error(" User delete failed : ", response.error);
+    }
+  }, [selectedUserId, role]);
 
   const handleDeleteCancel = () => {
     setIsDeleteModalOpen(false);
@@ -91,7 +106,7 @@ const AdminUser: React.FC = () => {
         <Icon
           src="/icons/editTrashcan.svg"
           alt="Delete"
-          onClick={() => handleDeleteClick(row.userId)} 
+          onClick={() => handleDeleteClick(row.userId)}
         />
       ),
     },
@@ -108,9 +123,9 @@ const AdminUser: React.FC = () => {
       />
 
       <ConfirmDeleteModal
-        $isOpen={isDeleteModalOpen} 
-        onConfirm={handleDeleteConfirm} 
-        onCancel={handleDeleteCancel} 
+        $isOpen={isDeleteModalOpen}
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
       />
     </AdminLayoutContainer>
   );
