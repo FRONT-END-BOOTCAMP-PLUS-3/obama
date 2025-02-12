@@ -1,19 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProfileHeader from "./ProfileHeader";
 import AboutMe from "./AboutMe";
 import useAuthStore from "@/store/authStore";
-import { LoginContainer, LoginMessage, PageContainer, ContentWrapper } from "./ProfilePage.Styled";
+import { PageContainer, ContentWrapper, SectionContainer } from "./ProfilePage.Styled";
 import { UserRole } from "@/types/auth";
-import { Button } from "@/components/common/button";
 import ProfileActions from "./ProfileActions";
+import IspublicToggle from "./IspublicToggle";
 
 const ProfilePage: React.FC = () => {
   const { userId, setAuth } = useAuthStore();
   const [profileData, setProfileData] = useState<{ user: any; aboutMe: any[] } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hiddenCategories, setHiddenCategories] = useState<number[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -47,28 +48,24 @@ const ProfilePage: React.FC = () => {
     fetchProfileData();
   }, [userId]);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (!userId) {
-    return (
-      <LoginContainer>
-        <LoginMessage>로그인이 필요합니다.</LoginMessage>
-        <Button size="l" onClick={() => router.push("/login")}>
-          로그인 페이지로 이동
-        </Button>
-      </LoginContainer>
+  const handleToggleChange = useCallback((categoryId: number, isChecked: boolean) => {
+    setHiddenCategories((prev) =>
+      isChecked ? prev.filter((id) => id !== categoryId) : [...prev, categoryId]
     );
-  }
+  }, []);
 
   return (
     <PageContainer>
       {profileData ? (
         <ContentWrapper>
-          <ProfileHeader user={profileData.user} />
-          <AboutMe userId={userId} aboutMeData={profileData.aboutMe} />
-          <ProfileActions />
+          <SectionContainer>
+            <ProfileHeader user={profileData.user} />
+            <AboutMe userId={userId} hiddenCategories={hiddenCategories} />
+          </SectionContainer>
+          <SectionContainer>
+            <IspublicToggle onToggleChange={handleToggleChange} />
+            <ProfileActions />
+          </SectionContainer>
         </ContentWrapper>
       ) : (
         <p>프로필 정보를 불러오는 중입니다...</p>

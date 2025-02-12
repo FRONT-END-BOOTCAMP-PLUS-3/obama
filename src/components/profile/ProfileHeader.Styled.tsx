@@ -7,7 +7,6 @@ export const HeaderWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   background: linear-gradient(180deg, hsl(205, 86.7%, 94.1%), #ffffff);
-  padding: 2rem;
 `;
 
 export const ImageWrapper = styled.div`
