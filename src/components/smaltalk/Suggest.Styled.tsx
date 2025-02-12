@@ -1,15 +1,8 @@
 import styled from "styled-components";
 
 export const Title = styled.h2`
-  margin-top: 3rem;
+  margin-top: 2rem;
   color: var(--black-color);
-`
-
-export const IconContainer = styled.div`
-  display: flex;
-  align-self: flex-start;
-  margin-left: 1rem;
-  margin-top: 5rem;
 `
 
 export const BalanceGameQuestion = styled.h5`
@@ -21,7 +14,7 @@ export const BalanceGameQuestion = styled.h5`
 export const Question = styled.h5`
   color: var(--black-color);
   margin-bottom: 1.25rem;
-  margin-top: 3rem;
+  margin-top: 1rem;
   text-align: center;
   padding: 0 1.25rem;
 `
