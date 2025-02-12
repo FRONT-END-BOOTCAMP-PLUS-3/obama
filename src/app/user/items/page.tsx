@@ -34,7 +34,6 @@ export default function CreatePage() {
   const searchParams = useSearchParams(); // useSearchParams를 사용
   const categoryName = searchParams.get("cn"); // 'cn' 쿼리 파라미터에서 값을 가져옵니다.
   const [categoryId, setCategoryId] = useState<number | null>(null);
-
   const [items, setItems] = useState<Item[]>([]); // update with your actual type
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [question, setQuestion] = useState<string>("");
@@ -166,10 +165,10 @@ export default function CreatePage() {
         const userId = localStorage.getItem("userId");
         if (!userId) throw new Error("userId가 없습니다.");
 
-        const filePath = `profiles/${userId}.png`; // ✅ 확장자 고정
+        const filePath = `profiles/${userId}.png`;
 
-        // ✅ Supabase에 이미지 업로드
-        await supabase.storage.from("profile-images").remove([filePath]); // 기존 파일 삭제
+        // ✅ Supabase에 이미지 업로드 (기존 파일 삭제 후 업로드)
+        await supabase.storage.from("profile-images").remove([filePath]);
 
         const { data, error } = await supabase.storage
           .from("profile-images")
@@ -188,7 +187,6 @@ export default function CreatePage() {
       answer = textFieldValue;
     }
 
-    // ✅ "다음" 버튼 클릭 시에만 유효성 검사 실행
     if (direction === "next" && !answer) {
       alert("답변을 입력하거나 선택해주세요!");
       return;
@@ -197,7 +195,7 @@ export default function CreatePage() {
     if (direction === "next") {
       try {
         const response = await fetch("/api/profile", {
-          method: "POST",
+          method: "POST", // ✅ 기존과 동일 (서버에서 upsert 처리)
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             category_id: categoryId,
@@ -221,7 +219,7 @@ export default function CreatePage() {
     setSelectedType(null);
     setIntroText("");
     setTextFieldValue("");
-    setProfileImage(null); // ✅ 이미지 상태 초기화
+    setProfileImage(null);
 
     if (categoryId === 12) {
       router.push("/user");
