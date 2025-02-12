@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/authStore";
 
-const useAdminAuth = () => {
+const UseAdminAuth = () => {
   const { isAdmin, isAuthenticated } = useAuthStore();
   const router = useRouter();
 
@@ -14,4 +14,4 @@ const useAdminAuth = () => {
   }, [isAdmin, isAuthenticated, router]);
 };
 
-export default useAdminAuth;
+export default UseAdminAuth;
