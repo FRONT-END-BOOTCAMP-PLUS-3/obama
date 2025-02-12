@@ -10,11 +10,7 @@ import {
 import Button from "@/components/common/button/Button";
 import { useLoginForm } from "@/components/auth/useLoginForm";
 import TextButton from "@/components/common/button/TextButton";
-interface Category {
-  id: number;
-  korname: string;
-  name: string;
-}
+
 
 const LoginForm = () => {
   const {
