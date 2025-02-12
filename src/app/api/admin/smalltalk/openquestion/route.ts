@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SbOpenQuestionRepository } from "@/infrastructure/repositories/smalltalk/SbOpenQuestionRepository";
-import { CreateOpenQuestionUsecase } from "@/application/usecases/smalltalk/CreateOpenQuestionUsecase";
+import { CreateOpenQuestionUsecase } from "@/application/usecases/admin/openquestion/CreateOpenQuestionUsecase";
 import { OpenQuestionsUsecase } from "@/application/usecases/smalltalk/OpenQuestionUsecase";
-import { UpdateOpenQuestionUsecase } from "@/application/usecases/smalltalk/UpdateOpenQuestionUsecase";
-import { DeleteOpenQuestionUsecase } from "@/application/usecases/smalltalk/DeleteOpenQuestionUsecase";
+import { UpdateOpenQuestionUsecase } from "@/application/usecases/admin/openquestion/UpdateOpenQuestionUsecase";
+import { DeleteOpenQuestionUsecase } from "@/application/usecases/admin/openquestion/DeleteOpenQuestionUsecase";
 
 export async function GET(request: NextRequest) {
   try {

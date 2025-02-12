@@ -10,7 +10,7 @@ import { AddButton } from "@/components/admin/AdminOpenQuestion.Style";
 import { UseOpenQuestion } from "@/components/admin/hook/UseOpenQuestion";
 import { UseModal } from "@/components/admin/hook/UseModals";
 import { EditOpenQuestionTable } from "@/components/admin/EditOpenQuestionTable";
-import useAdminAuth from "@/components/admin/hook/useAdminAuth";
+import useAdminAuth from "@/components/admin/hook/UseAdminAuth";
 
 const ROWS_PER_PAGE = 10;
 
