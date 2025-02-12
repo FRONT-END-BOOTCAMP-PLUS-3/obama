@@ -27,7 +27,7 @@ const LoginForm = () => {
   return (
     <>
       <LoginWrapper>
-        <Title>로그인 찾기</Title>
+        <Title>로그인</Title>
         <InputLayer>
           <TextField
             name="email"

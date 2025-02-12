@@ -8,7 +8,7 @@ import {
   validateVerificationCode,
 } from "@/utils/auth/validate";
 import { useRouter } from "next/navigation";
-import {  useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface FormState {
   email: string;
@@ -91,7 +91,6 @@ export const useSignUpForm = () => {
     return Object.keys(newErrors).length === 0;
   }, [formState, verificationCode]);
 
-
   useEffect(() => {
     setIsFormValid(validateForm());
   }, [formState, verificationCode, validateForm]);
@@ -103,16 +102,12 @@ export const useSignUpForm = () => {
     }));
   }, [phoneSegments]);
 
-
-  const handleFormChange = useCallback(
-    (name: string, value: string) => {
-      setFormState((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }, []
-  );
-
+  const handleFormChange = useCallback((name: string, value: string) => {
+    setFormState((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }, []);
 
   const handlePhoneChange = useCallback(
     (segment: "first" | "second" | "third", value: string) => {
@@ -124,7 +119,7 @@ export const useSignUpForm = () => {
     []
   );
 
-const getFieldState = (
+  const getFieldState = (
     value: string,
     errorMessage?: string
   ): "default" | "error" => {
@@ -148,15 +143,12 @@ const getFieldState = (
         console.log("인증완료");
         alert(message);
         setIsDuplicated(true);
-        
       } else {
         alert(message);
         setIsDuplicated(false);
-        
       }
     } catch (error) {
       console.error(error);
-
     } finally {
       setIsLoading(false);
     }
@@ -168,10 +160,10 @@ const getFieldState = (
     },
     []
   );
-  
+
   const sendEmail = useCallback(async () => {
     console.log("sendEmailButton onClick", formState.email);
-    
+
     try {
       const response = await apiClient.post("/api/auth/send-email", {
         email: formState.email,
@@ -256,26 +248,30 @@ const getFieldState = (
     [formState, isFormValid, isVerified]
   );
 
+  const handleCancel = useCallback(async (): Promise<void> => {
+    await router.push("/login"); // router.push()는 Promise를 반환하므로 그대로 사용 가능
+  }, []);
+
   const resetField = (field: keyof FormState) => {
     setFormState((prev) => ({
       ...prev,
       [field]: "",
     }));
-  
+
     setErrors((prev) => ({
       ...prev,
       [field]: undefined, // 에러 초기화
     }));
-  
+
     if (field === "email") {
       setIsDuplicated(false);
       setIsVerified(false);
       setVerificationCode("");
     }
-    if (field === "password"){
-      setFormState((prev)=> ({
+    if (field === "password") {
+      setFormState((prev) => ({
         ...prev,
-        ["passwordConfirm"]:"",
+        ["passwordConfirm"]: "",
       }));
     }
   };
@@ -283,7 +279,7 @@ const getFieldState = (
   return {
     formState,
     errors,
-    phoneSegments,    
+    phoneSegments,
     verificationCode,
     isDuplicated,
     isVerified,
@@ -298,6 +294,7 @@ const getFieldState = (
     sendEmail,
     getFieldState,
     handleSubmit,
-    resetField
+    handleCancel,
+    resetField,
   };
 };

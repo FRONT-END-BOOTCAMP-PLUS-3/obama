@@ -3,8 +3,8 @@ import { SectionButtonLayer } from "@/components/auth/SignUp.Styled";
 import { SignUpProps } from "@/types/auth";
 
 const SubmitSection: React.FC<
-  Pick<SignUpProps, "isFormValid" | "handleSubmit">
-> = ({ isFormValid, handleSubmit }) => {
+  Pick<SignUpProps, "isFormValid" | "handleSubmit"| "handleCancel">
+> = ({ isFormValid, handleSubmit, handleCancel }) => {
   return (
     <SectionButtonLayer>
       <Button
@@ -16,7 +16,7 @@ const SubmitSection: React.FC<
       >
         회원 가입하기
       </Button>
-      <Button size="l" variant="contained" type="button">
+      <Button size="l" variant="contained" type="button" onClick={handleCancel}>
         취 소
       </Button>
     </SectionButtonLayer>
