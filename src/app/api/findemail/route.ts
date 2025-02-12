@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   if (!email) {
     return NextResponse.json({ error: "등록되지 않은 사용자입니다." }, { status: 400 });
   }
-  return NextResponse.json(email, { status: 200 });
+  return NextResponse.json({email}, { status: 200 });
 } catch (error){
   console.error(error)
   return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
