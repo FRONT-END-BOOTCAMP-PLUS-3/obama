@@ -143,6 +143,8 @@ export class SbUserRepository implements IUserRepository {
     request: UserIdRequestDto
   ): Promise<string | null> {
     const snakedDto = toSnakeCase(request);
+
+    console.log(request);
     if (!snakedDto) {
       // 변환 결과가 null인 경우에 대한 처리
       return null;

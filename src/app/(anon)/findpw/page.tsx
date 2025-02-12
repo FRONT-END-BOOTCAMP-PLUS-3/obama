@@ -6,15 +6,21 @@ import ChangePw from "@/components/findpw/ChangePw";
 import { Title } from "@/components/auth/SignUp.Styled";
 
 const Page = () => {
-  const [step, setStep] = useState(1); 
+  
+  const [userId, setUserId] = useState("");
+
+  const handleVerificationSuccess= (id: string) => {
+    setUserId(id);
+  }
+  console.log(userId);
 
   return (
     <>
     <Title>비밀번호 변경</Title>
-      {step === 1 ? (
-        <VerifyIdentity onVerified={() => setStep(2)} />
+      {!userId ? (
+        <VerifyIdentity onVerified={handleVerificationSuccess} />
       ) : (
-        <ChangePw />
+        <ChangePw userId={userId}/>
       )}
     </>
   );

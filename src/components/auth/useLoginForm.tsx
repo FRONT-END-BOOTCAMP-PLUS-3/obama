@@ -103,7 +103,7 @@ export const useLoginForm = () => {
   },[]);
 
   const handleClickFindPassword = useCallback(async () => {
-    router.push("/findpassword");
+    router.push("/findpw");
   }, []);
 
   return {
