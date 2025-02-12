@@ -3,7 +3,7 @@
 import { useState } from "react";
 import TextField  from "@/components/common/textField/TextField";
 import { Caption, PasswordLayer, Title, WithdrawButtonLayer, WithdrawWrapper } from "./Withdraw.Styled";
-import { Button } from "../common/button";
+import { Button } from "@/components/common/button";
 import useAuthStore from "@/store/authStore";
 import { fetchClient } from "@/utils/api/fetchClient";
 import { useRouter } from "next/navigation";

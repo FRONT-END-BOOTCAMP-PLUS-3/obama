@@ -43,8 +43,7 @@ export const useLoginForm = () => {
     return Object.keys(newErrors).length === 0;
   }, [formState]);
 
-  const handleLoginFormChange = useCallback((name: string, value: string) => {
-    
+  const handleFormChange = useCallback((name: string, value: string) => {
     // 입력 변경 반영 함수
     setFormState((prev) => ({
       ...prev,
@@ -53,7 +52,7 @@ export const useLoginForm = () => {
   }, []);
 
   // 로그인 버튼 눌렀을 시 동작 함수
-  const handleLoginSubmit = useCallback(async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     
     // 이벤트 시 재랜더링 방지 함수
     e.preventDefault();
@@ -95,18 +94,28 @@ export const useLoginForm = () => {
     }
   }, [formState, router, validateForm]);
   
-
-  const handleClickSignUpPage = useCallback(async () => {
+  const handleClickBack = useCallback(async () => {
     router.push("/signup");
   }, [])
+
+  const handleClickFindId = useCallback(async () => {
+    router.push("/findid");
+  },[]);
+
+  const handleClickFindPassword = useCallback(async () => {
+    router.push("/findpassword");
+  }, []);
 
   return {
     formState,
     errors,
     isLoading,
 
-    handleLoginFormChange,
-    handleLoginSubmit,
-    handleClickSignUpPage,
+    handleFormChange,
+    handleSubmit,
+    handleClickBack,
+    handleClickFindId,
+    handleClickFindPassword
+    
   };
 };

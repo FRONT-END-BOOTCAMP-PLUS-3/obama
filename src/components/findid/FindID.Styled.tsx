@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 
-export const LoginWrapper = styled.form`
+export const FindIDWrapper = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,15 +26,4 @@ export const SectionButtonLayer = styled.div`
   width: 100%;
   flex-wrap: wrap;
   justify-content: space-between;
-`;
-
-
-export const TextButtonLayer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    gap: 1.25rem;
-    margin-top: 4rem;
-
 `;

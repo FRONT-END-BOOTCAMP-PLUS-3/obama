@@ -11,7 +11,7 @@ interface TextButtonProps {
   onClick?: () => void;
 }
 
-const TextButton: React.FC<TextButtonProps> = ({ children,  color, type ,onClick }) => {
+const TextButton: React.FC<TextButtonProps> = ({ children,  color, type , onClick }) => {
   return (
     <TextButtonStyled
       color={color}
