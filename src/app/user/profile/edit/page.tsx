@@ -9,6 +9,7 @@ import {
 
 import InfoItem from "@/components/dashboard/InfoItem";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface Category {
   id: number;
@@ -22,6 +23,12 @@ interface AboutMeData {
 }
 
 const EditPage = () => {
+  const router = useRouter();
+
+  const handleEdit = (categoryName: string) => {
+    router.push(`/user/items?cn=${categoryName}`);
+  };
+
   const convertHashtagInput = (userInputs: AboutMeData[]): AboutMeData[] => {
     return userInputs
       .filter((input) => input.category_id <= 11)
@@ -86,11 +93,13 @@ const EditPage = () => {
           const category = categories.find(
             (cat) => cat.id === item.category_id
           );
+
           return (
             <InfoItem
               key={item.category_id}
               field={category ? category.korname : "알 수 없음"}
               text={item.answer}
+              onEdit={() => category && handleEdit(category.name)} // onEdit 추가
             />
           );
         })}
