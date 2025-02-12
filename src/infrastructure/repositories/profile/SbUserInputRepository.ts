@@ -1,13 +1,10 @@
 import supabase from "@/infrastructure/databases/supabase/server";
-import { IUserInputRepository } from "@/domain/repositories/profile/IUserinputRepository";
+import { IUserInputRepository } from "@/domain/repositories/profile/IUserInputRepository";
 import { UserInput } from "@/domain/entities/profile/UserInput";
 import { toSnakeCase } from "@/utils/convert/convertToCase";
 
 export class SbUserInputRepository implements IUserInputRepository {
-  findAnswerByUserId(userId: string): Promise<UserInput[]> {
-    throw new Error("Method not implemented.");
-  }
-  async findAllByUserId(userId: string): Promise<UserInput[]> {
+  async findAllByUserId(user_id: string): Promise<UserInput[]> {
     const client = await supabase();
     const { data, error } = await client
       .from("userInput")
@@ -34,4 +31,7 @@ export class SbUserInputRepository implements IUserInputRepository {
       console.error("Supabase Insert Error:", error);
       throw new Error(`Failed to insert user input: ${error.message}`);
     }
+
+    return data;
   }
+}
