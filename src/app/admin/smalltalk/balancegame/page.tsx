@@ -52,8 +52,6 @@ const AdminBalancegame: React.FC = () => {
   );
 
  
-  
-
   return (
     <AdminLayoutContainer>
       <SearchBar placeholder="ID 또는 질문명을 입력해주세요." />
