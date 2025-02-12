@@ -1,12 +1,15 @@
 import supabase from "@/infrastructure/databases/supabase/server";
 import { User } from "@/domain/entities/user/User";
 import { IUserRepository } from "@/domain/repositories/auth/IUserRepository";
-import { toCamelCase, toSnakeCase, toSnakeCaseString } from "@/utils/convert/convertToCase";
+import {
+  toCamelCase,
+  toSnakeCase,
+  toSnakeCaseString,
+} from "@/utils/convert/convertToCase";
 import { UserRole } from "@/types/auth";
+import { UserIdRequestDto } from "@/application/usecases/auth/dtos/userIdRequestDto";
 
 export class SbUserRepository implements IUserRepository {
-
- 
   private readonly tableName = "user";
 
   // Create
@@ -111,16 +114,20 @@ export class SbUserRepository implements IUserRepository {
     });
   }
 
-  async findEmailByNameAndPhone(name: string, phone: string): Promise<string | null> {
+  // 이메일 찾기를 통해 검색
+  async findEmailByNameAndPhone(
+    name: string,
+    phone: string
+  ): Promise<string | null> {
     const client = await supabase();
     const { data, error } = await client
-     .from(this.tableName)
-     .select("email")
-     .eq("phone", phone)
-     .eq("name", name)
-     .single();
+      .from(this.tableName)
+      .select("email")
+      .eq("phone", phone)
+      .eq("name", name)
+      .single();
 
-     if (error) {
+    if (error) {
       if (error.code === "PGRST116") {
         // 데이터가 없을 때 발생하는 에러 (PostgREST의 'No rows found' 에러)
         return null;
@@ -129,7 +136,35 @@ export class SbUserRepository implements IUserRepository {
       throw new Error("EMAIL_NOT_FOUND");
     }
 
-    return  toCamelCase(data.email) ||  null;
+    return toCamelCase(data.email) || null;
+  }
+
+  async findIdByNameAndPhoneAndEmailAndBirthDate(
+    request: UserIdRequestDto
+  ): Promise<string | null> {
+    const snakedDto = toSnakeCase(request);
+    if (!snakedDto) {
+      // 변환 결과가 null인 경우에 대한 처리
+      return null;
+    }
+
+    const client = await supabase();
+    const { data, error } = await client
+      .from(this.tableName)
+      .select("user_id")
+      .match(snakedDto)
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") {
+        // 데이터가 없을 때 발생하는 에러 (PostgREST의 'No rows found' 에러)
+        return null;
+      }
+      console.error("Error finding userId:", error.message);
+      throw new Error("USER_NOT_FOUND");
+    }
+
+    return toCamelCase(data.user_id);
   }
 
   // Delete
@@ -152,22 +187,23 @@ export class SbUserRepository implements IUserRepository {
   }
 
   //Update
-  async updateUserField(userId: string, field: string, newValue: string): Promise<boolean> {
-    
+  async updateUserField(
+    userId: string,
+    field: string,
+    newValue: string
+  ): Promise<boolean> {
     const snakeField = toSnakeCaseString(field);
     const client = await supabase();
-    const {error} = await client
+    const { error } = await client
       .from(this.tableName)
       .update({ [snakeField]: newValue })
       .eq("user_id", userId);
 
-      if (error) {
-        console.error("❌ 업데이트 실패:", error);
-        return false;
+    if (error) {
+      console.error("❌ 업데이트 실패:", error);
+      return false;
     }
     console.log("✅ 업데이트 성공");
     return true;
   }
 }
-
-

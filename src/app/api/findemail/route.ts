@@ -4,12 +4,13 @@ import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepos
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
+  try {
   const { name, phone } = await req.json();
 
   if (!name || !phone) { return NextResponse.json({ error: "모든 필드를 입력해야 합니다." }, { status: 400 });
   }
 
-  try {
+
   // DB의존성 주입
   const userRepository: IUserRepository = new SbUserRepository();
 
