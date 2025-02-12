@@ -1,20 +1,22 @@
-import { NextRequest, NextResponse } from "next/server";
-import { SbUserInputRepository } from "@/infrastructure/repositories/profile/SbUserInputRepository";
-import { UserInput } from "@/domain/entities/profile/UserInput";
+import { NextResponse } from "next/server";
+import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepository";
+import { toCamelCase } from "@/utils/convert/convertToCase";
 
-export async function POST(req: NextRequest) {
+export async function GET(request: Request) {
   try {
-    const body = await req.json();
-    console.log("📥 Received Body:", body); // 요청 데이터 확인
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
 
-    const { category_id, answer, user_id } = body;
+    if (!userId) {
+      return NextResponse.json({ message: "Invalid userId" }, { status: 400 });
+    }
 
     const userRepository = new SbUserRepository();
 
     // ✅ 유저 기본 정보 조회
     const userResult = await userRepository.findUserById(userId);
     if (!userResult) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+      return NextResponse.json({ message: "User not found" }, { status: 403 });
     }
 
     return NextResponse.json({
@@ -22,9 +24,9 @@ export async function POST(req: NextRequest) {
     }, { status: 200 });
 
   } catch (error) {
-    console.error("❌ Error in POST /api/profile:", error);
+    console.error("API Error:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { message: error instanceof Error ? error.message : "Internal Server Error" },
       { status: 500 }
     );
   }
