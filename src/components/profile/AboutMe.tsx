@@ -47,7 +47,6 @@ const AboutMe: React.FC<AboutMeProps> = ({ userId }) => {
         if (!res.ok) throw new Error("유저 프로필 데이터를 가져오는 데 실패했습니다.");
 
         const data = await res.json();
-        console.log("🔹 유저 프로필 데이터:", data); // ✅ 콘솔 출력
 
         setAboutMeData(data.aboutMeData);
       } catch (error) {
@@ -61,7 +60,6 @@ const AboutMe: React.FC<AboutMeProps> = ({ userId }) => {
         if (!res.ok) throw new Error("카테고리 데이터를 가져오는 데 실패했습니다.");
 
         const data = await res.json();
-        console.log("🔹 카테고리 데이터:", data); // ✅ 콘솔 출력
 
         setCategories(data.categories);
       } catch (error) {
@@ -75,7 +73,6 @@ const AboutMe: React.FC<AboutMeProps> = ({ userId }) => {
         if (!res.ok) throw new Error("userinput 데이터를 가져오는 데 실패했습니다.");
 
         const data = await res.json();
-        console.log("🔹 userinput 데이터:", data); // ✅ 콘솔 출력
 
         setUserInputData(convertHashtagInput(data));
       } catch (error) {
