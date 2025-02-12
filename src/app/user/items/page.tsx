@@ -32,6 +32,7 @@ export default function CreatePage() {
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams(); // useSearchParams를 사용
+  const isEditMode = searchParams.get("edit") === "true";
   const categoryName = searchParams.get("cn"); // 'cn' 쿼리 파라미터에서 값을 가져옵니다.
   const [categoryId, setCategoryId] = useState<number | null>(null);
   const [items, setItems] = useState<Item[]>([]); // update with your actual type
@@ -167,7 +168,6 @@ export default function CreatePage() {
 
         const filePath = `profiles/${userId}.png`;
 
-        // ✅ Supabase에 이미지 업로드 (기존 파일 삭제 후 업로드)
         await supabase.storage.from("profile-images").remove([filePath]);
 
         const { data, error } = await supabase.storage
@@ -195,7 +195,7 @@ export default function CreatePage() {
     if (direction === "next") {
       try {
         const response = await fetch("/api/profile", {
-          method: "POST", // ✅ 기존과 동일 (서버에서 upsert 처리)
+          method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             category_id: categoryId,
@@ -212,6 +212,12 @@ export default function CreatePage() {
         console.error("❌ 저장 중 오류 발생:", error);
         return;
       }
+    }
+
+    // ✅ 수정 모드라면, 인포 페이지로 돌아가기
+    if (isEditMode) {
+      router.push(`/user/profile/edit`); // 여기에서 수정 완료 후 이동할 페이지 설정
+      return;
     }
 
     // ✅ 상태 초기화

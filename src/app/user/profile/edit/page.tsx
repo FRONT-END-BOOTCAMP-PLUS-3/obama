@@ -26,7 +26,7 @@ const EditPage = () => {
   const router = useRouter();
 
   const handleEdit = (categoryName: string) => {
-    router.push(`/user/items?cn=${categoryName}`);
+    router.push(`/user/items?cn=${categoryName}&edit=true`);
   };
 
   const [categories, setCategories] = useState<Category[]>([]);
