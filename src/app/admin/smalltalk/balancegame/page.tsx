@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import AdminLayoutContainer from "@/components/admin/AdminLayoutContainer";
 import AdminTable from "@/components/admin/table/Table";
 import Pagination from "@/components/admin/pagenation/Pagenation";
@@ -33,6 +33,19 @@ const AdminBalancegame: React.FC = () => {
     handleDeleteClick
   } = UseBalancegame();
 
+  const [filteredData, setFilteredData] = useState(data);
+
+  useEffect(() => {
+    setFilteredData(data); // 데이터 변경 시 초기화
+  }, [data]);
+
+  const totalPages = Math.ceil(filteredData.length / ROWS_PER_PAGE);
+
+  const currentData = useMemo(
+    () => filteredData.slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE),
+    [filteredData, currentPage]
+  );
+
   const handleEdit = (id: number, row: RowData) => {
     setEditingId(id); 
     setEditedData({ 
@@ -40,24 +53,51 @@ const AdminBalancegame: React.FC = () => {
       answerTitle: row.answerTitle,
       answerText: row.answerText,
     });
-   };
+  };
+
+  const handleSearch = (searchType: string, query: string) => {
+    if (!query.trim()) {
+      setFilteredData(data);
+      return;
+    }
+
+    const filtered = data.filter((item) =>
+      searchType === "ID"
+        ? item.id.toString().includes(query) 
+        : searchType === "질문명"
+        ? item.question.includes(query) 
+        : searchType === "답변 제목"
+        ? item.answerTitle.includes(query) 
+        : item.answerText.includes(query) 
+    );
+
+    setFilteredData(filtered);
+    setCurrentPage(1);
+  };
 
   const columns = createColumns(
-  editingId, 
-  editedData,
-  setEditedData, 
-  handleSaveEdit, 
-  handleEdit, 
-  handleDeleteClick
+    editingId, 
+    editedData,
+    setEditedData, 
+    handleSaveEdit, 
+    handleEdit, 
+    handleDeleteClick
   );
 
- 
   return (
     <AdminLayoutContainer>
-      <SearchBar placeholder="ID 또는 질문명을 입력해주세요." />
-      <AdminTable data={data} columns={columns} />
-      <Pagination totalPages={Math.ceil(data.length / ROWS_PER_PAGE)} currentPage={currentPage} onPageChange={setCurrentPage} />
-      <ConfirmDeleteModal $isOpen={isDeleteModalOpen} onConfirm={handleDelete} onCancel={() => setIsDeleteModalOpen(false)} />
+      <SearchBar 
+        placeholder="ID, 질문명, 답변 제목, 답변 텍스트를 입력해주세요."
+        options={["ID", "질문명", "답변 제목", "답변 텍스트"]}
+        onSearch={handleSearch}
+      />
+      <AdminTable data={currentData} columns={columns} />
+      <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage} />
+      <ConfirmDeleteModal 
+        $isOpen={isDeleteModalOpen} 
+        onConfirm={handleDelete} 
+        onCancel={() => setIsDeleteModalOpen(false)} 
+      />
       <BalancegameModal
         $isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
