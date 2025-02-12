@@ -1,6 +1,6 @@
 export interface UserInput {
-    userInputId: string;
-    categoryId: string;
+    userInputId: number;
+    categoryId: number;
     answer: string;
     userId: string;
   }

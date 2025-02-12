@@ -3,7 +3,8 @@ export interface CategoryListDto {
   limit?: number;
   categories?: {
     id: number;
+    korname: string;
     name: string;
-    question: string; // ✅ 추가
+    question: string;
   }[];
 }

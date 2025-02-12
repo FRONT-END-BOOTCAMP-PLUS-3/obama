@@ -9,38 +9,18 @@ export async function POST(req: NextRequest) {
 
     const { category_id, answer, user_id } = body;
 
-    // ✅ 필수 필드 검사
-    if (!category_id || !answer || !user_id) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+    const userRepository = new SbUserRepository();
+
+    // ✅ 유저 기본 정보 조회
+    const userResult = await userRepository.findUserById(userId);
+    if (!userResult) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    // ✅ 올바른 데이터 타입 확인
-    if (
-      typeof category_id !== "number" ||
-      typeof answer !== "string" ||
-      typeof user_id !== "string"
-    ) {
-      return NextResponse.json(
-        { error: "Invalid data types" },
-        { status: 400 }
-      );
-    }
+    return NextResponse.json({
+      user: toCamelCase(userResult.user),
+    }, { status: 200 });
 
-    // ✅ 요청별 repository 인스턴스 생성
-    const userInputRepository = new SbUserInputRepository();
-
-    // ✅ 데이터 저장
-    const newUserInput: Omit<UserInput, "userInput_id"> = {
-      category_id,
-      answer,
-      user_id,
-    };
-
-    const result = await userInputRepository.create(newUserInput);
-    return NextResponse.json(result, { status: 201 });
   } catch (error) {
     console.error("❌ Error in POST /api/profile:", error);
     return NextResponse.json(

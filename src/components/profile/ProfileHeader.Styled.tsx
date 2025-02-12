@@ -22,7 +22,7 @@ export const ImageWrapper = styled.div`
 `;
 
 export const Name = styled.h1`
-  font-size: 1.5rem;
+  font-size: 2rem;
   color: var(--black-color);
 `;
 
@@ -38,9 +38,9 @@ export const Info = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: var(--gray-700);
-  border-radius: 2rem;
+  border-radius: 1.5rem;
   padding: .5rem;
-  box-shadow: 0px 2px 4px rgba(17, 13, 13, 0.1);
+  box-shadow: 0px 2px 4px var(--gray-900);
   gap: 1rem;
 `;
 
@@ -54,25 +54,3 @@ export const Value = styled.span`
   font-size: 1rem;
   color: var(--white-color);
 `;
-
-// export const SNSWrapper = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   width: 100%;
-//   gap: 0.5rem;
-//   flex-wrap: wrap; /* 아이템이 줄 바꿈됨 */
-//   margin-top: 1rem;
-// `;
-
-// export const SNSButton = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   background-color: var(--gray-700);
-//   border-radius: 1rem;
-//   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-//   padding: 0.5rem 1rem;
-//   color: var(--white-color);
-//   cursor: pointer;
-// `;

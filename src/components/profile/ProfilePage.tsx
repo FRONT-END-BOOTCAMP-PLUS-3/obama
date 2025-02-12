@@ -1,30 +1,50 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; // ✅ 추가
+import { useRouter } from "next/navigation";
 import ProfileHeader from "./ProfileHeader";
-import useAuthStore from "@/store/authStore"; 
-import { LoginContainer, LoginMessage, PageContainer } from "./ProfilePage.Styled";
+import AboutMe from "./AboutMe";
+import useAuthStore from "@/store/authStore";
+import { LoginContainer, LoginMessage, PageContainer, ContentWrapper } from "./ProfilePage.Styled";
 import { UserRole } from "@/types/auth";
 import { Button } from "@/components/common/button";
 
 const ProfilePage: React.FC = () => {
   const { userId, setAuth } = useAuthStore();
+  const [profileData, setProfileData] = useState<{ user: any; aboutMe: any[] } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter(); // ✅ Next.js 라우터 추가
+  const router = useRouter();
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     const storedRole = localStorage.getItem("role") as UserRole;
 
     if (storedUserId && storedRole) {
-      setAuth(storedUserId, storedRole); 
+      setAuth(storedUserId, storedRole);
     } else {
       console.error("로그인 정보가 없습니다.");
     }
 
     setIsLoading(false);
   }, [setAuth]);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchProfileData = async () => {
+      try {
+        const res = await fetch(`/api/user/profile?userId=${userId}`);
+        if (!res.ok) throw new Error("API 요청 실패");
+
+        const data = await res.json();
+        setProfileData(data);
+      } catch (error) {
+        console.error("API 요청 오류:", error);
+      }
+    };
+
+    fetchProfileData();
+  }, [userId]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -43,7 +63,14 @@ const ProfilePage: React.FC = () => {
 
   return (
     <PageContainer>
-        <ProfileHeader />
+      {profileData ? (
+        <ContentWrapper>
+          <ProfileHeader user={profileData.user} />
+          <AboutMe userId={userId} aboutMeData={profileData.aboutMe} />
+        </ContentWrapper>
+      ) : (
+        <p>프로필 정보를 불러오는 중입니다...</p>
+      )}
     </PageContainer>
   );
 };

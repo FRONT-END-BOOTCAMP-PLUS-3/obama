@@ -12,6 +12,7 @@ export class CategoryListUseCase {
       limit: categories.length,
       categories: categories.map((category) => ({
         id: category.category_id,
+        korname: category.category_name,
         name: category.category_name_en,
         question: category.category_question, // ✅ 추가
       })),

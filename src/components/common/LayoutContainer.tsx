@@ -42,6 +42,7 @@ const LayoutContainer = ({ children }: { children: React.ReactNode }) => {
     pathname === "/" ||
     pathname.startsWith("/user/admin") ||
     pathname.startsWith("/user/items") ||
+    pathname.startsWith("/user/profile");
     pathname.startsWith("/user/qrcode");
 
   return (
