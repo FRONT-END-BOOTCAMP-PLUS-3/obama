@@ -9,7 +9,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const request = await req.json();
-
+    console.log(request);
     if (!request) {
       return NextResponse.json(
         { error: "모든 필드를 입력해야 합니다." },
@@ -62,7 +62,7 @@ export async function PATCH(req: NextRequest) {
     if(!isUpdate){
       return NextResponse.json({ error: "비밀번호 변경 실패" }, { status: 500 });
     }
-    return NextResponse.json({ message: "비밀번호 변경 성공" }, { status: 200 });
+    return NextResponse.json({ success: true }, { status: 200 });
 
   } catch(error) {
     console.error(error);

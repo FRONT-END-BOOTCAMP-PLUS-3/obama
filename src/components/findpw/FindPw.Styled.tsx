@@ -36,7 +36,7 @@ export const ErrorMessage = styled.span`
 ;
 
 export const SuccessMessage = styled.span`
-  color: var(--success-color); 
+  color: var(--error-color); 
   font-size: var(--font-size-sm); 
   margin: -1.25rem 0;
   `
