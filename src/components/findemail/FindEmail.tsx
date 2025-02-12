@@ -1,29 +1,29 @@
 "use client"
 import {
-  FindIDWrapper,
+  FindEmailWrapper,
   InputLayer,
   SectionButtonLayer,
   Title,
-} from "@/components/findid/FindID.Styled";
+} from "@/components/findemail/FindEmail.Styled";
 import { TextField } from "@/components/common/textField";
 import { Button } from "@/components/common/button";
-import { useFindIDForm } from "@/components/findid/useFindIDForm";
+import { useFindEmailForm } from "@/components/findemail/useFindEmailForm";
 
-const FindID = () => {
+const FindEmail = () => {
   const {
     formState,
     isLoading,
-
+    // email,
     handleFormChange,
     handleSubmit,
     handleClickBack,
-  } = useFindIDForm();
+  } = useFindEmailForm();
 
   const {name, phone} = formState;
 
   return (
     <>
-      <FindIDWrapper>
+      <FindEmailWrapper>
         <Title>이메일 찾기</Title>
         <InputLayer>
           <TextField
@@ -68,8 +68,8 @@ const FindID = () => {
             이메일 찾기
           </Button>
         </SectionButtonLayer>
-      </FindIDWrapper>
+      </FindEmailWrapper>
     </>
   );
 };
-export default FindID;
+export default FindEmail;

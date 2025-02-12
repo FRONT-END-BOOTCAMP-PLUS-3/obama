@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 
-export const FindIDWrapper = styled.form`
+export const FindEmailWrapper = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
