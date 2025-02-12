@@ -5,6 +5,7 @@ import { toCamelCase, toSnakeCase, toSnakeCaseString } from "@/utils/convert/con
 import { UserRole } from "@/types/auth";
 
 export class SbUserRepository implements IUserRepository {
+
  
   private readonly tableName = "user";
 
@@ -21,6 +22,7 @@ export class SbUserRepository implements IUserRepository {
     }
   }
   // Read
+  // UserList조회
   async findAll(): Promise<Omit<User, "password">[] | null> {
     const client = await supabase();
 
@@ -41,6 +43,7 @@ export class SbUserRepository implements IUserRepository {
     return toCamelCase(usersWithoutPassword);
   }
 
+  // userId로 password 찾기
   async findPasswordById(userId: string): Promise<string | null> {
     const client = await supabase();
     const { data, error } = await client
@@ -106,6 +109,27 @@ export class SbUserRepository implements IUserRepository {
       password: data.password,
       role: data.role,
     });
+  }
+
+  async findEmailByNameAndPhone(name: string, phone: string): Promise<string | null> {
+    const client = await supabase();
+    const { data, error } = await client
+     .from(this.tableName)
+     .select("email")
+     .eq("phone", phone)
+     .eq("name", name)
+     .single();
+
+     if (error) {
+      if (error.code === "PGRST116") {
+        // 데이터가 없을 때 발생하는 에러 (PostgREST의 'No rows found' 에러)
+        return null;
+      }
+      console.error("Error finding email:", error.message);
+      throw new Error("EMAIL_NOT_FOUND");
+    }
+
+    return  toCamelCase(data.email) ||  null;
   }
 
   // Delete

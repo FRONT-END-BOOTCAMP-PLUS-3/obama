@@ -42,6 +42,12 @@ const LayoutContainer = ({ children }: { children: React.ReactNode }) => {
     pathname === "/" ||
     pathname.startsWith("/user/admin") ||
     pathname.startsWith("/user/items") ||
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/signUp")||
+    pathname.startsWith("/user/withdraw")||
+    pathname.startsWith("/user/withdraw/confirm")||
+    pathname.startsWith("/findemail")||
+    pathname.startsWith("/findpassword")||
     pathname.startsWith("/user/profile");
     pathname.startsWith("/user/qrcode");
 

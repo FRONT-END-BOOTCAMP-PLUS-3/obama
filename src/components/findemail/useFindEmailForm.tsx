@@ -3,28 +3,30 @@ import { validateName, validatePhone } from "@/utils/auth/validate";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
-interface FindIDFormState {
+interface FindEmailFormState {
   name: string;
   phone: string;
 }
 
-interface FindIDFormError {
+interface FindEmailFormError {
   name?: string;
   phone?: string;
 }
 
-export const useFindIDForm = () => {
+export const useFindEmailForm = () => {
   const router = useRouter();
 
-  const [formState, setFormState] = useState<FindIDFormState>({
+  const [formState, setFormState] = useState<FindEmailFormState>({
     name: "",
     phone: "",
   });
-  const [errors, setErrors] = useState<FindIDFormError>({});
+
+  const [email, setEmail] = useState<string> ("");
+  const [errors, setErrors] = useState<FindEmailFormError>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const validateForm = useCallback(() => {
-    const newErrors: FindIDFormError = {};
+    const newErrors: FindEmailFormError = {};
 
     const nameError = validateName(formState.name);
     if (nameError) newErrors.name = nameError;
@@ -51,6 +53,7 @@ export const useFindIDForm = () => {
     async (e: React.FormEvent) => {
       // 이벤트 시 재랜더링 방지 함수
       e.preventDefault();
+      e.stopPropagation();
 
       // 유효성 검사
       if (!validateForm()) return;
@@ -59,30 +62,34 @@ export const useFindIDForm = () => {
 
       try {
         // ✅ fetchClient를 사용하여 로그인 요청
-        const response = await fetchClient<FindIDFormState, { email: string }>(
-          "/api/findid",
+        const response = await fetchClient<FindEmailFormState,  string >(
+          "/api/findemail",
           {
             method: "POST",
             body: formState,
-            requiresAuth: false, // 로그인은 인증 헤더 필요 없음
+            requiresAuth: false,
           }
         );
 
         if (response.status === 200 && response.data) {
           // 로그인 성공 디버깅
-          console.log("✅ 로그인 성공:", response.data);
+          console.log("✅ 아이디 찾기 성공:", response.data);
 
           // 로그인 시 UUID와 UserRole data 출력
-        //   const { email } = response.data;
+          const emailData = response.data;
+
+          setEmail(emailData);
 
           // 전역 상태 로그인 관리
           // 로그인 성공시 profile routing
-          router.push("/");
+          // router.push("/");
         } else {
           console.error("❌ 로그인 실패:", response.error);
+          alert("잘못된 유저정보입니다.");
         }
       } catch (error) {
         console.error("❌ API 요청 오류:", error);
+        alert("잘못된 유저정보입니다.");
       } finally {
         setIsLoading(false);
       }
@@ -98,7 +105,7 @@ export const useFindIDForm = () => {
     formState,
     errors,
     isLoading,
-
+    email,
     handleFormChange,
     handleSubmit,
     handleClickBack,

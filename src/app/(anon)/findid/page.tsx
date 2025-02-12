@@ -1,8 +1,8 @@
-import FindID from "@/components/findid/FindID";
+import FindEmail from "@/components/findemail/FindEmail";
 
 const page = () => {
     return(
-        <FindID/>
+        <FindEmail/>
     );
 }
 
