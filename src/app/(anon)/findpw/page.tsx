@@ -12,7 +12,6 @@ const Page = () => {
   const handleVerificationSuccess= (id: string) => {
     setUserId(id);
   }
-  console.log(userId);
 
   return (
     <>

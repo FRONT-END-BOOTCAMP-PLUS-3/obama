@@ -19,12 +19,10 @@ const Withdraw = () => {
   };
 
   const handleClickWithdraw = async () => {
-    console.log("handleClickWithdraw");
 
-    const { userId , role} = useAuthStore.getState();
+    const { userId } = useAuthStore.getState();
 
     try{
-      console.log(userId, password, role);
       const response = await fetchClient("/api/user/withdraw",{ method: "DELETE", 
         body: {userId, password}
       });

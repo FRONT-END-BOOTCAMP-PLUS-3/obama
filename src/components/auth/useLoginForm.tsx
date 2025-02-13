@@ -73,7 +73,6 @@ export const useLoginForm = () => {
   
       if (response.status === 200 && response.data) {
         // 로그인 성공 디버깅
-        console.log("✅ 로그인 성공:", response.data.userId);
 
         // 로그인 시 UUID와 UserRole data 출력
         const { userId, role } = response.data;
@@ -81,7 +80,7 @@ export const useLoginForm = () => {
         // 전역 상태 로그인 관리
         setAuth(userId, role);
         // 로그인 성공시 profile routing
-        router.push("/");  
+        router.push("/user/profile");  
       
       } else {
         console.error("❌ 로그인 실패:", response.error);

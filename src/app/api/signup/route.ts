@@ -13,7 +13,6 @@ export async function POST (req: NextRequest){
         const {signUpRequest} = await req.json();
         const userData: SignUpRequestDTO = signUpRequest
         
-        console.log(userData);
         if (!userData.email || !userData.password || !userData.birthDate || !userData.name || !userData.phone) {
             return NextResponse.json({ error: "모든 필드를 입력해야 합니다." }, { status: 400 });
         }

@@ -18,8 +18,6 @@ export class SbItemRepository implements IItemRepository {
       throw new Error(`Failed to fetch items: ${error.message}`);
     }
 
-    console.log(`📌 Filtered Data for categoryId ${categoryId}:`, data);
-
     return data;
   }
 }

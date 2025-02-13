@@ -4,7 +4,6 @@ export class DeleteUserByAdminUseCase {
     constructor(private readonly userRepository: IUserRepository) {}
 
     async execute(targetId: string):Promise<boolean> {
-        console.log("🔥 DeleteUserByAdminUseCase 실행 → 대상:", targetId);
 
         // ✅ 관리자 권한 검증을 Adapter에서 처리 (UseCase에서는 제거)
         return await this.userRepository.deleteById(targetId);

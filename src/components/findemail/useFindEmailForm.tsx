@@ -75,7 +75,6 @@ export const useFindEmailForm = () => {
 
         if (response.status === 200 && response.data) {
           // 로그인 성공 디버깅
-          console.log("✅ 아이디 찾기 성공:", response.data);
 
           // 로그인 시 UUID와 UserRole data 출력
           const emailData = response.data;
@@ -83,8 +82,7 @@ export const useFindEmailForm = () => {
           setMessage(emailData.email);
        
           // 전역 상태 로그인 관리
-          // 로그인 성공시 profile routing
-          // router.push("/");
+
         } else {
           console.error("❌ 로그인 실패:", response.error);
           alert("잘못된 유저정보입니다.");

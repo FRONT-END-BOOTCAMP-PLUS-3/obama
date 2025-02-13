@@ -11,11 +11,8 @@ export const useAutoLogin = () => {
           const storedRole = localStorage.getItem("role");
 
           if (storedUserId && storedRole) {
-              console.log("🔥 autoLogin 실행 → userId:", storedUserId);
               setAuth(storedUserId, storedRole as UserRole);
-          } else {
-              console.log("❌ autoLogin 실패 → userId 없음");
-          }
+          } 
       }
   }, [userId]); // ✅ `userId`가 변경될 때마다 실행
 };
