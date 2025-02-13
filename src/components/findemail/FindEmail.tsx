@@ -1,31 +1,37 @@
 "use client"
 import {
-  FindIDWrapper,
+  FindEmailWrapper,
   InputLayer,
   SectionButtonLayer,
   Title,
-} from "@/components/findid/FindID.Styled";
+} from "@/components/findemail/FindEmail.Styled";
 import { TextField } from "@/components/common/textField";
 import { Button } from "@/components/common/button";
-import { useFindIDForm } from "@/components/findid/useFindIDForm";
+import { useFindEmailForm } from "@/components/findemail/useFindEmailForm";
+import FindEmailResult from "./FindEmailResult";
 
-const FindID = () => {
+
+const FindEmail = () => {
   const {
     formState,
     isLoading,
-
+    message,
+    isChange,
     handleFormChange,
     handleSubmit,
     handleClickBack,
-  } = useFindIDForm();
+  } = useFindEmailForm();
 
   const {name, phone} = formState;
+  // const email:string ="seogu080@naver.com";
 
   return (
     <>
-      <FindIDWrapper>
+      <FindEmailWrapper>
         <Title>이메일 찾기</Title>
-        <InputLayer>
+        {isChange ? <FindEmailResult email={message} />:(
+          <>
+         <InputLayer>
           <TextField
             name="name"
             placeholder="name"
@@ -47,7 +53,8 @@ const FindID = () => {
             value={phone}
             onChange={handleFormChange}
           />
-        </InputLayer>
+        </InputLayer> 
+   
         <SectionButtonLayer>
           <Button
             size="m"
@@ -68,8 +75,10 @@ const FindID = () => {
             이메일 찾기
           </Button>
         </SectionButtonLayer>
-      </FindIDWrapper>
+        </>
+           )}  
+      </FindEmailWrapper>
     </>
   );
 };
-export default FindID;
+export default FindEmail;

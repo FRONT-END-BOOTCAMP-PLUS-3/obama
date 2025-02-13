@@ -11,6 +11,7 @@ import Button from "@/components/common/button/Button";
 import { useLoginForm } from "@/components/auth/useLoginForm";
 import TextButton from "@/components/common/button/TextButton";
 
+
 const LoginForm = () => {
   const {
     formState,
@@ -19,7 +20,7 @@ const LoginForm = () => {
     handleSubmit,
     handleClickBack,
     handleClickFindId,
-    handleClickFindPassword
+    handleClickFindPassword,
   } = useLoginForm();
 
   const { email, password } = formState;
@@ -27,7 +28,7 @@ const LoginForm = () => {
   return (
     <>
       <LoginWrapper>
-        <Title>로그인 찾기</Title>
+        <Title>로그인</Title>
         <InputLayer>
           <TextField
             name="email"
@@ -71,8 +72,12 @@ const LoginForm = () => {
             로그인
           </Button>
           <TextButtonLayer>
-            <TextButton type="button" onClick={handleClickFindId}>이메일 찾기</TextButton>
-            <TextButton type="button" onClick={handleClickFindPassword}>비밀번호 찾기</TextButton>
+            <TextButton type="button" onClick={handleClickFindId}>
+              이메일 찾기
+            </TextButton>
+            <TextButton type="button" onClick={handleClickFindPassword}>
+              비밀번호 찾기
+            </TextButton>
           </TextButtonLayer>
         </SectionButtonLayer>
       </LoginWrapper>

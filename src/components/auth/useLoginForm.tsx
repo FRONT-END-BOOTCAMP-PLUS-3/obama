@@ -99,11 +99,11 @@ export const useLoginForm = () => {
   }, [])
 
   const handleClickFindId = useCallback(async () => {
-    router.push("/findid");
+    router.push("/findemail");
   },[]);
 
   const handleClickFindPassword = useCallback(async () => {
-    router.push("/findpassword");
+    router.push("/findpw");
   }, []);
 
   return {

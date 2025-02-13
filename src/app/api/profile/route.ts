@@ -5,11 +5,10 @@ import { UserInput } from "@/domain/entities/profile/UserInput";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    console.log("📥 Received Body:", body); // 요청 데이터 확인
+    console.log("📥 Received Body:", body);
 
     const { category_id, answer, user_id } = body;
 
-    // ✅ 필수 필드 검사
     if (!category_id || !answer || !user_id) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -17,7 +16,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ✅ 올바른 데이터 타입 확인
     if (
       typeof category_id !== "number" ||
       typeof answer !== "string" ||
@@ -29,18 +27,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ✅ 요청별 repository 인스턴스 생성
     const userInputRepository = new SbUserInputRepository();
 
-    // ✅ 데이터 저장
+    // ✅ 기존 값이 있으면 수정, 없으면 생성
     const newUserInput: Omit<UserInput, "userInput_id"> = {
       category_id,
       answer,
       user_id,
     };
 
-    const result = await userInputRepository.create(newUserInput);
-    return NextResponse.json(result, { status: 201 });
+    const result = await userInputRepository.createOrUpdate(newUserInput);
+    return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.error("❌ Error in POST /api/profile:", error);
     return NextResponse.json(

@@ -27,17 +27,23 @@ const AdminOpenQuestion: React.FC = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editedValue, setEditedValue] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
-
-  const totalPages = Math.ceil(data.length / ROWS_PER_PAGE);
   
-  const currentData = useMemo(
-    () => data.slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE),
-    [data, currentPage]
-  );
+  const [filteredData, setFilteredData] = useState(data); 
 
   useEffect(() => {
     fetchAllOpenQuestions();
   }, [fetchAllOpenQuestions]);
+
+  useEffect(() => {
+    setFilteredData(data); 
+  }, [data]);
+
+  const totalPages = Math.ceil(filteredData.length / ROWS_PER_PAGE);
+
+  const currentData = useMemo(
+    () => filteredData.slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE), // ✅ 검색된 데이터 사용
+    [filteredData, currentPage]
+  );
 
   const handleEdit = (id: number, openQuestion: string) => {
     setEditingId(id);
@@ -60,6 +66,21 @@ const AdminOpenQuestion: React.FC = () => {
     }
   };
 
+  const handleSearch = (searchType: string, query: string) => {
+    if (!query.trim()) {
+      setFilteredData(data); 
+      return;
+    }
+
+    const filtered = data.filter((item) =>
+      searchType === "subjectId"
+        ? item.subjectId.toString().includes(query) 
+        : item.openQuestion.includes(query) 
+    );
+
+    setFilteredData(filtered);
+    setCurrentPage(1); 
+  };
 
   const columnsForEditTable = EditOpenQuestionTable({
     editingId,
@@ -72,15 +93,19 @@ const AdminOpenQuestion: React.FC = () => {
       deleteModal.openModal();
     },
   });
-  
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
     <AdminLayoutContainer>
-      <SearchBar placeholder="subjectId, 주제명을 입력해주세요." />
-      <AdminTable data={currentData} columns={columnsForEditTable} />
+      <SearchBar 
+        placeholder="subjectId, 주제명을 입력해주세요." 
+        options={["subjectId", "주제명"]} 
+        onSearch={handleSearch}  
+      />
+      <AdminTable data={currentData} columns={columnsForEditTable} /> 
       <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage} />
       <AddButton onClick={createModal.openModal}>+</AddButton>
       <OpenQuestionModal

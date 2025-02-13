@@ -15,23 +15,58 @@ export class SbUserInputRepository implements IUserInputRepository {
     return data;
   }
 
-  async create(userInput: Omit<UserInput, "userInput_id">): Promise<UserInput> {
+  async createOrUpdate(
+    userInput: Omit<UserInput, "userInput_id">
+  ): Promise<UserInput> {
     const client = await supabase();
 
     // 🔹 Convert the input to snake_case
     const snakeCaseInput = toSnakeCase(userInput);
 
-    const { data, error } = await client
+    // 🔹 해당 user_id와 category_id의 데이터가 존재하는지 확인
+    const { data: existingData, error: fetchError } = await client
       .from("userInput")
-      .insert([snakeCaseInput])
-      .select()
+      .select("*")
+      .eq("user_id", userInput.user_id)
+      .eq("category_id", userInput.category_id)
       .single();
 
-    if (error) {
-      console.error("Supabase Insert Error:", error);
-      throw new Error(`Failed to insert user input: ${error.message}`);
+    if (fetchError && fetchError.code !== "PGRST116") {
+      // PGRST116: No rows found (Supabase의 단일 조회 에러 코드)
+      console.error("Supabase Fetch Error:", fetchError);
+      throw new Error(`Failed to fetch user input: ${fetchError.message}`);
     }
 
-    return data;
+    if (existingData) {
+      // ✅ 기존 데이터가 존재하면 업데이트
+      const { data: updatedData, error: updateError } = await client
+        .from("userInput")
+        .update(snakeCaseInput)
+        .eq("user_id", userInput.user_id)
+        .eq("category_id", userInput.category_id)
+        .select()
+        .single();
+
+      if (updateError) {
+        console.error("Supabase Update Error:", updateError);
+        throw new Error(`Failed to update user input: ${updateError.message}`);
+      }
+
+      return updatedData;
+    } else {
+      // ✅ 데이터가 없으면 새로 삽입
+      const { data: insertedData, error: insertError } = await client
+        .from("userInput")
+        .insert([snakeCaseInput])
+        .select()
+        .single();
+
+      if (insertError) {
+        console.error("Supabase Insert Error:", insertError);
+        throw new Error(`Failed to insert user input: ${insertError.message}`);
+      }
+
+      return insertedData;
+    }
   }
 }

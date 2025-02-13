@@ -32,14 +32,16 @@ export default function CreatePage() {
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams(); // useSearchParams를 사용
+  const isEditMode = searchParams.get("edit") === "true";
   const categoryName = searchParams.get("cn"); // 'cn' 쿼리 파라미터에서 값을 가져옵니다.
   const [categoryId, setCategoryId] = useState<number | null>(null);
-
   const [items, setItems] = useState<Item[]>([]); // update with your actual type
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [question, setQuestion] = useState<string>("");
   const [introText, setIntroText] = useState<string>("");
-
+  const [userInputData, setUserInputData] = useState<
+    { category_id: number; answer: string }[]
+  >([]);
   const [textFieldValue, setTextFieldValue] = useState<string>("");
 
   const mbtiOptions = [
@@ -60,6 +62,27 @@ export default function CreatePage() {
     "ESTP",
     "ESFP",
   ];
+
+  useEffect(() => {
+    const fetchUserinputdata = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        if (!userId) throw new Error("User ID가 없습니다.");
+
+        const res = await fetch(`/api/user/input?userId=${userId}`);
+        if (!res.ok)
+          throw new Error("userinput 데이터를 가져오는 데 실패했습니다.");
+
+        const data = await res.json();
+        setUserInputData(data);
+        console.log(data);
+      } catch (error) {
+        console.error("userinput API 오류:", error);
+      }
+    };
+
+    fetchUserinputdata();
+  }, []);
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -143,10 +166,9 @@ export default function CreatePage() {
         const userId = localStorage.getItem("userId");
         if (!userId) throw new Error("userId가 없습니다.");
 
-        const filePath = `profiles/${userId}.png`; // ✅ 확장자 고정
+        const filePath = `profiles/${userId}.png`;
 
-        // ✅ Supabase에 이미지 업로드
-        await supabase.storage.from("profile-images").remove([filePath]); // 기존 파일 삭제
+        await supabase.storage.from("profile-images").remove([filePath]);
 
         const { data, error } = await supabase.storage
           .from("profile-images")
@@ -165,7 +187,6 @@ export default function CreatePage() {
       answer = textFieldValue;
     }
 
-    // ✅ "다음" 버튼 클릭 시에만 유효성 검사 실행
     if (direction === "next" && !answer) {
       alert("답변을 입력하거나 선택해주세요!");
       return;
@@ -193,12 +214,18 @@ export default function CreatePage() {
       }
     }
 
+    // ✅ 수정 모드라면, 인포 페이지로 돌아가기
+    if (isEditMode) {
+      router.push(`/user/profile/edit`); // 여기에서 수정 완료 후 이동할 페이지 설정
+      return;
+    }
+
     // ✅ 상태 초기화
     setSelectedItems(new Set());
     setSelectedType(null);
     setIntroText("");
     setTextFieldValue("");
-    setProfileImage(null); // ✅ 이미지 상태 초기화
+    setProfileImage(null);
 
     if (categoryId === 12) {
       router.push("/user");
@@ -246,6 +273,20 @@ export default function CreatePage() {
   const toggleSelection = (type: string) => {
     setSelectedType((prev) => (prev === type ? null : type));
   };
+
+  useEffect(() => {
+    if (!categoryId || userInputData.length === 0) return;
+
+    const userInput = userInputData.find(
+      (input) => input.category_id === categoryId
+    );
+    if (userInput && userInput.answer) {
+      const selectedValues = new Set(
+        userInput.answer.split(", ").map((item) => item.trim())
+      );
+      setSelectedItems(selectedValues);
+    }
+  }, [categoryId, userInputData]);
 
   return (
     <ProfileCreateContainer>
