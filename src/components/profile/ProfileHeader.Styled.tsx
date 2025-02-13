@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 export const HeaderWrapper = styled.div`
- display: flex;
- width: 100%;
- padding-top:2rem;
- margin: 1rem;
+  display: flex;
+  width: 100%;
+  padding: 2rem;  // ✅ 기존 2rem에서 0으로 변경 (상단 여백 제거)
+  margin: 0;  // ✅ 추가 (불필요한 여백 제거)
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(180deg, hsl(205, 86.7%, 94.1%), #ffffff);
 `;
+
 
 export const ImageWrapper = styled.div`
   margin-bottom: 1rem;
