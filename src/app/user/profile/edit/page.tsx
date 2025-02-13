@@ -115,8 +115,6 @@ const EditPage = () => {
     fetchProfileData();
   }, []);
 
-  console.log(categories);
-  console.log(userInputData);
   const sortedUserInputData = [...userInputData].sort(
     (a, b) => a.category_id - b.category_id
   );

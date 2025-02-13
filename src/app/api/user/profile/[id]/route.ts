@@ -8,7 +8,6 @@ export async function GET(
 ) {
   try {
     const userId = params.userId;
-    console.log("params", params);
     if (!userId) {
       return NextResponse.json({ message: "Invalid userId" }, { status: 400 });
     }
