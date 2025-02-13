@@ -73,6 +73,12 @@ const Sidebar: React.FC<SidebarProps> = ({ $isOpen, $setIsOpen }) => {
         <MenuItem onClick={() => handleNavigation("/smalltalks/select")}>
           <Text $isOpen={$isOpen}>Smalltalk</Text>
         </MenuItem>
+        <MenuItem onClick={() => handleNavigation("/user/items?cn=hobby")}>
+          <Text $isOpen={$isOpen}>Profile Create</Text>
+        </MenuItem>
+        <MenuItem onClick={() => handleNavigation("/user/profile/edit")}>
+          <Text $isOpen={$isOpen}>Profile Edit</Text>
+        </MenuItem>
       </MenuList>
     </SidebarContainer>
   );
