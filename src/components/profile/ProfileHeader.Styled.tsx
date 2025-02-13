@@ -3,11 +3,11 @@ import styled from "styled-components";
 export const HeaderWrapper = styled.div`
  display: flex;
  width: 100%;
- height: 100%;
+ padding-top:2rem;
+ margin: 1rem;
   flex-direction: column;
   align-items: center;
   background: linear-gradient(180deg, hsl(205, 86.7%, 94.1%), #ffffff);
-  padding: 2rem;
 `;
 
 export const ImageWrapper = styled.div`

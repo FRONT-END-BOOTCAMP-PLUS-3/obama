@@ -1,18 +1,34 @@
 import styled from "styled-components";
 
 export const PageContainer = styled.div`
-  min-width: 390px;
-  min-height: 844px;
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
 `;
+
 
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+    width: 100%;
+
 `;
+
+export const SectionContainer = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start;
+`;
+
 
 export const LoginContainer = styled.div`
   display: flex;

@@ -9,12 +9,12 @@ export const Wrapper = styled.div`
   height: 2rem;
 `;
 
-export const CheckBox = styled.input<{ ischecked: boolean }>`
+export const CheckBox = styled.input<{ checked: boolean }>`
   appearance: none;
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: ${(props) => (props.ischecked ? "var(--primary-color)" : "var(--disabled-color)")};
+  background-color: ${(props) => (props.checked ? "var(--primary-color)" : "var(--disabled-color)")};
   border-radius: 3rem;
   border: none;
   outline: none;
@@ -25,7 +25,7 @@ export const CheckBox = styled.input<{ ischecked: boolean }>`
     content: "";
     position: absolute;
     top: 50%;
-    left: ${(props) => (props.ischecked ? "calc(100% - 26px)" : "6px")};
+    left: ${(props) => (props.checked ? "calc(100% - 26px)" : "6px")};
     width: 1.2rem;
     height: 1.2rem;
     background: white;

@@ -21,13 +21,16 @@ const QrCreatePage: React.FC = () => {
     clientConfig.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
 
+const localIP = "192.168.45.5"; // 🔹 본인 PC의 LAN IP로 변경
+const port = "3000"; // 🔹 Next.js 실행 포트
+
   useEffect(() => {
     const getUserData = async () => {
       const userId = localStorage.getItem("userId");
       if (!userId) return;
 
       // QR 코드 URL 동적으로 설정
-      setQrUrl(`${window.location.origin}/users/${userId}`);
+      setQrUrl(`http://${localIP}:${port}/users/${userId}`);
 
       // 프로필 이미지 가져오기
       const imagePath = `profiles/${userId}.png`;
