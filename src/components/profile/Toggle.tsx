@@ -4,7 +4,6 @@ import { CheckBox, Wrapper, Text } from "./Toggle.Styled";
 
 interface ToggleProps {
   ischecked: boolean;
-  onChange: () => void;
   leftLabel: string;
   rightLabel: string;
 }
@@ -13,19 +12,19 @@ const Toggle: React.FC<ToggleProps> = ({ ischecked, onChange, leftLabel, rightLa
   return (
     <Wrapper>
       {/* 왼쪽 텍스트 */}
-      <Text position="left" ischecked={ischecked}>
+      <Text position="left" checked={ischecked}>
         {leftLabel}
       </Text>
 
       {/* 체크박스 */}
       <CheckBox
         type="checkbox"
-        ischecked={ischecked}
+        checked={ischecked}
         onChange={onChange}
       />
 
       {/* 오른쪽 텍스트 */}
-      <Text position="right" ischecked={!ischecked}>
+      <Text position="right" checked={!ischecked}>
         {rightLabel}
       </Text>
     </Wrapper>

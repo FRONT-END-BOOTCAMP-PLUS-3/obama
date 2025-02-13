@@ -10,7 +10,7 @@ const ProfileActions: React.FC = () => {
   };
 
   const handleEditClick = () => {
-    router.push("edit");
+    router.push("profile/edit");
   };
 
   return (
