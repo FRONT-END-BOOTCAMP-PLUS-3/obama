@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import ProfileHeader from "./ProfileHeader";
 import AboutMe from "./AboutMe";
 import useAuthStore from "@/store/authStore";
@@ -15,7 +14,6 @@ const ProfilePage: React.FC = () => {
   const [profileData, setProfileData] = useState<{ user: any; aboutMe: any[] } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hiddenCategories, setHiddenCategories] = useState<number[]>([]);
-  const router = useRouter();
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -45,12 +43,14 @@ const ProfilePage: React.FC = () => {
       }
     };
 
+
+    
     fetchProfileData();
   }, [userId]);
 
   const handleToggleChange = useCallback((categoryId: number, isChecked: boolean) => {
-    setHiddenCategories((prev) =>
-      isChecked ? prev.filter((id) => id !== categoryId) : [...prev, categoryId]
+    setHiddenCategories(prev =>
+      isChecked ? prev.filter(id => id !== categoryId) : [...prev, categoryId]
     );
   }, []);
 

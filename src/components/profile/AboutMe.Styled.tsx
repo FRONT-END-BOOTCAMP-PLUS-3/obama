@@ -8,28 +8,37 @@ export const AboutMeWrapper = styled.div`
 `;
 
 export const SectionTitle = styled.h2`
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   align-self: center;
 `;
 
 export const Item = styled.div`
-  display: flex;
-  margin-bottom: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Label | Value */
+  align-items: center;
+  gap: 1rem;
+  padding: 0.1rem;
 `;
 
-
 export const CategoryName = styled.span`
-  font-size: 1rem;
-  margin-right: 0.5rem;
-  word-break: break-all;
-  overflow-wrap: break-word;
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  text-align: center;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  max-width: 9rem;
+   pading: 0.3rem;
 `;
 
 export const Answer = styled.span`
-  font-size: 1rem;
-  font-weight: bold;
-  color: #222;
-  word-break: break-all;
-  overflow-wrap: break-word;
+  font-size: var(--font-size-sm);
+  text-align: center;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  color: var(--gray-700);
+  max-width: 15rem;
+   pading: 0.3rem;
 `;
