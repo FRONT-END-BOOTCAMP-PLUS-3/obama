@@ -21,8 +21,8 @@ const QrCreatePage: React.FC = () => {
     clientConfig.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
 
-const localIP = "192.168.45.5"; // 🔹 본인 PC의 LAN IP로 변경
-const port = "3000"; // 🔹 Next.js 실행 포트
+  const localIP = "172.31.98.76"; // 🔹 본인 PC의 LAN IP로 변경
+  const port = "3000"; // 🔹 Next.js 실행 포트
 
   useEffect(() => {
     const getUserData = async () => {

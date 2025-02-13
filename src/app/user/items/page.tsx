@@ -222,7 +222,7 @@ export default function CreatePage() {
     setProfileImage(null);
 
     if (categoryId === 12) {
-      router.push("/user");
+      router.push("/user/profile");
       return;
     }
 
