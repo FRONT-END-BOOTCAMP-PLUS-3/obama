@@ -9,7 +9,6 @@ export class VerifyPasswordUseCase implements IVerifyPasswordUseCase {
     ) {}
 
     async execute(userId: string, password: string): Promise<boolean> {
-        console.log("🔐 VerifyPasswordUseCase 실행:", userId);
 
         // 1️⃣ 이메일을 기반으로 비밀번호 및 롤(Role) 가져오기
         const hashedPassword = await this.userRepository.findPasswordById(userId);

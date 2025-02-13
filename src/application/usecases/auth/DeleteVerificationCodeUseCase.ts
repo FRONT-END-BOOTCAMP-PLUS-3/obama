@@ -5,6 +5,5 @@ export class DeleteVerificationCodeUseCase {
 
     async execute(email: string): Promise<void> {
         await this.verificationRepository.deleteVerificationCode(email);
-        console.log("🗑 인증 코드 삭제 완료 (Redis)");
     }
 }

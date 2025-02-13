@@ -90,7 +90,6 @@ export class SbUserRepository implements IUserRepository {
   async findAuthDataByEmail(
     email: string
   ): Promise<{ userId: string; password: string; role: UserRole } | null> {
-    console.log("repository mounted");
     const client = await supabase();
 
     const { data, error } = await client
@@ -144,7 +143,6 @@ export class SbUserRepository implements IUserRepository {
   ): Promise<string | null> {
     const snakedDto = toSnakeCase(request);
 
-    console.log(request);
     if (!snakedDto) {
       // 변환 결과가 null인 경우에 대한 처리
       return null;
@@ -171,7 +169,6 @@ export class SbUserRepository implements IUserRepository {
 
   // Delete
   async deleteById(userId: string): Promise<boolean> {
-    console.log("repository deleteById:", userId);
 
     const client = await supabase();
 
@@ -205,7 +202,6 @@ export class SbUserRepository implements IUserRepository {
       console.error("❌ 업데이트 실패:", error);
       return false;
     }
-    console.log("✅ 업데이트 성공");
     return true;
   }
 }

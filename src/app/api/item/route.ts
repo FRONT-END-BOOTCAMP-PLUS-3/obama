@@ -12,20 +12,18 @@ export async function GET(req: Request) {
       categoryId: categoryIdParam ? Number(categoryIdParam) : undefined,
     };
 
-    console.log(`🔍 Fetching items with DTO:`, dto); // ✅ 디버깅 로그 추가
 
     const itemRepository = new SbItemRepository();
     const itemListUseCase = new ItemListUseCase(itemRepository);
 
     const items = await itemListUseCase.execute(dto);
 
-    console.log("✅ Filtered items:", items); // ✅ 필터링된 아이템 로그 출력
 
     return NextResponse.json({ items }, { status: 200 });
   } catch (error) {
     console.error("❌ Error fetching items:", error);
     return NextResponse.json(
-      { error: "Failed to fetch items", details: error.message },
+      { error: "Failed to fetch items", details: error },
       { status: 500 }
     );
   }
