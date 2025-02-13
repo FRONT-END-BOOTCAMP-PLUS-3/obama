@@ -23,6 +23,7 @@ export const Item = styled.div`
 
 export const CategoryName = styled.span`
   font-size: var(--font-size-sm);
+  color: var(--primary-700);
   font-weight: bold;
   text-align: center;
   white-space: normal;

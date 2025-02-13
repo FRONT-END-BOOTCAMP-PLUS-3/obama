@@ -10,7 +10,7 @@ import {
 } from "./AboutMe.Styled";
 
 interface AboutMeProps {
-  userId: string;
+  userId: string | null;
   hiddenCategories: number[]; // 숨겨야 할 카테고리 리스트 추가
 }
 
