@@ -73,7 +73,6 @@ export const useLoginForm = () => {
   
       if (response.status === 200 && response.data) {
         // 로그인 성공 디버깅
-        console.log("✅ 로그인 성공:", response.data.userId);
 
         // 로그인 시 UUID와 UserRole data 출력
         const { userId, role } = response.data;

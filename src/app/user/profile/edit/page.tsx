@@ -64,8 +64,7 @@ const EditPage = () => {
     fetchCategories();
     fetchUserinputdata();
   }, []); // 빈 배열을 넣어서 최초 렌더링 시 한 번만 실행됨
-  console.log(categories);
-  console.log(userInputData);
+
   const sortedUserInputData = [...userInputData].sort(
     (a, b) => a.category_id - b.category_id
   );

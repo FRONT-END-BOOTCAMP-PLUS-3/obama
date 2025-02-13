@@ -75,7 +75,6 @@ export default function CreatePage() {
 
         const data = await res.json();
         setUserInputData(data);
-        console.log(data);
       } catch (error) {
         console.error("userinput API 오류:", error);
       }
@@ -100,7 +99,6 @@ export default function CreatePage() {
         } else {
           setQuestion("No Question available");
         }
-        console.log("Fetched category:", category);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -116,12 +114,9 @@ export default function CreatePage() {
 
     const fetchItems = async () => {
       try {
-        console.log(`Fetching items for categoryId: ${categoryId}`);
 
         const response = await fetch(`/api/item?categoryId=${categoryId}`);
         const data = await response.json();
-
-        console.log("Fetched items:", data.items);
 
         const formattedItems: Item[] = (
           data.items as Array<{
@@ -170,7 +165,7 @@ export default function CreatePage() {
 
         await supabase.storage.from("profile-images").remove([filePath]);
 
-        const { data, error } = await supabase.storage
+        const { error } = await supabase.storage
           .from("profile-images")
           .upload(filePath, profileImage, { upsert: true });
 
@@ -205,7 +200,6 @@ export default function CreatePage() {
         });
 
         const result = await response.json();
-        console.log("📥 저장 결과:", result);
 
         if (!response.ok) throw new Error(result.error || "데이터 저장 실패");
       } catch (error) {
@@ -244,7 +238,7 @@ export default function CreatePage() {
       const data = await response.json();
 
       const newCategory = data.categories?.find(
-        (cat) => cat.id === newCategoryId
+        (cat: { id: number; name: string }) => cat.id === newCategoryId
       );
       if (newCategory) {
         router.push(`/user/items?cn=${newCategory.name}`);

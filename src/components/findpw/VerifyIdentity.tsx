@@ -58,7 +58,6 @@ const VerifyIdentity = ({ onVerified }: VerifyIdentityProps) => {
 
       if (response.status === 200 && response.data) {
         // 로그인 성공 디버깅
-        console.log("✅ 아이디 찾기 성공:", response.data);
 
         const fetchedUserId = response.data.userId;
 

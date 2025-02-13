@@ -17,7 +17,6 @@ interface ChangePwProps {
 }
 
 const ChangePw = ({ userId }: ChangePwProps) => {
-  console.log("3"+userId);
 
   const route = useRouter();
   const [password, setPassword] = useState("");

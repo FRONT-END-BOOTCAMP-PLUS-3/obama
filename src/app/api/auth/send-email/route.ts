@@ -5,7 +5,6 @@ import { RdVerificationRepository } from "@/infrastructure/repositories/auth/RdV
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  console.log("SendEmail Axios connect");
 
   try {
     const { email } = await req.json();

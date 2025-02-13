@@ -6,8 +6,6 @@ import { SbUserRepository } from "@/infrastructure/repositories/auth/SbUserRepos
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest) {
-  console.log("🔥 사용자 계정 삭제 API 요청 수신");
-  console.log(req);
 
   try {
     const { userId, password } = await req.json();

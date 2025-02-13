@@ -9,11 +9,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { IPasswordVerificationUseCase } from '@/application/usecases/auth/interfaces/IPasswordVerificationUseCase';
 
 export async function POST(req: NextRequest) {
-    console.log("👌login API POST request");
 
   try {
     const request :LoginRequestDto = await req.json()
-    console.log(request);
     
     // Infrastructure UserRepository
     const userRepository: IUserRepository = new SbUserRepository();
@@ -26,9 +24,6 @@ export async function POST(req: NextRequest) {
     
     // 로그인 기능 실행
     const loginResponseDto :LoginResponseDto = await loginUseCase.execute(request);
-    
-    // responseDto 데이터 연결 확인
-    console.log(loginResponseDto)
     
     // 로그인 성공 시 전달 메시지;
     return NextResponse.json(loginResponseDto, {status:200});

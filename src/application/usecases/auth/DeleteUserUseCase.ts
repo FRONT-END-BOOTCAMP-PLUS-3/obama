@@ -11,7 +11,6 @@ export class DeleteUserUseCase  {
 
     async execute(userId: string, password: string): Promise<boolean>{
         
-        console.log("🔥 DeleteUserUseCase 실행:", userId);
 
         await this.VerifyPasswordUseCase.execute(userId, password);
 

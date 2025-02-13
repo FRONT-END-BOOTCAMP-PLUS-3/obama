@@ -5,7 +5,6 @@ import { UserInput } from "@/domain/entities/profile/UserInput";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    console.log("📥 Received Body:", body);
 
     const { category_id, answer, user_id } = body;
 
@@ -37,6 +36,7 @@ export async function POST(req: NextRequest) {
     };
 
     const result = await userInputRepository.createOrUpdate(newUserInput);
+
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.error("❌ Error in POST /api/profile:", error);

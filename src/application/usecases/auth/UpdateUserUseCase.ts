@@ -10,7 +10,6 @@ export class UpdateUserUseCase{
 
         const {userId, field, newValue} = userUpdateDto;
        
-        console.log("🔐 UpdateUserUseCase 실행:", userUpdateDto.userId);
         const isUpdate = await this.userRepository.updateUserField(userId, field, newValue);
 
         if(!isUpdate)throw new Error("update error");

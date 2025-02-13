@@ -31,14 +31,12 @@ const useAuthStore = create<AuthState>((set) => {
     isAdmin: initialAuth.role === "admin",
     
     setAuth: (userId, role) => {
-      console.log("🔥 setAuth 실행됨 → userId:", userId, "role:", role);
       localStorage.setItem("userId", userId);
       localStorage.setItem("role", role);
       set({ userId, role, isAuthenticated: true, isAdmin: role === "admin" });
     },
 
     clearAuth: () => {
-      console.log("🚀 clearAuth 실행됨 → 로그아웃");
       localStorage.removeItem("userId");
       localStorage.removeItem("role");
       set({ userId: null, role: null, isAuthenticated: false, isAdmin: false });

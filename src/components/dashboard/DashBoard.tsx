@@ -44,7 +44,6 @@ const DashBoard = () => {
       });
 
       if (response.status !== 200) {
-        console.log(response.error);
         alert(response.error);
       }
 

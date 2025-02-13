@@ -10,7 +10,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const userId = await req.json();
-    console.log(userId);
     if (!userId) {
       return NextResponse.json(
         { message: "userId is required" },

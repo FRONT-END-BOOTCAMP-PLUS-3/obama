@@ -130,7 +130,6 @@ export const useSignUpForm = () => {
   };
 
   const handleDuplicateEmail = useCallback(async () => {
-    console.log("DuplicateEmail Button onClick", formState.email);
     try {
       const response = await apiClient.post("/api/auth/check-email", {
         email: formState.email,
@@ -140,7 +139,6 @@ export const useSignUpForm = () => {
       setIsLoading(true);
 
       if (!isDuplicate) {
-        console.log("인증완료");
         alert(message);
         setIsDuplicated(true);
       } else {
@@ -162,13 +160,13 @@ export const useSignUpForm = () => {
   );
 
   const sendEmail = useCallback(async () => {
-    console.log("sendEmailButton onClick", formState.email);
 
     try {
-      const response = await apiClient.post("/api/auth/send-email", {
+     await apiClient.post("/api/auth/send-email", {
         email: formState.email,
       });
-      console.log("✅ 인증 코드가 발송되었습니다.", response.data);
+      
+
     } catch (error: unknown) {
       console.error(error);
 
@@ -181,7 +179,6 @@ export const useSignUpForm = () => {
   }, [formState.email]);
 
   const handleSubmitVerificationCode = useCallback(async () => {
-    console.log("sendVerificationCode", verificationCode, formState.email);
     try {
       const response = await apiClient.post("/api/auth/verify-code", {
         email: formState.email,
@@ -216,7 +213,6 @@ export const useSignUpForm = () => {
 
       if (!isFormValid) {
         alert("모든 입력 필드를 올바르게 작성해주세요.");
-        console.log(formState);
         return;
       }
 
