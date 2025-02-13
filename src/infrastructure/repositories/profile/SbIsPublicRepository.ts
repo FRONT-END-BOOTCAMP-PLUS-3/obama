@@ -12,10 +12,6 @@ export class SbIsPublicRepository implements IIsPublicRepository {
       .eq("user_id", user_id);
 
     if (error) throw new Error("isPublic data not found");
-
-
-    console.log("🔹 Supabase Raw Data:", data);
-
     return toCamelCase(data) as IsPublic[];
   }
 }

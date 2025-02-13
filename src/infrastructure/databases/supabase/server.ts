@@ -1,5 +1,4 @@
 import { clientConfig } from "@/config/clientEnv";
-import { serverConfig } from "@/config/serverEnv";
 import { createServerClient } from "@supabase/ssr";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
@@ -11,33 +10,12 @@ export default async function supabase() {
   // 브라우저(클라이언트) 환경: window 객체가 존재합니다.
   if (typeof window !== "undefined") {
     if (!supabaseClientSingleton) {
-      if (process.env.NODE_ENV === "test") {
-        console.log(
-          "⚠️ Running in test mode (client side): Using mock Supabase client."
-        );
-        supabaseClientSingleton = createSupabaseClient(
-          clientConfig.NEXT_PUBLIC_SUPABASE_URL,
-          serverConfig.SUPABASE_SERVICE_ROLE_KEY
-        );
-      } else {
-        supabaseClientSingleton = createSupabaseClient(
-          clientConfig.NEXT_PUBLIC_SUPABASE_URL,
-          clientConfig.NEXT_PUBLIC_SUPABASE_ANON_KEY
-        );
-      }
+      supabaseClientSingleton = createSupabaseClient(
+        clientConfig.NEXT_PUBLIC_SUPABASE_URL,
+        clientConfig.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      );
     }
     return supabaseClientSingleton;
-  }
-
-  // 서버 사이드 환경: window가 없으므로, 각 요청마다 새로운 인스턴스를 생성합니다.
-  if (process.env.NODE_ENV === "test") {
-    console.log(
-      "⚠️ Running in test mode (server side): Using mock Supabase client."
-    );
-    return createSupabaseClient(
-      clientConfig.NEXT_PUBLIC_SUPABASE_URL,
-      serverConfig.SUPABASE_SERVICE_ROLE_KEY
-    );
   }
 
   // 일반 서버 사이드 환경: Next.js의 cookies() API를 사용해 쿠키 기반 서버 클라이언트를 생성합니다.
