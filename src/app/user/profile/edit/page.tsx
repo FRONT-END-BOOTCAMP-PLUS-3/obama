@@ -3,13 +3,19 @@
 import {
   DashBoardContainer,
   InfoSection,
+} from "@/components/dashboard/DashBoard.Styled";
+import {
+  ProfileImage,
+  ImageWrapper,
   Title,
   TitleWrapper,
-} from "@/components/dashboard/DashBoard.Styled";
-
+  ProfileWrapper,
+} from "@/components/edit/EditPageStyled";
 import InfoItem from "@/components/dashboard/InfoItem";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@supabase/supabase-js";
+import { clientConfig } from "@/config/clientEnv";
 
 interface Category {
   id: number;
@@ -28,9 +34,17 @@ const EditPage = () => {
   const handleEdit = (categoryName: string) => {
     router.push(`/user/items?cn=${categoryName}&edit=true`);
   };
-
+  const supabase = createClient(
+    clientConfig.NEXT_PUBLIC_SUPABASE_URL,
+    clientConfig.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
+  const [imageUrl, setImageUrl] = useState<string>("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [userInputData, setUserInputData] = useState<AboutMeData[]>([]);
+  const [profileData, setProfileData] = useState<{
+    user: any;
+    aboutMe: any[];
+  } | null>(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -61,10 +75,48 @@ const EditPage = () => {
       }
     };
 
+    const getUserData = async () => {
+      const userId = localStorage.getItem("userId");
+      if (!userId) return;
+
+      // 프로필 이미지 가져오기
+      const imagePath = `profiles/${userId}.png`;
+      const { data } = supabase.storage
+        .from("profile-images")
+        .getPublicUrl(imagePath);
+
+      if (data) {
+        setImageUrl(data.publicUrl);
+      }
+    };
+
+    getUserData();
+
     fetchCategories();
     fetchUserinputdata();
   }, []); // 빈 배열을 넣어서 최초 렌더링 시 한 번만 실행됨
 
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+
+    const fetchProfileData = async () => {
+      try {
+        const res = await fetch(`/api/user/profile?userId=${userId}`);
+        if (!res.ok) throw new Error("API 요청 실패");
+
+        const data = await res.json();
+        setProfileData(data);
+        console.log(data);
+      } catch (error) {
+        console.error("API 요청 오류:", error);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
+  console.log(categories);
+  console.log(userInputData);
   const sortedUserInputData = [...userInputData].sort(
     (a, b) => a.category_id - b.category_id
   );
@@ -73,6 +125,15 @@ const EditPage = () => {
     <DashBoardContainer>
       <TitleWrapper>
         <Title>프로필 수정</Title>
+        <ProfileWrapper>
+          <ImageWrapper>
+            <ProfileImage
+              src={imageUrl || "/icons/profilePicture.svg"}
+              alt="Profile"
+            />
+          </ImageWrapper>
+          <h5>{profileData?.user.name}</h5>
+        </ProfileWrapper>
       </TitleWrapper>
 
       <InfoSection>
