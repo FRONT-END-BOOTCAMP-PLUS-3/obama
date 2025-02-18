@@ -5,6 +5,9 @@ dotenv.config({ path: ".env.local" });
 
 // 1) 스키마 정의
 const envSchema = z.object({
+  KAKAO_CLIENT_KEY: z.string().nonempty(),
+  KAKAO_CLIENT_SECRET:z.string().nonempty(),
+  NEXTAUTH_SECRET:z.string().nonempty(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().nonempty(),
   REDIS_URL: z.string().nonempty(),
   SMTP_HOST: z.string().nonempty(),
